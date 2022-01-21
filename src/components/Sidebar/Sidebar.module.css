@@ -1,0 +1,8 @@
+.sidebar {
+  /* grid-area: sidebar; */
+  background-color: tomato;
+  padding: 15px;
+}
+.menuItem>a.active {
+  color: gold;
+}

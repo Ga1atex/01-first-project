@@ -1,10 +1,11 @@
-import logo from '../img/logo.svg';
+import logo from '../../assets/img/logo.svg';
+import styles from './Header.module.css'
 
 export default function Header() {
   return (
-    <header className="header">
+    <header className={styles.header + " active"}>
       <div className="header__container">
-      <img src={logo} className="App-logo" alt="logo" width="20px" height="20px"/>
+      <img src={logo} className="App-logo" alt="logo" width="30px" height="30px"/>
       <h1>hello world 456</h1>
       <a
         className="App-link"

@@ -1,9 +1,5 @@
 export default function UserProfile() {
   return (
-    <div className="page__profile profile">
-      <div className="profile__avatar">
-        <img src="@img" alt="" />
-      </div>
       <div className="profile__info user-info">
         <h3 className="user-info__name">Ya Ti</h3>
         <div className="user-info__description">
@@ -13,6 +9,5 @@ export default function UserProfile() {
           <a href="/" className="user-info__website">localhost</a>
         </div>
       </div>
-    </div>
   )
 }
