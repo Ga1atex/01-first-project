@@ -1,5 +1,12 @@
-const sidebarReducer = (state, action) => {
+const initialState = {
+  friendsData: [
+    { id: 1, firstName: 'Andrew' },
+    { id: 2, firstName: 'Sasha' },
+    { id: 3, firstName: 'Sveta' },
+  ]
+}
 
+const sidebarReducer = (state = initialState, action) => {
   switch (action.type) {
     // case SEND_MESSAGE:
     //   sendMessage(action.text);
@@ -10,6 +17,7 @@ const sidebarReducer = (state, action) => {
     default:
       return state;
   }
+
 }
 
 export default sidebarReducer;

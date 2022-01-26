@@ -1,4 +1,4 @@
-import Posts from '../Posts/Posts';
+import PostsContainer from '../Posts/PostsContainer';
 import UserProfile from '../UserProfile/UserProfile';
 
 export default function Profile(props) {
@@ -6,7 +6,8 @@ export default function Profile(props) {
     <div className="page__profile profile">
       <div className=""><img src="" alt="" /></div>
       <UserProfile />
-      <Posts postsData={props.profilePage.postsData} dispatch={props.dispatch} newPostText={props.profilePage.textAreaText}/>
+      <PostsContainer store={props.store}/>
+      {/* <PostsContainer postsData={props.profilePage.postsData} dispatch={props.dispatch} newPostText={props.profilePage.textAreaText}/> */}
     </div>
   );
 }

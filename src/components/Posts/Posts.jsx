@@ -1,28 +1,25 @@
-import Post from './Post/Post'
+import Post from './Post/Post';
 import React from 'react';
-import { addPostActionCreator, updateTextActionCreator } from '../../redux/profileReducer';
 
 export default function Posts(props) {
   const postsElements = props.postsData.map(post => {
-    return <Post message={post.message} id={post.id} likesCount={post.likesCount}/>;
-  })
+    return <Post message={post.message} id={post.id} likesCount={post.likesCount} />;
+  });
 
   const newPostElement = React.createRef();
+
   const addPost = () => {
     const text = newPostElement.current.value;
-
     if (text) {
-      // props.addPost(text);
-      const action = addPostActionCreator(text)
-      props.dispatch(action);
+      props.addPost(text);
     }
-  }
-  const updateNewPostText = () => {
-    const text = newPostElement.current.value;
-    // props.updateNewPostText(text, 'profilePage');
-    const action = updateTextActionCreator(text, 'profilePage')
-    props.dispatch(action);
-  }
+  };
+
+  const updateNewPostText = (event) => {
+    // const text = newPostElement.current.value;
+    const text = event.target.value;
+    props.updateNewPostText(text);
+  };
 
   return (
     <section className="profile__posts posts">
@@ -33,5 +30,5 @@ export default function Posts(props) {
       </div>
       {postsElements}
     </section>
-  )
+  );
 }

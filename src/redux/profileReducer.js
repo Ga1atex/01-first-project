@@ -1,6 +1,5 @@
-const UPDATE_TEXT_VALUE = 'UPDATE-TEXT-VALUE';
-const ADD_POST = 'ADD-POST';
-
+const UPDATE_TEXT_VALUE = 'UPDATE_TEXT_VALUE';
+const ADD_POST = 'ADD_POST';
 
 export const addPostActionCreator = (text) => {
   return {
@@ -8,14 +7,25 @@ export const addPostActionCreator = (text) => {
     text
   };
 };
-export const updateTextActionCreator = (text, pageName) => {
+export const updateTextActionCreator = (text) => {
   return {
     type: UPDATE_TEXT_VALUE,
     text,
-    page: pageName
+    page: 'profilePage'
   };
 }
-const profileReducer = (state, action) => {
+
+const initialState = {
+  postsData: [
+    { id: 1, message: 'Post1', likesCount: "431" },
+    { id: 2, message: 'Hey', likesCount: "431" },
+    { id: 3, message: 'Hi', likesCount: "431" },
+    { id: 4, message: 'How is your day123', likesCount: "222" },
+  ],
+  textAreaText: 'profile'
+}
+
+const profileReducer = (state = initialState, action) => {
   function addPost(postMessage) {
     const newPost = {
       id: state.postsData.length + 1,
@@ -28,7 +38,7 @@ const profileReducer = (state, action) => {
     state.textAreaText = '';
   }
 
-  function updateTextValue(newText, page) {
+  function updateTextValue(newText) {
     state.textAreaText = newText;
   }
 
@@ -37,7 +47,7 @@ const profileReducer = (state, action) => {
       addPost();
       return state;
     case UPDATE_TEXT_VALUE:
-      updateTextValue(action.text, action.page);
+      updateTextValue(action.text);
       return state;
     default:
       return state;
