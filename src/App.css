@@ -23,7 +23,7 @@
 }
 .page__container {
     display: grid;
-    grid-template-columns: max-content 1fr;
+    grid-template-columns: min-content 1fr;
 }
 
 

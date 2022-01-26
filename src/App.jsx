@@ -16,11 +16,13 @@ function App(props) {
       <Header />
       <main className='page'>
         <div className='page__container'>
-          <Sidebar />
+          <Sidebar state={props.state.sidebar}/>
           <div className="page__content-wrapper">
             <Routes>
-              <Route path="profile" element={<Profile postsData={props.postsData}/>} />
-              <Route path="dialogs" element={<Dialogs dialogsData={props.dialogsData} messagesData={props.messagesData} />} />
+              <Route path="profile" element={<Profile
+                profilePage={props.state.profilePage} dispatch={props.dispatch}/>} />
+              <Route path="dialogs" element={<Dialogs dispatch={props.dispatch}
+                dialogsPage={props.state.dialogsPage}/>} />
             </Routes>
           </div>
         </div>

@@ -1,13 +1,10 @@
-.dialogs {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  column-gap: 10px;
+.dialog {
+  display: flex;
+  align-items: center;
 }
-.dialogsItems .active {
+.dialogAvatar {
+  flex: 0 1 50px;
+}
+.dialog .active {
   color: gold;
 }
-.dialog {}
-
-.messages {}
-
-.message {}

@@ -6,7 +6,7 @@ export default function Profile(props) {
     <div className="page__profile profile">
       <div className=""><img src="" alt="" /></div>
       <UserProfile />
-      <Posts postsData={props.postsData}/>
+      <Posts postsData={props.profilePage.postsData} dispatch={props.dispatch} newPostText={props.profilePage.textAreaText}/>
     </div>
   );
 }
