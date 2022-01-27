@@ -7,8 +7,8 @@ import './App.css';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import Profile from './components/Profile/Profile';
-import Sidebar from './components/Sidebar/Sidebar';
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
+import SidebarContainer from "./components/Sidebar/SidebarContainer";
 
 function App(props) {
   return (
@@ -16,16 +16,11 @@ function App(props) {
       <Header />
       <main className='page'>
         <div className='page__container'>
-          <Sidebar state={props.state.sidebar}/>
+          <SidebarContainer />
           <div className="page__content-wrapper">
             <Routes>
-              {/* <Route path="profile" element={<Profile
-                profilePage={props.state.profilePage} dispatch={props.dispatch}/>} /> */}
-              <Route path="profile" element={<Profile
-                store={props.store} />} />
-              <Route path="dialogs" element={<DialogsContainer store={props.store} />} />
-              {/* <Route path="dialogs" element={<Dialogs dispatch={props.dispatch}
-                dialogsPage={props.state.dialogsPage}/>} /> */}
+              <Route path="profile" element={<Profile />} />
+              <Route path="dialogs" element={<DialogsContainer />} />
             </Routes>
           </div>
         </div>

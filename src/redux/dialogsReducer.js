@@ -14,31 +14,63 @@ const initialState = {
     { id: 3, text: 'Hi' },
     { id: 4, text: 'How is your day123' },
   ],
-  textAreaText: 'dialogs'
+  textAreaText: ''
 }
 
 const dialogsReducer = (state = initialState, action) => {
-  function updateTextValue(newText) {
-    state.textAreaText = newText;
-  }
+  // const newState = JSON.parse(JSON.stringify(state));
 
-  function sendMessage() {
-    const newMessage = {
-      id: state.messagesData.length + 1,
-      text: state.textAreaText,
-    };
+  // function updateTextValue(newText) {
+  //   newState = {
+  //     ...state,
+  //     textAreaText: newText
+  //   }
+  // }
 
-    state.messagesData.push(newMessage);
-    state.textAreaText = '';
-  }
+  // function sendMessage() {
+  //   const newMessage = {
+  //     id: newState.messagesData.length + 1,
+  //     text: newState.textAreaText,
+  //   };
+
+  //   newState = {
+  //   ...state,
+  //   textAreaText: '',
+  //     messagesData: [...state.messagesData, newMessage],
+  // }
+
+  // }
 
   switch (action.type) {
-    case SEND_MESSAGE:
-      sendMessage(action.text);
-      return state;
-    case UPDATE_NEW_MESSAGE_VALUE:
-      updateTextValue(action.text);
-      return state;
+    case SEND_MESSAGE: {
+
+      const newState = {
+        ...state,
+        textAreaText: '',
+        messagesData: [...state.messagesData],
+      };
+
+      const newMessage = {
+        id: newState.messagesData.length + 1,
+        // text: state.textAreaText,
+        text: action.text,
+      };
+
+      newState.messagesData.push(newMessage);
+      // sendMessage(action.text);
+      return newState;
+    }
+
+    case UPDATE_NEW_MESSAGE_VALUE: {
+      // updateTextValue(action.text);
+      const newState = {
+        ...state,
+        textAreaText: action.text,
+      };
+
+      return newState;
+    }
+
     default:
       return state;
   }

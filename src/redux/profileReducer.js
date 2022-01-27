@@ -22,33 +22,56 @@ const initialState = {
     { id: 3, message: 'Hi', likesCount: "431" },
     { id: 4, message: 'How is your day123', likesCount: "222" },
   ],
-  textAreaText: 'profile'
+  textAreaText: ''
 }
 
 const profileReducer = (state = initialState, action) => {
-  function addPost(postMessage) {
-    const newPost = {
-      id: state.postsData.length + 1,
-      // message: action.postMessage,
-      message: state.textAreaText,
-      likesCount: 0
-    };
+  // const newState = JSON.parse(JSON.stringify(state));
+  // const newState = {
+  //   ...state,
+  //   ...state.postsData
+  // };
+  // function addPost(postMessage) {
+  //   const newPost = {
+  //     id: state.postsData.length + 1,
+  //     // message: action.postMessage,
+  //     message: state.textAreaText,
+  //     likesCount: 0
+  //   };
 
-    state.postsData.push(newPost);
-    state.textAreaText = '';
-  }
+  //   newState.postsData.push(newPost);
+  //   newState.textAreaText = '';
+  // }
 
-  function updateTextValue(newText) {
-    state.textAreaText = newText;
-  }
+  // function updateTextValue(newText) {
+  //   newState.textAreaText = newText;
+  // }
 
   switch (action.type) {
-    case ADD_POST:
-      addPost();
-      return state;
-    case UPDATE_TEXT_VALUE:
-      updateTextValue(action.text);
-      return state;
+    case ADD_POST: {
+      const newState = {
+        ...state,
+        ...state.postsData
+      };
+      const newPost = {
+        id: state.postsData.length + 1,
+        // message: action.postMessage,
+        message: state.textAreaText,
+        likesCount: 0
+      };
+
+      newState.postsData.push(newPost);
+      newState.textAreaText = '';
+
+      return newState;
+    }
+    case UPDATE_TEXT_VALUE:{
+      const newState = {
+        ...state,
+        textAreaText: action.text
+      };
+      return newState;
+    }
     default:
       return state;
   }

@@ -2,12 +2,12 @@ import { NavLink } from "react-router-dom";
 import styles from './Sidebar.module.css';
 
 export default function Sidebar(props) {
-  const friendsList = props.state.friendsData.map((friend => <li className={styles.friendsItem}>
+  const friendsList = props.sidebar.friendsData.map((friend => <li className={styles.friendsItem} key={friend.id}>
     <a className={styles.friendsImg} href=""><img src="" alt={friend.firstName + "'s avatar"} width="60" height="60" /></a>
     <span className={styles.friendsFirstName}>{friend.firstName}</span>
   </li>));
 
-  return (
+    return (
     <aside className={styles.sidebar}>
       <nav className='sidebar__menu menu'>
         <ul className='menu__list'>
@@ -24,5 +24,5 @@ export default function Sidebar(props) {
         </ul>
       </nav>
     </aside>
-  );
+    )
 }

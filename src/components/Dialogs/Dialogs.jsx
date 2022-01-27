@@ -7,10 +7,10 @@ export default function Dialogs(props) {
   const state = props.dialogsPage;
 
   const dialogsElements = state.dialogsData.map(dialog => {
-    return <DialogItem name={dialog.name} id={dialog.id} />;
+    return <DialogItem name={dialog.name} key={dialog.id} id={dialog.id} />;
   })
   const messagesElements = state.messagesData.map(message => {
-    return <Message textMessage={message.text} />;
+    return <Message textMessage={message.text} key={message.id}/>;
   })
 
   const newMessageElement = React.createRef();
