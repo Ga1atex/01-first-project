@@ -18,28 +18,6 @@ const initialState = {
 }
 
 const dialogsReducer = (state = initialState, action) => {
-  // const newState = JSON.parse(JSON.stringify(state));
-
-  // function updateTextValue(newText) {
-  //   newState = {
-  //     ...state,
-  //     textAreaText: newText
-  //   }
-  // }
-
-  // function sendMessage() {
-  //   const newMessage = {
-  //     id: newState.messagesData.length + 1,
-  //     text: newState.textAreaText,
-  //   };
-
-  //   newState = {
-  //   ...state,
-  //   textAreaText: '',
-  //     messagesData: [...state.messagesData, newMessage],
-  // }
-
-  // }
 
   switch (action.type) {
     case SEND_MESSAGE: {
@@ -72,6 +50,7 @@ const dialogsReducer = (state = initialState, action) => {
     }
 
     default:
+
       return state;
   }
 }

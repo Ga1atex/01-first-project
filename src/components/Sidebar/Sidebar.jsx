@@ -13,6 +13,7 @@ export default function Sidebar(props) {
         <ul className='menu__list'>
           <li className={styles.menuItem}><NavLink to="/profile" className={(navData) => (navData.isActive ? styles.active : '')}>Profile</NavLink></li>
           <li className={styles.menuItem}><NavLink to="/dialogs" className={(navData) => (navData.isActive ? styles.active : '')}>Messages</NavLink></li>
+          <li className={styles.menuItem}><NavLink to="/users" className={(navData) => (navData.isActive ? styles.active : '')}>Users</NavLink></li>
           <li className={styles.menuItem}><NavLink to="/feed" className={(navData) => (navData.isActive ? styles.active : '')}>News</NavLink></li>
           <li className={styles.menuItem}><NavLink to="/audios" className={(navData) => (navData.isActive ? styles.active : '')}>Music</NavLink></li>
           <li className={styles.menuItem}><NavLink to="/settings" className={(navData) => (navData.isActive ? styles.active : '')}>Settings</NavLink></li>
