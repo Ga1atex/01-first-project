@@ -8,7 +8,6 @@ const reducers = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
   sidebar: sidebarReducer,
-  // usersPage: usersReducer
   usersPage: usersReducer
 })
 
