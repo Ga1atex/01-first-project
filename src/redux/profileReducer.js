@@ -1,19 +1,6 @@
 const UPDATE_TEXT_VALUE = 'UPDATE_TEXT_VALUE';
 const ADD_POST = 'ADD_POST';
-
-export const addPostActionCreator = (text) => {
-  return {
-    type: ADD_POST,
-    text
-  };
-};
-export const updateTextActionCreator = (text) => {
-  return {
-    type: UPDATE_TEXT_VALUE,
-    text,
-    page: 'profilePage'
-  };
-}
+const SET_USER_PROFILE = 'SET_USER_PROFILE';
 
 const initialState = {
   postsData: [
@@ -22,7 +9,8 @@ const initialState = {
     { id: 3, message: 'Hi', likesCount: "431" },
     { id: 4, message: 'How is your day123', likesCount: "222" },
   ],
-  textAreaText: ''
+  textAreaText: '',
+  profile: undefined
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -72,9 +60,35 @@ const profileReducer = (state = initialState, action) => {
       };
       return newState;
     }
+    case SET_USER_PROFILE: {
+      const newState = {
+        ...state,
+        profile: action.profile
+      };
+      return newState;
+    }
     default:
       return state;
   }
 };
-
+//Action creators
+export const addPost = (text) => {
+  return {
+    type: ADD_POST,
+    text
+  };
+};
+export const updateText = (text) => {
+  return {
+    type: UPDATE_TEXT_VALUE,
+    text,
+    page: 'profilePage'
+  };
+}
+export const setUserProfile = (profile) => {
+  return {
+    type: SET_USER_PROFILE,
+    profile
+  };
+}
 export default profileReducer;

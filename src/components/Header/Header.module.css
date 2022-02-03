@@ -3,3 +3,15 @@
   grid-column: span 2; */
   background-color: teal;
 }
+.headerContainer {
+  display: flex;
+  align-items: center;
+}
+.loginBlock {
+
+}
+.logo {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+}

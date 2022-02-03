@@ -1,6 +1,8 @@
-import React from 'react'
+import React from 'react';
 import styles from './Users.module.css';
-import userPhoto from '../../assets/images/user.png'
+import userPhoto from '../../assets/images/user.png';
+import { NavLink } from 'react-router-dom';
+import { followAPI } from '../../api/api';
 
 const Users = (props) => {
   const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -10,7 +12,6 @@ const Users = (props) => {
       pages.push(i);
     }
   }
-  console.log(props);
   return (
     <div className="page__users users">
       <div className="pagging">
@@ -26,8 +27,21 @@ const Users = (props) => {
         props.usersData.map(user => {
           return <div key={user.id} className="users__item user">
             <div className="">
-              <div className=""><img src={user.photos.small != null ? user.photos.small : userPhoto} alt={user.name + " avatar image"} width={60} height={60} /></div>
-              <button className="" onClick={() => { props.toggleFollow(user.id); }}>{user.followed ? 'Unfollow' : 'Follow'}</button>
+              <NavLink className="" to={"/profile/" + user.id}>
+                <img src={user.photos.small != null ? user.photos.small : userPhoto} alt={user.name + " avatar image"} width={60} height={60} />
+              </NavLink>
+              <button className="" onClick={() => {
+                (user.followed ?
+                  followAPI.unfollow(user.id)
+                  // : axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, null, {
+                  : followAPI.follow(user.id))
+                  // props.toggleFollow(user.id);
+                  .then(data => {
+                      if (data.resultCode === 0) {
+                        props.toggleFollow(user.id);
+                      }
+                  });
+              }}>{user.followed ? 'Unfollow' : 'Follow'}</button>
             </div>
             <div className="user__info">
               <div className="user__description">
@@ -44,6 +58,6 @@ const Users = (props) => {
       }
     </div>
   );
-}
+};
 
 export default Users;
