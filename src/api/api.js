@@ -20,29 +20,24 @@ export const usersAPI = {
     return instance.get(`users?page=${pageNumber}&count=${pageSize}`)
       .then(sendResponseData);
   },
-};
-
-export const profileAPI = {
-  getProfile(userId) {
-    return instance.get(`profile/${userId}`)
-      .then(sendResponseData);
-  }
-};
-
-export const authAPI = {
-  getAuthData() {
-    return instance.get(`auth/me`)
-      .then(sendResponseData);
-  }
-};
-
-export const followAPI = {
   follow(id) {
     return instance.post(`follow/${id}`)
       .then(sendResponseData);
   },
   unfollow(id) {
     return instance.delete(`follow/${id}`)
+      .then(sendResponseData);
+  },
+  getProfile(userId) {
+    return instance.get(`profile/${userId}`)
+      .then(sendResponseData);
+  }
+};
+
+
+export const authAPI = {
+  getAuthData() {
+    return instance.get(`auth/me`)
       .then(sendResponseData);
   }
 };

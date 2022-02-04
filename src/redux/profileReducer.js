@@ -1,3 +1,5 @@
+import { usersAPI } from "../api/api";
+
 const UPDATE_TEXT_VALUE = 'UPDATE_TEXT_VALUE';
 const ADD_POST = 'ADD_POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
@@ -71,6 +73,7 @@ const profileReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 //Action creators
 export const addPost = (text) => {
   return {
@@ -85,10 +88,21 @@ export const updateText = (text) => {
     page: 'profilePage'
   };
 }
-export const setUserProfile = (profile) => {
+export const setUserProfile = (userId) => {
   return {
     type: SET_USER_PROFILE,
-    profile
+    profile: userId
   };
 }
+export const getUserProfile = (userId) => {
+  return (dispatch) => {
+    usersAPI.getProfile(userId)
+      .then(data => {
+        dispatch(setUserProfile(data));
+      }
+      );
+  };
+}
+
+
 export default profileReducer;

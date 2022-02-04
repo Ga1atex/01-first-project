@@ -1,3 +1,5 @@
+import { authAPI, usersAPI } from "../api/api";
+
 const SET_USER_DATA = 'SET_USER_DATA';
 
 
@@ -41,5 +43,24 @@ export const setAuthUserData = (userId, email, login, fullName, photoSmall, isAu
   };
 };
 
+export const getAuthUserData = () => {
+  return (dispatch) => {
+    authAPI.getAuthData()
+      .then(data => {
+        if (data.resultCode === 0) {
+          const { id, email, login } = data.data;
+          // this.props.setAuthUserData(id, email, login);
+          if (login) {
+            usersAPI.getProfile(id)
+              .then(data => {
+                dispatch(setAuthUserData(id, email, login, data.fullName, data.photos.small));
+              });
+          }
+        }
+      }
+      );
+  }
+
+};
 
 export default authReducer;

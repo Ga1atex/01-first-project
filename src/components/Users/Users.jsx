@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './Users.module.css';
 import userPhoto from '../../assets/images/user.png';
 import { NavLink } from 'react-router-dom';
-import { followAPI } from '../../api/api';
 
 const Users = (props) => {
   const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -12,13 +11,14 @@ const Users = (props) => {
       pages.push(i);
     }
   }
+
   return (
     <div className="page__users users">
       <div className="pagging">
         {/* <a href="" className="pagging__arrow"></a> */}
         <ul className="pagging__list">
           {pages.map(p => {
-            return <li className="pagging__item" key={p}><a href="#" className={props.currentPage === p ? styles.active : undefined + "pagging__item"} onClick={(e) => { props.onPageChanged(p); }}>{p}</a></li>;
+            return <li className="pagging__item" key={p}><a className={props.currentPage === p ? styles.active : undefined + "pagging__item"} onClick={(e) => { props.onPageChanged(p); }}>{p}</a></li>;
           })}
         </ul>
         {/* <a href="" className="pagging__arrow"></a>  */}
@@ -30,17 +30,8 @@ const Users = (props) => {
               <NavLink className="" to={"/profile/" + user.id}>
                 <img src={user.photos.small != null ? user.photos.small : userPhoto} alt={user.name + " avatar image"} width={60} height={60} />
               </NavLink>
-              <button className="" onClick={() => {
-                (user.followed ?
-                  followAPI.unfollow(user.id)
-                  // : axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, null, {
-                  : followAPI.follow(user.id))
-                  // props.toggleFollow(user.id);
-                  .then(data => {
-                      if (data.resultCode === 0) {
-                        props.toggleFollow(user.id);
-                      }
-                  });
+              <button disabled={props.followingInProgress.some(id => id === user.id)} className="" onClick={() => {
+                props.toggleFollow(user.followed, user.id);
               }}>{user.followed ? 'Unfollow' : 'Follow'}</button>
             </div>
             <div className="user__info">
