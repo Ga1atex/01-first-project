@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import Sidebar from "./Sidebar";
 
 const mapStateToProps = (state)=> {
@@ -11,6 +12,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
   };
 }
-const SidebarContainer = connect(mapStateToProps, mapDispatchToProps)(Sidebar);
-
-export default SidebarContainer;
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps)
+)(Sidebar);

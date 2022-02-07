@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { setCurrentPage, setTotalUsersCount, setUsers, toggleFollowSuccess, toggleIsFetching, toggleFollowingProgress, getUsers, toggleFollow } from '../../redux/usersReducer';
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { compose } from 'redux';
 
 class UsersContainer extends React.Component {
   componentDidMount() {
@@ -71,14 +73,16 @@ const mapStateToProps = (state) => {
 // }
 
 
-
-export default connect(mapStateToProps, {
-  toggleFollow,
-  // setUsers,
-  setCurrentPage,
-  // setTotalUsersCount,
-  // toggleIsFetching,
-  toggleFollowingProgress,
-  getUsers,
-  // toggleFollowSuccess
-})(UsersContainer);
+export default compose(
+  connect(mapStateToProps, {
+    toggleFollow,
+    // setUsers,
+    setCurrentPage,
+    // setTotalUsersCount,
+    // toggleIsFetching,
+    toggleFollowingProgress,
+    getUsers,
+    // toggleFollowSuccess
+  }),
+  withAuthRedirect,
+)(UsersContainer);

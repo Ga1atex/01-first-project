@@ -2,6 +2,7 @@ import DialogItem from './Dialog/Dialog';
 import styles from './Dialogs.module.css'
 import Message from './Message/Message';
 import React from 'react';
+import { Navigate } from 'react-router-dom';
 
 export default function Dialogs(props) {
   const state = props.dialogsPage;
