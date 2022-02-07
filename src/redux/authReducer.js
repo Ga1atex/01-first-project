@@ -2,8 +2,6 @@ import { authAPI, usersAPI } from "../api/api";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 
-
-
 const initialState = {
   id: null,
   email: null,
@@ -60,7 +58,6 @@ export const getAuthUserData = () => {
       }
       );
   }
-
 };
 
 export default authReducer;

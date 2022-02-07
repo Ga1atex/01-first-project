@@ -1,4 +1,3 @@
-import { Navigate } from 'react-router-dom';
 import PostsContainer from '../Posts/PostsContainer';
 import UserProfile from '../UserProfile/UserProfile';
 

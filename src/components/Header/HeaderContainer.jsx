@@ -8,7 +8,6 @@ class HeaderContainer extends React.Component {
   componentDidMount() {
     // this.props.toggleIsFetching(true);
     this.props.getAuthUserData()
-
   }
 
   render() {
