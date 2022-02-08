@@ -1,8 +1,9 @@
-import { usersAPI } from "../api/api";
+import { profileAPI } from "../api/api";
 
 const UPDATE_TEXT_VALUE = 'UPDATE_TEXT_VALUE';
 const ADD_POST = 'ADD_POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
+const SET_PROFILE_STATUS = 'SET_PROFILE_STATUS';
 
 const initialState = {
   postsData: [
@@ -12,31 +13,11 @@ const initialState = {
     { id: 4, message: 'How is your day123', likesCount: "222" },
   ],
   textAreaText: '',
-  profile: undefined
+  profile: undefined,
+  status: ''
 }
 
 const profileReducer = (state = initialState, action) => {
-  // const newState = JSON.parse(JSON.stringify(state));
-  // const newState = {
-  //   ...state,
-  //   ...state.postsData
-  // };
-  // function addPost(postMessage) {
-  //   const newPost = {
-  //     id: state.postsData.length + 1,
-  //     // message: action.postMessage,
-  //     message: state.textAreaText,
-  //     likesCount: 0
-  //   };
-
-  //   newState.postsData.push(newPost);
-  //   newState.textAreaText = '';
-  // }
-
-  // function updateTextValue(newText) {
-  //   newState.textAreaText = newText;
-  // }
-
   switch (action.type) {
     case ADD_POST: {
       const newState = {
@@ -45,7 +26,6 @@ const profileReducer = (state = initialState, action) => {
       };
       const newPost = {
         id: state.postsData.length + 1,
-        // message: action.postMessage,
         message: state.textAreaText,
         likesCount: 0
       };
@@ -66,6 +46,13 @@ const profileReducer = (state = initialState, action) => {
       const newState = {
         ...state,
         profile: action.profile
+      };
+      return newState;
+    }
+    case SET_PROFILE_STATUS: {
+      const newState = {
+        ...state,
+        status: action.status
       };
       return newState;
     }
@@ -94,9 +81,16 @@ export const setUserProfile = (userId) => {
     profile: userId
   };
 }
+export const setProfileStatus = (status) => {
+  return {
+    type: SET_PROFILE_STATUS,
+    status
+  };
+}
+
 export const getUserProfile = (userId) => {
   return (dispatch) => {
-    usersAPI.getProfile(userId)
+    profileAPI.getProfile(userId)
       .then(data => {
         dispatch(setUserProfile(data));
       }
@@ -104,5 +98,30 @@ export const getUserProfile = (userId) => {
   };
 }
 
+export const getProfileStatus = (userId) => {
+  return dispatch => {
+    // dispatch(toggleIsFetching(true));
+
+    profileAPI.getProfileStatus(userId)
+      .then(data => {
+        // dispatch(toggleIsFetching(false));
+        dispatch(setProfileStatus(data));
+      });
+  };
+};
+
+export const updateProfileStatus = (status) => {
+  return dispatch => {
+    // dispatch(toggleIsFetching(true));
+
+    profileAPI.updateProfileStatus(status)
+      .then(data => {
+        if (data.resultCode === 0) {
+        // dispatch(toggleIsFetching(false));
+        dispatch(setProfileStatus(status));
+        }
+      });
+  };
+};
 
 export default profileReducer;

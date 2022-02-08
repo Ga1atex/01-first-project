@@ -1,4 +1,4 @@
-import { authAPI, usersAPI } from "../api/api";
+import { authAPI, profileAPI } from "../api/api";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 
@@ -49,7 +49,7 @@ export const getAuthUserData = () => {
           const { id, email, login } = data.data;
           // this.props.setAuthUserData(id, email, login);
           if (login) {
-            usersAPI.getProfile(id)
+            profileAPI.getProfile(id)
               .then(data => {
                 dispatch(setAuthUserData(id, email, login, data.fullName, data.photos.small));
               });

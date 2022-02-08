@@ -1,5 +1,6 @@
 import Preloader from "../common/Preloader/Preloader";
 import ProfileStatus from "./ProfileStatus/ProfileStatus";
+import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
 
 export default function UserProfile(props) {
   if (!props.profile) {
@@ -11,7 +12,7 @@ export default function UserProfile(props) {
         <img src={props.profile.photos.large} alt="" />
       <h3 className="user-info__name">{props.profile.fullName}</h3>
         <div className="user-info__description">
-          <ProfileStatus status={"Hello my world"}/>
+          <ProfileStatusContainer userId={props.userId}/>
           {/* <p className="user-info__birthday">1.1.1990</p>
           <p className="user-info__location">Moscow</p>
           <p className="user-info__education">KubSu</p> */}

@@ -147,16 +147,4 @@ export const toggleFollow = (followed, id) => {
   };
 };
 
-// export const getProfileStatus = (userId) => {
-//   return dispatch => {
-//     // dispatch(toggleIsFetching(true));
-
-//     usersAPI.getProfileStatus(userId)
-//       .then(data => {
-//         // dispatch(toggleIsFetching(false));
-//         dispatch(getUserProfle(data));
-//       });
-//   };
-// };
-
 export default usersReducer;

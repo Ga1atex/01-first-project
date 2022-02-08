@@ -28,12 +28,21 @@ export const usersAPI = {
     return instance.delete(`follow/${id}`)
       .then(sendResponseData);
   },
+};
+
+export const profileAPI = {
   getProfile(userId) {
     return instance.get(`profile/${userId}`)
       .then(sendResponseData);
   },
   getProfileStatus(userId) {
     return instance.get(`profile/status/${userId}`)
+      .then(sendResponseData);
+  },
+  updateProfileStatus(statusText) {
+    return instance.put(`profile/status/`, {
+      status: statusText
+    })
       .then(sendResponseData);
   }
 };

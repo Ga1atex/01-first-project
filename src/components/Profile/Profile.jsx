@@ -5,8 +5,7 @@ export default function Profile(props) {
 
   return (
     <div className="page__profile profile">
-      <div className=""><img src="" alt="" /></div>
-      <UserProfile profile={props.profile}/>
+      <UserProfile profile={props.profile} userId={props.userId}/>
       <PostsContainer/>
     </div>
   );
