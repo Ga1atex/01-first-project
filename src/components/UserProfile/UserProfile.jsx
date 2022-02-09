@@ -1,5 +1,4 @@
 import Preloader from "../common/Preloader/Preloader";
-import ProfileStatus from "./ProfileStatus/ProfileStatus";
 import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
 
 export default function UserProfile(props) {

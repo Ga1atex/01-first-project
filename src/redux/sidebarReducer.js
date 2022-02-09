@@ -7,7 +7,6 @@ const initialState = {
 }
 
 const sidebarReducer = (state = initialState, action) => {
-  const newState = JSON.parse(JSON.stringify(state));
 
   switch (action.type) {
     // case SEND_MESSAGE:

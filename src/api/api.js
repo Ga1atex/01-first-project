@@ -51,5 +51,9 @@ export const authAPI = {
   getAuthData() {
     return instance.get(`auth/me`)
       .then(sendResponseData);
+  },
+  login() {
+    return instance.post(`auth/login`)
+      .then(sendResponseData);
   }
 };

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { compose } from 'redux';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
-import { getUserProfile, getProfileStatus } from '../../redux/profileReducer';
+import { getUserProfile } from '../../redux/profileReducer';
 import Profile from './Profile';
 
 class ProfileContainer extends React.Component {
@@ -12,7 +12,6 @@ class ProfileContainer extends React.Component {
   componentDidMount() {
     this.props.getUserProfile(this.userId);
     // this.props.getProfileStatus(userId);
-
   }
 
   render() {
