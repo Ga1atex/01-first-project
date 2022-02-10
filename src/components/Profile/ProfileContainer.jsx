@@ -45,10 +45,10 @@ function withRouter(Component) {
 }
 
 export default compose(
+  // withAuthRedirect,
   connect(mapStateToProps, {
     getUserProfile,
     // getProfileStatus
   }),
   withRouter,
-  withAuthRedirect,
 )(ProfileContainer);

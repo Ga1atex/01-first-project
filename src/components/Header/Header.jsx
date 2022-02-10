@@ -13,8 +13,12 @@ export default function Header(props) {
           Social Network
         </a>
         <div className={styles.loginBlock}>
-          {props.isAuth ? (<>
-            <img src={props.photoSmall != null ? props.photoSmall : propsPhoto} alt={"Your avatar image"} width={60} height={60} /><p>{props.fullName}</p></> )
+          {props.isAuth
+            ? (<>
+              <img src={props.photoSmall != null ? props.photoSmall : propsPhoto} alt={"Your avatar image"} width={60} height={60} />
+              <p>{props.fullName}</p>
+              <button onClick={props.logout}>Log out</button>
+            </>)
             : <NavLink to={'/login'}>Login</NavLink>
           }
 

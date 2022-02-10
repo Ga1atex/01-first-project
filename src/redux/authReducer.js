@@ -6,20 +6,18 @@ const initialState = {
   id: null,
   email: null,
   login: null,
-  isAuth: false,
-  isFetching: false,
+  // isFetching: false,
   fullName: null,
-  photosSmall: null
+  photosSmall: null,
+  isAuth: false,
 };
 
 const authReducer = (state = initialState, action) => {
-
   switch (action.type) {
     case SET_USER_DATA: {
       const newState = {
         ...state,
-        ...action,
-        isAuth: true
+        ...action.payload
       };
       return newState;
     }
@@ -31,16 +29,17 @@ const authReducer = (state = initialState, action) => {
 export const setAuthUserData = (userId, email, login, fullName, photoSmall, isAuth, isFetching) => {
   return {
     type: SET_USER_DATA,
-    userId,
-    email,
-    login,
-    fullName,
-    photoSmall,
-    // isAuth,
+    payload: {
+      userId,
+      email,
+      login,
+      fullName,
+      photoSmall,
+      isAuth,
+    }
     // isFetching
   };
 };
-
 export const getAuthUserData = () => {
   return (dispatch) => {
     authAPI.getAuthData()
@@ -51,13 +50,37 @@ export const getAuthUserData = () => {
           if (login) {
             profileAPI.getProfile(id)
               .then(data => {
-                dispatch(setAuthUserData(id, email, login, data.fullName, data.photos.small));
+                dispatch(setAuthUserData(id, email, login, data.fullName, data.photos.small, true));
               });
           }
         }
       }
       );
   }
+};
+
+export const login = (email, password, rememberMe) => {
+  return (dispatch) => {
+    authAPI.login(email, password, rememberMe)
+      .then(data => {
+        if (data.resultCode === 0) {
+          dispatch(getAuthUserData());
+        }
+      }
+      );
+  };
+};
+
+export const logout = () => {
+  return (dispatch) => {
+    authAPI.logout()
+      .then(data => {
+        if (data.resultCode === 0) {
+          dispatch(setAuthUserData(null, null, null, null, null, false));
+        }
+      }
+      );
+  };
 };
 
 export default authReducer;
