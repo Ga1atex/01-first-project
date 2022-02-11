@@ -4,6 +4,8 @@ import { required } from '../../utils/validators/validators';
 import { Input } from '../common/FormsControls/FormsControls';
 import {login} from '../../redux/authReducer'
 import { Navigate } from 'react-router-dom';
+import styles from '../common/FormsControls/FormsControls.module.css';
+
 
 const LoginForm = (props) => {
   return (
@@ -22,6 +24,8 @@ const LoginForm = (props) => {
         <Field component={Input} type="checkbox" name={"rememberMe"}/>
       Remember me
     </label>
+      {props.error && <div className={styles.formSummaryError}>{props.error}</div>}
+
     <button type="submit">Log-in</button>
     </form>
     )
@@ -36,9 +40,9 @@ function Login(props) {
     props.login(formData.email, formData.password, formData.rememberMe)
   }
 
-  // if (props.isAuth) {
-  //   return <Navigate to="/profile" />
-  // }
+  if (props.isAuth) {
+    return <Navigate to="/profile" />
+  }
 
   return (
     <div className="">

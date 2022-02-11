@@ -1,9 +1,10 @@
+import { stopSubmit } from "redux-form";
 import { authAPI, profileAPI } from "../api/api";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 
 const initialState = {
-  id: null,
+  userId: null,
   email: null,
   login: null,
   // isFetching: false,
@@ -26,38 +27,36 @@ const authReducer = (state = initialState, action) => {
   }
 };
 // Action Creators
-export const setAuthUserData = (userId, email, login, fullName, photoSmall, isAuth, isFetching) => {
+export const setAuthUserData = (userId, email, login, isAuth, fullName, photoSmall) => {
   return {
     type: SET_USER_DATA,
     payload: {
       userId,
       email,
       login,
+      isAuth,
       fullName,
       photoSmall,
-      isAuth,
     }
-    // isFetching
   };
 };
-export const getAuthUserData = () => {
-  return (dispatch) => {
-    authAPI.getAuthData()
-      .then(data => {
-        if (data.resultCode === 0) {
-          const { id, email, login } = data.data;
-          // this.props.setAuthUserData(id, email, login);
-          if (login) {
-            profileAPI.getProfile(id)
-              .then(data => {
-                dispatch(setAuthUserData(id, email, login, data.fullName, data.photos.small, true));
-              });
-          }
+export const getAuthUserData = () => (dispatch) => {
+  return authAPI.getAuthData()
+    .then(data => {
+      if (data.resultCode === 0) {
+        const { id, email, login } = data.data;
+        // dispatch(setAuthUserData(id, email, login, true));
+        if (login) {
+          return profileAPI.getProfile(id)
+            .then(profileData => {
+              dispatch(setAuthUserData(id, email, login, true, profileData.fullName, profileData.photos.small));
+            });
         }
       }
-      );
-  }
+    }
+    );
 };
+
 
 export const login = (email, password, rememberMe) => {
   return (dispatch) => {
@@ -65,6 +64,11 @@ export const login = (email, password, rememberMe) => {
       .then(data => {
         if (data.resultCode === 0) {
           dispatch(getAuthUserData());
+        } else if (data.resultCode === 1) {
+          const errorMessage = data.messages.length > 0 ? data.messages[0] : "E-mail or password is wrong";
+          dispatch(stopSubmit('login', {
+            _error: errorMessage
+          }));
         }
       }
       );

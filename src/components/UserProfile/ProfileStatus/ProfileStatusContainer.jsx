@@ -53,6 +53,6 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-  getProfileStatus: getProfileStatus,
-  updateProfileStatus: updateProfileStatus
+  getProfileStatus,
+  updateProfileStatus
 })(ProfileStatusContainer);
