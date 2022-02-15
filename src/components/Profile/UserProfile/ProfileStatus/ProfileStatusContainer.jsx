@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ProfileStatus from "./ProfileStatus";
-import { getProfileStatus, updateProfileStatus } from "../../../redux/profileReducer";
+import { getProfileStatus, updateProfileStatus } from "../../../../redux/profileReducer";
 
 const ProfileStatusContainer = (props) => {
   const [editMode, setEditMode] = useState(false);

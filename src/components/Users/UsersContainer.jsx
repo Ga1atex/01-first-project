@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setCurrentPage, toggleFollowingProgress, requestUsers, toggleFollow } from '../../redux/usersReducer';
 import Users from './Users';
@@ -6,51 +6,38 @@ import Preloader from '../common/Preloader/Preloader';
 import { compose } from 'redux';
 import { getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsers } from '../../redux/usersSelectors';
 
-class UsersContainer extends React.Component {
-  componentDidMount() {
-    this.props.requestUsers(this.props.currentPage, this.props.pageSize);
-  };
+const UsersContainer =(props) => {
+  useEffect(() => {
+    props.requestUsers(props.currentPage, props.pageSize);
+  }, [])
 
-  onPageChanged = (pageNumber) => {
-    // this.props.setCurrentPage(pageNumber);
-    this.props.requestUsers(pageNumber, this.props.pageSize);
+  const onPageChanged = (pageNumber) => {
+    // props.setCurrentPage(pageNumber);
+    props.requestUsers(pageNumber, props.pageSize);
 
-    // this.props.toggleIsFetching(true);
-    // usersAPI.requestUsers(pageNumber, this.props.pageSize)
+    // props.toggleIsFetching(true);
+    // usersAPI.requestUsers(pageNumber, props.pageSize)
     //   .then(data => {
-    //       this.props.toggleIsFetching(false);
-    //       this.props.setUsers(data.items);
+    //       props.toggleIsFetching(false);
+    //       props.setUsers(data.items);
     //   });
   };
-
-  render() {
     return (<>
-      {this.props.isFetching ? <Preloader /> : undefined}
+      {props.isFetching ? <Preloader /> : null}
       <Users
-        totalUsersCount={this.props.totalUsersCount}
-        pageSize={this.props.pageSize}
-        currentPage={this.props.currentPage}
-        // toggleFollowSuccess={this.props.toggleFollowSuccess}
-        onPageChanged={this.onPageChanged}
-        usersData={this.props.usersData}
-        // toggleFollowingProgress={this.props.toggleFollowingProgress}
-        followingInProgress={this.props.followingInProgress}
-        toggleFollow={this.props.toggleFollow}
+        totalUsersCount={props.totalUsersCount}
+        pageSize={props.pageSize}
+        currentPage={props.currentPage}
+        // toggleFollowSuccess={props.toggleFollowSuccess}
+        onPageChanged={onPageChanged}
+        usersData={props.usersData}
+        // toggleFollowingProgress={props.toggleFollowingProgress}
+        followingInProgress={props.followingInProgress}
+        toggleFollow={props.toggleFollow}
       />
     </>);
-  }
-}
 
-// const mapStateToProps = (state) => {
-//   return {
-//     usersData: state.usersPage.usersData,
-//     pageSize: state.usersPage.pageSize,
-//     totalUsersCount: state.usersPage.totalUsersCount,
-//     currentPage: state.usersPage.currentPage,
-//     isFetching: state.usersPage.isFetching,
-//     followingInProgress: state.usersPage.followingInProgress,
-//   };
-// };
+}
 
 // const mapDispatchToProps = (dispatch) => {
 //   return {

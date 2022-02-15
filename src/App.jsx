@@ -1,6 +1,7 @@
 import {
   Routes,
-  Route
+  Route,
+  BrowserRouter
 } from 'react-router-dom';
 import './App.css';
 import Footer from './components/Footer/Footer';
@@ -14,6 +15,9 @@ import React from 'react';
 import { initializeApp } from './redux/appReducer';
 import { connect } from 'react-redux';
 import Preloader from './components/common/Preloader/Preloader';
+import { Provider } from 'react-redux';
+import store from './redux/redux-store';
+
 
 class App extends React.Component {
   componentDidMount() {
@@ -23,7 +27,7 @@ class App extends React.Component {
 
   render() {
     if (!this.props.initialized) {
-      return <Preloader />
+      return <Preloader />;
     }
 
     return (
@@ -53,9 +57,21 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   return {
     initialized: state.app.initialized
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, {
-    initializeApp
-  })(App);
+const AppContainer = connect(mapStateToProps, {
+  initializeApp
+})(App);
+
+const SocialNetworkApp = (props) => {
+  return (
+    <BrowserRouter>
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    </BrowserRouter>
+  );
+};
+
+export default SocialNetworkApp;

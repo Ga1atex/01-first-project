@@ -1,4 +1,4 @@
-import Preloader from "../common/Preloader/Preloader";
+import Preloader from "../../common/Preloader/Preloader";
 import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer.jsx";
 
 export default function UserProfile(props) {

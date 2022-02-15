@@ -14,7 +14,7 @@ const initialState = {
   ],
   profile: null,
   status: ''
-}
+};
 
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -70,54 +70,43 @@ export const setUserProfile = (userId) => {
     type: SET_USER_PROFILE,
     profile: userId
   };
-}
+};
 export const setProfileStatus = (status) => {
   return {
     type: SET_PROFILE_STATUS,
     status
   };
-}
+};
 export const deletePost = (postId) => {
   return {
     type: DELETE_POST,
     postId
   };
-}
-
-export const getUserProfile = (userId) => {
-  return (dispatch) => {
-    profileAPI.getProfile(userId)
-      .then(data => {
-        dispatch(setUserProfile(data));
-      }
-      );
-  };
-}
-
-export const getProfileStatus = (userId) => {
-  return dispatch => {
-    // dispatch(toggleIsFetching(true));
-
-    profileAPI.getProfileStatus(userId)
-      .then(data => {
-        // dispatch(toggleIsFetching(false));
-        dispatch(setProfileStatus(data));
-      });
-  };
 };
 
-export const updateProfileStatus = (status) => {
-  return dispatch => {
-    // dispatch(toggleIsFetching(true));
+export const getUserProfile = (userId) => async (dispatch) => {
+  const data = await profileAPI.getProfile(userId);
+  dispatch(setUserProfile(data));
+};
 
-    profileAPI.updateProfileStatus(status)
-      .then(data => {
-        if (data.resultCode === 0) {
-        // dispatch(toggleIsFetching(false));
-        dispatch(setProfileStatus(status));
-        }
-      });
-  };
+
+export const getProfileStatus = (userId) => async (dispatch) => {
+  // dispatch(toggleIsFetching(true));
+
+  const data = await profileAPI.getProfileStatus(userId);
+  // dispatch(toggleIsFetching(false));
+  dispatch(setProfileStatus(data));
+};
+
+
+export const updateProfileStatus = (status) => async (dispatch) => {
+  // dispatch(toggleIsFetching(true));
+
+  const data = await profileAPI.updateProfileStatus(status);
+  if (data.resultCode === 0) {
+    // dispatch(toggleIsFetching(false));
+    dispatch(setProfileStatus(status));
+  }
 };
 
 export default profileReducer;

@@ -1,5 +1,5 @@
-import PostsContainer from '../Posts/PostsContainer';
-import UserProfile from '../UserProfile/UserProfile';
+import PostsContainer from './Posts/PostsContainer';
+import UserProfile from './UserProfile/UserProfile';
 
 export default function Profile(props) {
 

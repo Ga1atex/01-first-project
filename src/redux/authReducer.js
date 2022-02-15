@@ -40,51 +40,39 @@ export const setAuthUserData = (userId, email, login, isAuth, fullName, photoSma
     }
   };
 };
-export const getAuthUserData = () => (dispatch) => {
-  return authAPI.getAuthData()
-    .then(data => {
-      if (data.resultCode === 0) {
-        const { id, email, login } = data.data;
-        // dispatch(setAuthUserData(id, email, login, true));
-        if (login) {
-          return profileAPI.getProfile(id)
-            .then(profileData => {
-              dispatch(setAuthUserData(id, email, login, true, profileData.fullName, profileData.photos.small));
-            });
-        }
-      }
+
+export const getAuthUserData = () => async (dispatch) => {
+  const data = await authAPI.getAuthData();
+  if (data.resultCode === 0) {
+    const { id, email, login } = data.data;
+    // dispatch(setAuthUserData(id, email, login, true));
+    if (login) {
+      const profileData = await profileAPI.getProfile(id);
+      dispatch(setAuthUserData(id, email, login, true, profileData.fullName, profileData.photos.small));
+
     }
-    );
+  }
 };
 
 
-export const login = (email, password, rememberMe) => {
-  return (dispatch) => {
-    authAPI.login(email, password, rememberMe)
-      .then(data => {
-        if (data.resultCode === 0) {
-          dispatch(getAuthUserData());
-        } else if (data.resultCode === 1) {
-          const errorMessage = data.messages.length > 0 ? data.messages[0] : "E-mail or password is wrong";
-          dispatch(stopSubmit('login', {
-            _error: errorMessage
-          }));
-        }
-      }
-      );
-  };
+export const login = (email, password, rememberMe) => async (dispatch) => {
+  const data = await authAPI.login(email, password, rememberMe);
+  if (data.resultCode === 0) {
+    dispatch(getAuthUserData());
+  } else if (data.resultCode === 1) {
+    const errorMessage = data.messages.length > 0 ? data.messages[0] : "E-mail or password is wrong";
+    dispatch(stopSubmit('login', {
+      _error: errorMessage
+    }));
+  }
 };
 
-export const logout = () => {
-  return (dispatch) => {
-    authAPI.logout()
-      .then(data => {
-        if (data.resultCode === 0) {
-          dispatch(setAuthUserData(null, null, null, null, null, false));
-        }
-      }
-      );
-  };
+
+export const logout = () => async (dispatch) => {
+  const data = await authAPI.logout();
+  if (data.resultCode === 0) {
+    dispatch(setAuthUserData(null, null, null, null, null, false));
+  }
 };
 
 export default authReducer;
