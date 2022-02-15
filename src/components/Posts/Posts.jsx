@@ -6,7 +6,23 @@ import { Textarea } from '../common/FormsControls/FormsControls';
 
 const maxLength20 = maxLengthCreator(20);
 
-const Posts = (props) => {
+const AddNewPostForm = (props) => {
+  return (
+    <form className="posts__new-post" onSubmit={props.handleSubmit}>
+      <Field className="posts__textarea" cols="30" rows="10" placeholder='Your news...'
+        name="newPostValue"
+        component={Textarea}
+        validate={[required, maxLength20]} />
+      <button className="posts__btn" type="submit">Send</button>
+    </form>
+  );
+};
+
+const AddNewPostFormRedux = reduxForm({
+  form: "addNewPostForm"
+})(AddNewPostForm)
+
+const Posts = props => {
   const postsElements = props.postsData.map(post => {
     return <Post message={post.message} key={post.id} id={post.id} likesCount={post.likesCount} />;
   });
@@ -23,21 +39,5 @@ const Posts = (props) => {
     </section>
   );
 }
-
-let AddNewPostForm = (props) => {
-  return (
-    <form className="posts__new-post" onSubmit={props.handleSubmit}>
-      <Field className="posts__textarea" cols="30" rows="10" placeholder='Your news...'
-        name="newPostValue"
-        component={Textarea}
-        validate={[required, maxLength20]}/>
-      <button className="posts__btn" type="submit">Send</button>
-    </form>
-  )
-}
-
-let AddNewPostFormRedux = reduxForm({
-  form: "addNewPostForm"
-})(AddNewPostForm)
 
 export default Posts;
