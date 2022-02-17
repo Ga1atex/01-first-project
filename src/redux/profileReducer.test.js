@@ -1,17 +1,17 @@
-import profileReducer, { addPost, deletePost } from "./profileReducer";
+import profileReducer, { addPost, deletePost } from './profileReducer';
 
 const state = {
   postsData: [
-    { id: 1, message: 'Post1', likesCount: "431" },
-    { id: 2, message: 'Hey', likesCount: "431" },
-    { id: 3, message: 'Hi', likesCount: "431" },
-    { id: 4, message: 'How is your day123', likesCount: "222" },
+    { id: 1, message: 'Post1', likesCount: '431' },
+    { id: 2, message: 'Hey', likesCount: '431' },
+    { id: 3, message: 'Hi', likesCount: '431' },
+    { id: 4, message: 'How is your day123', likesCount: '222' },
   ]
 }
 
 test('length of posts should be incremented', () => {
   // 1. test data
-  let action = addPost("123");
+  let action = addPost('123');
 
   // 2. action
   let newState = profileReducer(state, action);
@@ -22,7 +22,7 @@ test('length of posts should be incremented', () => {
 
 test('message of the new post should be correct', () => {
   // 1. test data
-  let action = addPost("123");
+  let action = addPost('123');
 
   // 2. action
   let newState = profileReducer(state, action);

@@ -13,55 +13,77 @@ const sendResponseData = response => {
   if (response.status === 200) {
     return response.data;
   }
-}
+};
 
 export const usersAPI = {
-  getUsers(pageNumber = 1, pageSize = 10) {
-    return instance.get(`users?page=${pageNumber}&count=${pageSize}`)
-      .then(sendResponseData);
+  async getUsers(pageNumber = 1, pageSize = 10) {
+    const response = await instance.get(`users?page=${pageNumber}&count=${pageSize}`);
+    return sendResponseData(response);
   },
-  follow(id) {
-    return instance.post(`follow/${id}`)
-      .then(sendResponseData);
+  async follow(id) {
+    const response = await instance.post(`follow/${id}`);
+    return sendResponseData(response);
   },
-  unfollow(id) {
-    return instance.delete(`follow/${id}`)
-      .then(sendResponseData);
+  async unfollow(id) {
+    const response = await instance.delete(`follow/${id}`);
+    return sendResponseData(response);
   },
 };
 
 export const profileAPI = {
-  getProfile(userId) {
-    return instance.get(`profile/${userId}`)
-      .then(sendResponseData);
+  async getProfile(userId) {
+    const response = await instance.get(`profile/${userId}`);
+    return sendResponseData(response);
   },
-  getProfileStatus(userId) {
-    return instance.get(`profile/status/${userId}`)
-      .then(sendResponseData);
+  async getProfileStatus(userId) {
+    const response = await instance.get(`profile/status/${userId}`);
+    return sendResponseData(response);
   },
-  updateProfileStatus(statusText) {
-    return instance.put(`profile/status/`, {
+  async updateProfileStatus(statusText) {
+    const response = await instance.put(`profile/status/`, {
       status: statusText
-    })
-      .then(sendResponseData);
+    });
+    return sendResponseData(response);
+  },
+  async savePhoto(photoFile) {
+    const formData = new FormData();
+    formData.append('image', photoFile)
+    const response = await instance.put(`profile/photo/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return sendResponseData(response);
+  },
+  async saveProfile(profile) {
+    const response = await instance.put(`profile/`, profile);
+    return sendResponseData(response);
   }
 };
 
 export const authAPI = {
-  getAuthData() {
-    return instance.get(`auth/me`)
-      .then(sendResponseData);
+  async getAuthData() {
+    const response = await instance.get(`auth/me`);
+    return sendResponseData(response);
   },
-  login(email, password, rememberMe = false) {
-    return instance.post(`auth/login`, {
+  async login(email, password, rememberMe = false, captcha = null) {
+    const response = await instance.post(`auth/login`, {
       email,
       password,
-      rememberMe
-    })
-      .then(sendResponseData);
+      rememberMe,
+      captcha
+    });
+    return sendResponseData(response);
   },
-  logout() {
-    return instance.delete(`auth/login`)
-      .then(sendResponseData);
+  async logout() {
+    const response = await instance.delete(`auth/login`);
+    return sendResponseData(response);
   }
+};
+
+export const securityAPI = {
+  async getCaptcha() {
+    const response = await instance.get(`security/get-captcha-url`);
+    return sendResponseData(response);
+  },
 };

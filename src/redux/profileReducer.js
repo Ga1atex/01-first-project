@@ -1,18 +1,22 @@
-import { profileAPI } from "../api/api";
+import { stopSubmit } from 'redux-form';
+import { profileAPI } from '../api/api';
 
 const ADD_POST = 'ADD_POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_PROFILE_STATUS = 'SET_PROFILE_STATUS';
 const DELETE_POST = 'DELETE_POST';
+const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS';
+const SAVE_PROFILE_SUCCESS = 'SAVE_PROFILE_SUCCESS';
 
 const initialState = {
   postsData: [
-    { id: 1, message: 'Post1', likesCount: "431" },
-    { id: 2, message: 'Hey', likesCount: "431" },
-    { id: 3, message: 'Hi', likesCount: "431" },
-    { id: 4, message: 'How is your day123', likesCount: "222" },
+    { id: 1, message: 'Post1', likesCount: '431' },
+    { id: 2, message: 'Hey', likesCount: '431' },
+    { id: 3, message: 'Hi', likesCount: '431' },
+    { id: 4, message: 'How is your day123', likesCount: '222' },
   ],
   profile: null,
+  profileUpdateStatus: 'none',
   status: ''
 };
 
@@ -23,6 +27,7 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         postsData: [...state.postsData]
       };
+
       const newPost = {
         id: state.postsData.length + 1,
         message: action.text,
@@ -53,6 +58,21 @@ const profileReducer = (state = initialState, action) => {
       };
       return newState;
     }
+    case SAVE_PHOTO_SUCCESS: {
+      const newState = {
+        ...state,
+        profile: {...state.profile, photos: action.photos}
+      };
+      return newState;
+    }
+    case SAVE_PROFILE_SUCCESS: {
+      const newState = {
+        ...state,
+        updateProfileStatus: action.status
+      };
+      return newState;
+    }
+
     default:
       return state;
   }
@@ -83,29 +103,71 @@ export const deletePost = (postId) => {
     postId
   };
 };
+export const savePhotoSuccess = (photos) => {
+  return {
+    type: SAVE_PHOTO_SUCCESS,
+    photos
+  };
+};
+export const saveProfileSuccess = (status) => {
+  return {
+    type: SAVE_PROFILE_SUCCESS,
+    status
+  };
+};
 
 export const getUserProfile = (userId) => async (dispatch) => {
   const data = await profileAPI.getProfile(userId);
   dispatch(setUserProfile(data));
 };
-
-
 export const getProfileStatus = (userId) => async (dispatch) => {
-  // dispatch(toggleIsFetching(true));
-
   const data = await profileAPI.getProfileStatus(userId);
-  // dispatch(toggleIsFetching(false));
+
   dispatch(setProfileStatus(data));
 };
-
-
 export const updateProfileStatus = (status) => async (dispatch) => {
-  // dispatch(toggleIsFetching(true));
-
   const data = await profileAPI.updateProfileStatus(status);
+
   if (data.resultCode === 0) {
-    // dispatch(toggleIsFetching(false));
     dispatch(setProfileStatus(status));
+  }
+};
+export const savePhoto = (file) => async (dispatch) => {
+  const data = await profileAPI.savePhoto(file);
+
+  if (data.resultCode === 0) {
+    dispatch(savePhotoSuccess(data.data.photos));
+  } else if (data.resultCode === 1) {
+    const errorMessage = data.messages.length ? data.messages[0] : 'Image download fail';
+    alert(errorMessage)
+  }
+};
+export const saveProfile = (profile) => async (dispatch, getState) => {
+  const data = await profileAPI.saveProfile(profile);
+
+  if (data.resultCode === 0) {
+    dispatch(saveProfileSuccess('success'))
+    dispatch(getUserProfile(getState().auth.userId))
+  } else if (data.resultCode === 1) {
+    // const errorMessages = data.messages.length ? data.messages[0] : 'Wrong link';
+
+    const errorMessages = data.messages.reduce(function (obj, item) {
+      const errorInputs = item.match(/(.*)\((\w+)->(\w+)\)/i);
+      const [errorMessage, errorGroup, errorInput] = [errorInputs[1].trim(), errorInputs[2].toLowerCase(), errorInputs[3].toLowerCase()];
+
+      if (obj[errorGroup]) {
+        obj[errorGroup][errorInput] = errorMessage
+      } else {
+        obj[errorGroup] = {
+          [errorInput]: errorMessage
+        }
+      }
+      return obj;
+    }, {})
+    dispatch(saveProfileSuccess('error'))
+    dispatch(stopSubmit('edit-profile', errorMessages));
+
+    // return Promise.reject(data.messages[0]);
   }
 };
 

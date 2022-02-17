@@ -1,22 +1,64 @@
 import Preloader from "../../common/Preloader/Preloader";
 import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer.jsx";
+import userPhoto from '../../../assets/images/user.png';
+import './UserProfile.css';
+import { useState } from "react";
+import ProfileDataForm from "./ProfileDataForm";
+
 
 export default function UserProfile(props) {
+  const [editMode, setEditMode] = useState(false);
+
   if (!props.profile) {
-    return <Preloader />
+    return <Preloader />;
   }
 
+  const onMainPhotoSelected = (e) => {
+    if (e.target.files.length) {
+      props.savePhoto(e.target.files[0]);
+    }
+  };
+
+  const onSubmit = (formData) => {
+    props.saveProfile(formData);
+    if (props.profileUpdateSuccess === 'success') {
+      setEditMode(false);
+    }
+  };
+
+
   return (
-      <div className="profile__info user-info">
-        <img src={props.profile.photos.large} alt="" />
-      <h3 className="user-info__name">{props.profile.fullName}</h3>
-        <div className="user-info__description">
-        <ProfileStatusContainer userId={props.userId}/>
-          {/* <p className="user-info__birthday">1.1.1990</p>
-          <p className="user-info__location">Moscow</p>
-          <p className="user-info__education">KubSu</p> */}
-          <a href="/" className="user-info__website">localhost</a>
-        </div>
-      </div>
-  )
+    <div className="profile__info user-info">
+      <img className="user-info__avatar" src={props.profile.photos.large || userPhoto} alt="" width={250} height={250} />
+      {props.isOwner && <input type={"file"} onChange={onMainPhotoSelected} />}
+      <ProfileStatusContainer userId={props.userId} status={props.status} isOwner={props.isOwner} />
+      {editMode
+        ? <ProfileDataForm initialValues={props.profile} profile={props.profile} onSubmit={onSubmit}/>
+        : <ProfileData goToEditMode={() => { setEditMode(true); }} profile={props.profile} isOwner={props.isOwner} />}
+    </div>
+  );
 }
+
+const Contact = ({ contactTitle, contactValue, }) => {
+  return <div className="contact__title">
+    {contactTitle}: <a href={contactValue} className={"contact__value"}>{contactValue}</a>
+  </div>;
+};
+
+const ProfileData = (props) => {
+  return (<><div className="user-info__description">
+    <h3 className="user-info__name">Full name: {props.profile.fullName}</h3>
+    {props.isOwner && <button onClick={props.goToEditMode}>Edit</button>}
+    <p className="user-info__job">Looking for a job: {props.profile.lookingForAJob ? "Yes" : "No"} </p>
+    {props.profile.lookingForAJob && <p className="user-info__job-description">My professional skills: {props.profile.lookingForAJobDescription}</p>}
+    <p className="user-info__job">About me: {props.profile.aboutMe} </p>
+  </div>
+    <div className="user-info__contacts">
+      <h3 className="user-info__contacts-title"></h3>
+      {Object.keys(props.profile.contacts)
+        .map(item => {
+          return <Contact key={item} contactTitle={item} contactValue={props.profile.contacts[item]} />;
+        })}
+    </div>
+  </>);
+};

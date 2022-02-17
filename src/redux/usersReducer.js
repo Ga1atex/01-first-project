@@ -1,4 +1,4 @@
-import { usersAPI } from "../api/api";
+import { usersAPI } from '../api/api';
 
 const TOGGLE_FOLLOW = 'TOGGLE_FOLLOW';
 const SET_USERS = 'SET_USERS';
@@ -10,7 +10,7 @@ const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS';
 
 const initialState = {
   usersData: [],
-  pageSize: 5,
+  pageSize: 10,
   totalUsersCount: 0,
   currentPage: 1,
   isFetching: false,

@@ -7,8 +7,8 @@ const ProfileStatusContainer = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [status, setStatus] = useState(props.status);
 
-  const userId = props.userId || 22195;
-  props.getProfileStatus(userId);
+  // const userId = props.userId || props.authorizedUserId;
+  // props.getProfileStatus(userId);
 
   useEffect(() => {
     setStatus(props.status)
@@ -33,7 +33,8 @@ const ProfileStatusContainer = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    status: state.profilePage.status,
+    // authorizedUserId: state.auth.userId,
+    // status: state.profilePage.status
   };
 };
 
