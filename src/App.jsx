@@ -14,16 +14,12 @@ import store from './redux/redux-store';
 import Footer from './components/Footer/Footer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import SidebarContainer from './components/Sidebar/SidebarContainer';
-import UsersContainer from './components/Users/UsersContainer';
 import LoginPage from './components/Login/Login';
 import { Suspense } from 'react';
 
-// import DialogsContainer from './components/Dialogs/DialogsContainer';
-// import ProfileContainer from './components/Profile/ProfileContainer';
+const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
-
-
 
 class App extends React.Component {
   catchAllUnhandledErrors = (promiseRejectionEvent) => {

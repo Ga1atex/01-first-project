@@ -24,7 +24,7 @@ export default function UserProfile(props) {
     if (props.profileUpdateStatus === 'success') {
       setEditMode(false);
     }
-
+    // TODO: need to set profileUpdateStatus = 'none'
   };
 
 
