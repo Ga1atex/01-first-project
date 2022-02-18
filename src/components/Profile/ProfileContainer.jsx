@@ -23,7 +23,7 @@ class ProfileContainer extends React.Component {
   }
   render() {
     return (
-      <Profile isOwner={!this.props.router.params.userId} profile={this.props.profile} userId={this.userId} status={this.props.status} savePhoto={this.props.savePhoto} profileUpdateSuccess={this.props.profileUpdateSuccess}/>
+      <Profile isOwner={!this.props.router.params.userId} profile={this.props.profile} userId={this.userId} status={this.props.status} savePhoto={this.props.savePhoto} profileUpdateStatus={this.props.profileUpdateStatus} saveProfile={this.props.saveProfile}/>
       // {...this.props; }
     );
   }
@@ -35,7 +35,7 @@ const mapStateToProps = (state) => {
     isAuth: state.auth.isAuth,
     authorizedUserId: state.auth.userId,
     status: state.profilePage.status,
-    profileUpdateSuccess: state.profilePage.profileUpdateStatus
+    profileUpdateStatus: state.profilePage.profileUpdateStatus
   };
 };
 

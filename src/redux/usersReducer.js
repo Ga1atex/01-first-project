@@ -1,11 +1,11 @@
 import { usersAPI } from '../api/api';
 
-const TOGGLE_FOLLOW = 'TOGGLE_FOLLOW';
-const SET_USERS = 'SET_USERS';
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
-const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
-const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
-const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS';
+const TOGGLE_FOLLOW = 'social-network/usersPage/TOGGLE_FOLLOW';
+const SET_USERS = 'social-network/usersPage/SET_USERS';
+const SET_CURRENT_PAGE = 'social-network/usersPage/SET_CURRENT_PAGE';
+const SET_TOTAL_USERS_COUNT = 'social-network/usersPage/SET_TOTAL_USERS_COUNT';
+const TOGGLE_IS_FETCHING = 'social-network/usersPage/TOGGLE_IS_FETCHING';
+const TOGGLE_IS_FOLLOWING_PROGRESS = 'social-network/usersPage/TOGGLE_IS_FOLLOWING_PROGRESS';
 
 
 const initialState = {

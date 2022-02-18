@@ -1,7 +1,8 @@
 import {
   Routes,
   Route,
-  BrowserRouter
+  BrowserRouter,
+  Navigate
 } from 'react-router-dom';
 import './App.css';
 import React from 'react';
@@ -25,11 +26,16 @@ const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsCo
 
 
 class App extends React.Component {
-  componentDidMount() {
-    // this.props.toggleIsFetching(true);
-    this.props.initializeApp();
+  catchAllUnhandledErrors = (promiseRejectionEvent) => {
+    alert(promiseRejectionEvent.reason, promiseRejectionEvent.target);
   }
-
+  componentDidMount() {
+    this.props.initializeApp();
+    window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors);
+  }
   render() {
     if (!this.props.initialized) {
       return <Preloader />;
@@ -44,12 +50,14 @@ class App extends React.Component {
             <div className='page__content-wrapper'>
               <Suspense fallback={<Preloader />}>
                 <Routes>
+                  <Route path='' element={<Navigate to="profile" />}/>
                   <Route path='profile' element={<ProfileContainer />}>
                     <Route path=':userId' element={<ProfileContainer />} />
                   </Route>
                   <Route path='dialogs' element={<DialogsContainer />} />
                   <Route path='users' element={<UsersContainer />} />
                   <Route path='login' element={<LoginPage />} />
+                  <Route path='*' element={<div>404 Not Found</div>} />
                 </Routes>
               </Suspense>
             </div>

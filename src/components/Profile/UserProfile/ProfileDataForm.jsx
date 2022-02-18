@@ -3,9 +3,9 @@ import { required } from "../../../utils/validators/validators";
 import { Input, Textarea } from "../../common/FormsControls/FormsControls";
 
 const ProfileDataForm = (props) => {
-  return (<><form className="user-info__description" onSubmit={props.handleSubmit}>
+  return (<form className="user-info__description" onSubmit={props.handleSubmit}>
     <button onClick={props.goToEditMode}>Save</button>
-    <div>
+    <div className="">
       <label className="user-info__name">Full name:
         <Field component={Input} type="text" name={"fullName"} placeholder="Full Name..."
           validate={[required]} />
@@ -36,8 +36,7 @@ const ProfileDataForm = (props) => {
     </div>
     {props.error && <div className={''}>{props.error}</div>}
 
-  </form>
-  </>);
+  </form>);
 };
 
 export default reduxForm({

@@ -12,6 +12,8 @@ const instance = axios.create({
 const sendResponseData = response => {
   if (response.status === 200) {
     return response.data;
+  } else {
+    alert(response.status)
   }
 };
 

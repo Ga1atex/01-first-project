@@ -1,12 +1,12 @@
 import { stopSubmit } from 'redux-form';
 import { profileAPI } from '../api/api';
 
-const ADD_POST = 'ADD_POST';
-const SET_USER_PROFILE = 'SET_USER_PROFILE';
-const SET_PROFILE_STATUS = 'SET_PROFILE_STATUS';
-const DELETE_POST = 'DELETE_POST';
-const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS';
-const SAVE_PROFILE_SUCCESS = 'SAVE_PROFILE_SUCCESS';
+const ADD_POST = 'social-network/profilePage/ADD_POST';
+const SET_USER_PROFILE = 'social-network/profilePage/SET_USER_PROFILE';
+const SET_PROFILE_STATUS = 'social-network/profilePage/SET_PROFILE_STATUS';
+const DELETE_POST = 'social-network/profilePage/DELETE_POST';
+const SAVE_PHOTO_SUCCESS = 'social-network/profilePage/SAVE_PHOTO_SUCCESS';
+const SAVE_PROFILE_SUCCESS = 'social-network/profilePage/SAVE_PROFILE_SUCCESS';
 
 const initialState = {
   postsData: [
@@ -66,9 +66,10 @@ const profileReducer = (state = initialState, action) => {
       return newState;
     }
     case SAVE_PROFILE_SUCCESS: {
+
       const newState = {
         ...state,
-        updateProfileStatus: action.status
+        profileUpdateStatus: action.profileUpdateStatus
       };
       return newState;
     }
@@ -109,10 +110,10 @@ export const savePhotoSuccess = (photos) => {
     photos
   };
 };
-export const saveProfileSuccess = (status) => {
+export const saveProfileSuccess = (profileUpdateStatus) => {
   return {
     type: SAVE_PROFILE_SUCCESS,
-    status
+    profileUpdateStatus
   };
 };
 

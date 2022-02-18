@@ -1,7 +1,7 @@
+// old my own store, is not used anywhere now
 import dialogsReducer from "./dialogsReducer";
 import profileReducer from "./profileReducer";
 import sidebarReducer from "./sidebarReducer";
-
 const store = {
   _state: {
     profilePage: {

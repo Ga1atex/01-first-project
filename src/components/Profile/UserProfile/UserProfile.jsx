@@ -21,9 +21,10 @@ export default function UserProfile(props) {
 
   const onSubmit = (formData) => {
     props.saveProfile(formData);
-    if (props.profileUpdateSuccess === 'success') {
+    if (props.profileUpdateStatus === 'success') {
       setEditMode(false);
     }
+
   };
 
 
@@ -33,7 +34,7 @@ export default function UserProfile(props) {
       {props.isOwner && <input type={"file"} onChange={onMainPhotoSelected} />}
       <ProfileStatusContainer userId={props.userId} status={props.status} isOwner={props.isOwner} />
       {editMode
-        ? <ProfileDataForm initialValues={props.profile} profile={props.profile} onSubmit={onSubmit}/>
+        ? <ProfileDataForm initialValues={props.profile} profile={props.profile} onSubmit={onSubmit} />
         : <ProfileData goToEditMode={() => { setEditMode(true); }} profile={props.profile} isOwner={props.isOwner} />}
     </div>
   );
@@ -46,19 +47,20 @@ const Contact = ({ contactTitle, contactValue, }) => {
 };
 
 const ProfileData = (props) => {
-  return (<><div className="user-info__description">
-    <h3 className="user-info__name">Full name: {props.profile.fullName}</h3>
+  return (<div className="user-info__description">
     {props.isOwner && <button onClick={props.goToEditMode}>Edit</button>}
-    <p className="user-info__job">Looking for a job: {props.profile.lookingForAJob ? "Yes" : "No"} </p>
-    {props.profile.lookingForAJob && <p className="user-info__job-description">My professional skills: {props.profile.lookingForAJobDescription}</p>}
-    <p className="user-info__job">About me: {props.profile.aboutMe} </p>
-  </div>
+    <div className="">
+      <h3 className="user-info__name">Full name: {props.profile.fullName}</h3>
+      <p className="user-info__job">Looking for a job: {props.profile.lookingForAJob ? "Yes" : "No"} </p>
+      {props.profile.lookingForAJob && <p className="user-info__job-description">My professional skills: {props.profile.lookingForAJobDescription}</p>}
+      <p className="user-info__job">About me: {props.profile.aboutMe} </p>
+    </div>
     <div className="user-info__contacts">
-      <h3 className="user-info__contacts-title"></h3>
+      <h3 className="user-info__contacts-title">My contacts:</h3>
       {Object.keys(props.profile.contacts)
         .map(item => {
           return <Contact key={item} contactTitle={item} contactValue={props.profile.contacts[item]} />;
         })}
     </div>
-  </>);
+  </div>);
 };
