@@ -11,7 +11,11 @@
 
 }
 .logo {
+  /* display: flex;
+  align-items: center; */
+  flex: 1 1 auto;
+}
+.logoLink {
   display: flex;
   align-items: center;
-  flex: 1 1 auto;
 }

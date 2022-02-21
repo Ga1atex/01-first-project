@@ -1,9 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { connect } from "react-redux";
 import ProfileStatus from "./ProfileStatus";
 import { getProfileStatus, updateProfileStatus } from "../../../../redux/profileReducer";
+import { AppStateType } from "../../../../redux/redux-store";
 
-const ProfileStatusContainer = (props) => {
+type MapStatePropsType ={
+
+}
+type OwnPropsType = {
+  status: string
+}
+type MapDispatchPropsType = {
+  getProfileStatus: (userId: number) => void
+  updateProfileStatus: (newStatus:string) => void
+}
+type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
+
+const ProfileStatusContainer = (props: PropsType) => {
   const [editMode, setEditMode] = useState(false);
   const [status, setStatus] = useState(props.status);
 
@@ -22,7 +35,7 @@ const ProfileStatusContainer = (props) => {
     props.updateProfileStatus(status);
   };
 
-  const onStatusChange = (e) => {
+  const onStatusChange = (e:ChangeEvent<HTMLInputElement>) => {
     setStatus(e.currentTarget.value);
   };
 
@@ -31,14 +44,14 @@ const ProfileStatusContainer = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppStateType) => {
   return {
     // authorizedUserId: state.auth.userId,
     // status: state.profilePage.status
   };
 };
 
-export default connect(mapStateToProps, {
+export default connect<MapStatePropsType,MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
   getProfileStatus,
   updateProfileStatus
 })(ProfileStatusContainer);

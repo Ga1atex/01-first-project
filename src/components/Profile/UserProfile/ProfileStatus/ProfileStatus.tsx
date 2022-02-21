@@ -1,6 +1,14 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 
-export function ProfileStatus(props) {
+type PropsType = {
+  editMode: boolean
+   status: string
+   onStatusChange: (e:ChangeEvent<HTMLInputElement>) => void
+   activateEditMode: () => void
+   deactivateEditMode: () => void
+}
+
+export function ProfileStatus(props:PropsType) {
   return (
     <div>
       {props.editMode

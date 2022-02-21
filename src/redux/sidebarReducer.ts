@@ -1,3 +1,4 @@
+import { AnyAction } from "redux";
 import { FriendType } from "../types/types";
 
 const initialState = {
@@ -8,7 +9,10 @@ const initialState = {
   ] as Array<FriendType>
 }
 type InitialStateType = typeof initialState
-const sidebarReducer = (state = initialState, action: any):InitialStateType => {
+
+type ActionsTypes = AnyAction
+
+const sidebarReducer = (state = initialState, action: ActionsTypes):InitialStateType => {
   switch (action.type) {
     default:
       return state;

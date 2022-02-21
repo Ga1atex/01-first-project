@@ -1,3 +1,8 @@
+import { AppStateType } from "../redux/redux-store"
+
+export type GetStateType = () => AppStateType;
+
+
 export type PostType = {
   id: number,
   message: string,
@@ -34,7 +39,6 @@ export type UserType = {
     "status": string,
     "followed": boolean
 }
-
 
 export type FriendType = {
   id: number,

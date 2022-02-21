@@ -1,5 +1,5 @@
 import Preloader from "../../common/Preloader/Preloader";
-import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer.jsx";
+import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
 import userPhoto from '../../../assets/images/user.png';
 import './UserProfile.css';
 import { useState } from "react";

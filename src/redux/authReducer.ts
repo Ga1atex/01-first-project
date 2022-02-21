@@ -1,6 +1,10 @@
+import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
 import { stopSubmit } from 'redux-form';
+import { ThunkAction } from 'redux-thunk';
 import { authAPI, profileAPI, securityAPI } from '../api/api';
+import { GetStateType } from '../types/types';
+import { AppStateType } from './redux-store';
 
 const SET_USER_DATA = 'social-network/auth/SET_USER_DATA';
 const GET_CAPTCHA_URL_SUCCESS = 'social-network/auth/GET_CAPTCHA_URL_SUCCESS';
@@ -10,14 +14,14 @@ const initialState = {
   email: null as null | string,
   login: null as null | string,
   fullName: null as null | string,
-  photosSmall: null as null | string,
+  photoSmall: null as null | string,
   isAuth: false,
   captchaUrl: null as null | string// if null, then captcha is not required
 };
 
 export type InitialStateType = typeof initialState
 
-const authReducer = (state = initialState, action: AnyAction):InitialStateType => {
+const authReducer = (state = initialState, action: ActionsTypes):InitialStateType => {
   switch (action.type) {
     case SET_USER_DATA: {
       const newState = {
@@ -47,11 +51,12 @@ type setAuthUserDataActionPayloadType = {
       photoSmall: string | null
 }
 
+type ActionsTypes = setAuthUserDataActionType | getCaptchaUrlSuccessActionType
+
 type setAuthUserDataActionType = {
   type: typeof SET_USER_DATA,
   payload: setAuthUserDataActionPayloadType
 }
-
 // Action Creators
 export const setAuthUserData = (userId: null | number, email: null | string, login: null | string, isAuth: boolean, fullName: null | string, photoSmall: null | string):setAuthUserDataActionType => {
   return {
@@ -78,7 +83,9 @@ export const getCaptchaUrlSuccess = (captchaUrl: string):getCaptchaUrlSuccessAct
   };
 };
 
-export const getAuthUserData = () => async (dispatch: any) => {
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+
+export const getAuthUserData = (): ThunkType => async (dispatch, getState) => {
   const data = await authAPI.getAuthData();
   if (data.resultCode === 0) {
     const { id, email, login } = data.data;
@@ -91,7 +98,7 @@ export const getAuthUserData = () => async (dispatch: any) => {
 };
 
 
-export const login = (email: string, password: string, rememberMe: boolean, captcha: null | undefined ) => async (dispatch:any) => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: null | undefined): ThunkType => async (dispatch, getState) => {
   const data = await authAPI.login(email, password, rememberMe, captcha);
   if (data.resultCode === 0) {
     // success, get auth data
@@ -101,13 +108,14 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
       dispatch(getCaptchaUrl());
     }
     const errorMessage = data.messages.length > 0 ? data.messages[0] : 'E-mail or password is wrong';
+    // @ts-ignore
     dispatch(stopSubmit('login', {
       _error: errorMessage
     }));
   }
 };
 
-export const getCaptchaUrl = () => async (dispatch: any) => {
+export const getCaptchaUrl = (): ThunkType => async (dispatch, getState) => {
   const data = await securityAPI.getCaptcha();
   const captchaUrl = data.url;
 
@@ -115,7 +123,7 @@ export const getCaptchaUrl = () => async (dispatch: any) => {
 };
 
 
-export const logout = () => async (dispatch: any) => {
+export const logout = (): ThunkType => async (dispatch) => {
   const data = await authAPI.logout();
   if (data.resultCode === 0) {
     dispatch(setAuthUserData(null, null, null, false, null, null));
