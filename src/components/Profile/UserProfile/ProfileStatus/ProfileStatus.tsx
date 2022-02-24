@@ -2,13 +2,13 @@ import React, { ChangeEvent } from "react";
 
 type PropsType = {
   editMode: boolean
-   status: string
-   onStatusChange: (e:ChangeEvent<HTMLInputElement>) => void
-   activateEditMode: () => void
-   deactivateEditMode: () => void
+  status: string
+  onStatusChange: (e: ChangeEvent<HTMLInputElement>) => void
+  activateEditMode: () => void
+  deactivateEditMode: () => void
 }
 
-export function ProfileStatus(props:PropsType) {
+export function ProfileStatus(props: PropsType) {
   return (
     <div>
       {props.editMode

@@ -1,13 +1,20 @@
-import DialogItem from './Dialog/Dialog';
+import DialogItem from './Dialog/Dialog'
+//@ts-ignore
 import styles from './Dialogs.module.css'
 import Message from './Message/Message';
 import React from 'react';
 import { maxLengthCreator } from '../../utils/validators/validators';
 import AddMessageForm from './AddMessageForm';
+import { InitialStateType } from '../../redux/dialogsReducer';
 
 export const maxLength50 = maxLengthCreator(50);
 
-export default function Dialogs(props) {
+type OwnPropsType ={
+  dialogsPage: InitialStateType
+  sendMessage: (messageText: string) => void
+}
+
+const Dialogs: React.FC<OwnPropsType> = (props) => {
   const state = props.dialogsPage;
 
   const dialogsElements = state.dialogsData.map(dialog => {
@@ -17,7 +24,7 @@ export default function Dialogs(props) {
     return <Message textMessage={message.text} key={message.id}/>;
   })
 
-  const addNewMessage = (values) => {
+  const addNewMessage = (values: { newMessageValue: string}) => {
     if (values.newMessageValue) {
       props.sendMessage(values.newMessageValue);
     }
@@ -37,3 +44,5 @@ export default function Dialogs(props) {
     </div>
   );
 }
+
+export default Dialogs;

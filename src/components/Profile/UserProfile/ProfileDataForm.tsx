@@ -1,10 +1,16 @@
-import { Field, reduxForm } from "redux-form";
+import { Field, InjectedFormProps, reduxForm } from "redux-form";
+import { ProfileType } from "../../../types/types";
 import { required } from "../../../utils/validators/validators";
 import { Input, Textarea } from "../../common/FormsControls/FormsControls";
 
-const ProfileDataForm = (props) => {
+type PropsType = {
+  profile: ProfileType
+  turnOffEditMode: () => void
+}
+
+const ProfileDataForm: React.FC<InjectedFormProps<ProfileType, PropsType> & PropsType> = (props) => {
   return (<form className="user-info__description" onSubmit={props.handleSubmit}>
-    <button onClick={props.goToEditMode}>Save</button>
+    <button onClick={props.turnOffEditMode}>Save</button>
     <div className="">
       <label className="user-info__name">Full name:
         <Field component={Input} type="text" name={"fullName"} placeholder="Full Name..."
@@ -39,6 +45,6 @@ const ProfileDataForm = (props) => {
   </form>);
 };
 
-export default reduxForm({
+export default reduxForm<ProfileType, PropsType>({
   form: 'edit-profile'
 })(ProfileDataForm);

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './Pagination.css';
 
-type PropsType = {
+type PaginationPropsType = {
   totalItemsCount: number
   pageSize: number
   portionSize?: number
-  onPageChanged: (pageNumber: number) => void
-  currentPage: number
+  onPageChanged?: (pageNumber: number) => void
+  currentPage?: number
 }
 
-const Pagination: React.FC<PropsType> = ({ totalItemsCount, pageSize, portionSize = 10, onPageChanged, currentPage }) => {
+const Pagination: React.FC<PaginationPropsType> = ({ totalItemsCount, pageSize, portionSize = 10, onPageChanged = () =>{}, currentPage = 1}) => {
   const pagesCount = Math.ceil(totalItemsCount / pageSize);
   const pages: Array<number> = [];
   for (let i = 1; i <= pagesCount; i++) {

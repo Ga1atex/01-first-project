@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { setCurrentPage, toggleFollowingProgress, requestUsers, toggleFollow } from '../../redux/usersReducer';
-import Users from './Users';
-import Preloader from '../common/Preloader/Preloader';
 import { compose } from 'redux';
+import { AppStateType } from '../../redux/redux-store';
+import { requestUsers, toggleFollow } from '../../redux/usersReducer';
 import { getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsers } from '../../redux/usersSelectors';
 import { UserType } from '../../types/types';
-import { AppStateType } from '../../redux/redux-store';
+import Preloader from '../common/Preloader/Preloader';
+import Users from './Users';
 
 type MapStatePropsType = {
   currentPage: number

@@ -1,9 +1,17 @@
 // import styles from './Post.module.css'
 
-export default function Post(props) {
+type PropsType = {
+  message: string
+  likesCount: number
+  id: number
+}
+
+const Post: React.FC<PropsType> = (props) => {
   return (
       <article className="posts__article">
         {props.message} {props.likesCount} likes
       </article>
   );
 }
+
+export default Post;

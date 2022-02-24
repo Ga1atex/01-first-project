@@ -8,11 +8,11 @@ const initialState = {
     { id: 3, firstName: 'Sveta' },
   ] as Array<FriendType>
 }
-type InitialStateType = typeof initialState
+export type SidebarInitialStateType = typeof initialState
 
 type ActionsTypes = AnyAction
 
-const sidebarReducer = (state = initialState, action: ActionsTypes):InitialStateType => {
+const sidebarReducer = (state = initialState, action: ActionsTypes): SidebarInitialStateType => {
   switch (action.type) {
     default:
       return state;

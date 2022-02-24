@@ -1,7 +1,13 @@
 import { NavLink } from "react-router-dom";
+import { SidebarInitialStateType } from "../../redux/sidebarReducer";
+//@ts-ignore
 import styles from './Sidebar.module.css';
 
-export default function Sidebar(props) {
+type MapStateToPropsType = {
+  sidebar: SidebarInitialStateType
+}
+
+const Sidebar: React.FC<MapStateToPropsType> = (props) => {
   const friendsList = props.sidebar.friendsData.map((friend => <li className={styles.friendsItem} key={friend.id}>
     <a className={styles.friendsImg} href=""><img src="" alt={friend.firstName + "'s avatar"} width="60" height="60" /></a>
     <span className={styles.friendsFirstName}>{friend.firstName}</span>
@@ -27,3 +33,5 @@ export default function Sidebar(props) {
     </aside>
     )
 }
+
+export default Sidebar

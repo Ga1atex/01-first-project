@@ -1,10 +1,18 @@
 import React from 'react';
+// @ts-ignore
 import userPhoto from '../../assets/images/user.png';
 import { NavLink } from 'react-router-dom';
+import { UserType } from '../../types/types';
+import { BaseThunkType } from '../../redux/redux-store';
 
-const User = ({ user, followingInProgress, toggleFollow, ...props}) => {
+type PropsType = {
+  user: UserType
+  followingInProgress: Array<number>
+  toggleFollow: (followed: boolean, id: number) => void
+}
 
-  return (<div key={props.key} className="users__item user">
+const User: React.FC<PropsType> = ({ user, followingInProgress, toggleFollow,  ...props}) => {
+  return (<div key={user.id} className="users__item user">
     <div className="">
       <NavLink className="" to={"/profile/" + user.id}>
         <img src={user.photos.small != null ? user.photos.small : userPhoto} alt={user.name + " avatar image"} width={60} height={60} />

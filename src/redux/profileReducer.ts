@@ -1,8 +1,9 @@
-import { stopSubmit } from 'redux-form';
+import { FormAction, FormErrors, stopSubmit } from 'redux-form';
 import { ThunkAction } from 'redux-thunk';
-import { profileAPI } from '../api/api';
+import { ResultCodesEnum } from '../api/api';
+import { profileAPI } from "../api/profileAPI";
 import { PhotosType, PostType, ProfileType } from '../types/types';
-import { AppStateType } from './redux-store';
+import { AppStateType, BaseThunkType, InferActionTypes } from './redux-store';
 
 const ADD_POST = 'social-network/profilePage/ADD_POST';
 const SET_USER_PROFILE = 'social-network/profilePage/SET_USER_PROFILE';
@@ -27,7 +28,7 @@ const initialState = {
 
 export type InitialStateType = typeof initialState
 
-type ActionsTypes = AddPostActionType | SetUserProfileActionType | setProfileStatusActionType |deletePostActionType |savePhotoSuccessActionType |saveProfileSuccessActionType
+type ActionsTypes = InferActionTypes<typeof actionCreators>
 
 const profileReducer = (state = initialState, action: ActionsTypes):InitialStateType => {
   switch (action.type) {
@@ -89,92 +90,69 @@ const profileReducer = (state = initialState, action: ActionsTypes):InitialState
 };
 
 //Action creators
-type AddPostActionType = {
-  type: typeof ADD_POST,
-  text: string
+export const actionCreators = {
+  addPost: (text: string) => {
+    return {
+      type: ADD_POST,
+      text
+    } as const
+  },
+  setUserProfile: (profile: ProfileType) => {
+    return {
+      type: SET_USER_PROFILE,
+      profile
+    } as const
+  },
+  setProfileStatus: (status: string) => {
+    return {
+      type: SET_PROFILE_STATUS,
+      status
+    } as const
+  },
+  deletePost: (postId: number) => {
+    return {
+      type: DELETE_POST,
+      postId
+    } as const
+  },
+  savePhotoSuccess: (photos: PhotosType) => {
+    return {
+      type: SAVE_PHOTO_SUCCESS,
+      photos
+    } as const
+  },
+  saveProfileSuccess: (profileUpdateStatus: string) => {
+    return {
+      type: SAVE_PROFILE_SUCCESS,
+      profileUpdateStatus
+    } as const
+  }
 }
-export const addPost = (text: string):AddPostActionType => {
-  return {
-    type: ADD_POST,
-    text
-  };
-};
-type SetUserProfileActionType= {
-  type: typeof SET_USER_PROFILE
-  profile: ProfileType
-}
-//
-export const setUserProfile = (profile:ProfileType):SetUserProfileActionType => {
-  return {
-    type: SET_USER_PROFILE,
-    profile
-  };
-};
-type setProfileStatusActionType = {
-  type: typeof SET_PROFILE_STATUS,
-  status: string
-}
-export const setProfileStatus = (status: string):setProfileStatusActionType => {
-  return {
-    type: SET_PROFILE_STATUS,
-    status
-  };
-};
-type deletePostActionType = {
-  type: typeof DELETE_POST,
-  postId: number
-}
-export const deletePost = (postId: number): deletePostActionType => {
-  return {
-    type: DELETE_POST,
-    postId
-  };
-};
-type savePhotoSuccessActionType = {
-  type: typeof SAVE_PHOTO_SUCCESS,
-  photos: PhotosType
-}
-export const savePhotoSuccess = (photos:PhotosType):savePhotoSuccessActionType => {
-  return {
-    type: SAVE_PHOTO_SUCCESS,
-    photos
-  };
-};
-type saveProfileSuccessActionType = {
-  type: typeof SAVE_PROFILE_SUCCESS,
-  profileUpdateStatus:string
-}
-export const saveProfileSuccess = (profileUpdateStatus:string):saveProfileSuccessActionType => {
-  return {
-    type: SAVE_PROFILE_SUCCESS,
-    profileUpdateStatus
-  };
-};
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
-
+type ThunkType = BaseThunkType<ActionsTypes | FormAction>
+//Thunk Creators
 export const getUserProfile = (userId: null | number): ThunkType => async (dispatch) => {
   const data = await profileAPI.getProfile(userId);
-  dispatch(setUserProfile(data));
+  dispatch(actionCreators.setUserProfile(data));
 };
 export const getProfileStatus = (userId: number):ThunkType => async (dispatch) => {
   const data = await profileAPI.getProfileStatus(userId);
 
-  dispatch(setProfileStatus(data));
+  dispatch(actionCreators.setProfileStatus(data));
 };
 export const updateProfileStatus = (status: string):ThunkType => async (dispatch) => {
   const data = await profileAPI.updateProfileStatus(status);
 
-  if (data.resultCode === 0) {
-    dispatch(setProfileStatus(status));
+  if (data.resultCode === ResultCodesEnum.Success) {
+    dispatch(actionCreators.setProfileStatus(status));
   }
 };
-export const savePhoto = (file: any):ThunkType => async (dispatch) => {
+export const savePhoto = (file: File):ThunkType => async (dispatch) => {
   const data = await profileAPI.savePhoto(file);
 
-  if (data.resultCode === 0) {
-    dispatch(savePhotoSuccess(data.data.photos));
-  } else if (data.resultCode === 1) {
+  if (data.resultCode === ResultCodesEnum.Success) {
+    dispatch(actionCreators.savePhotoSuccess(data.data.photos));
+  } else if (data.resultCode === ResultCodesEnum.Error) {
     const errorMessage = data.messages.length ? data.messages[0] : 'Image download fail';
     alert(errorMessage)
   }
@@ -182,27 +160,29 @@ export const savePhoto = (file: any):ThunkType => async (dispatch) => {
 export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch, getState) => {
   const data = await profileAPI.saveProfile(profile);
 
-  if (data.resultCode === 0) {
-    dispatch(saveProfileSuccess('success'))
+  if (data.resultCode === ResultCodesEnum.Success) {
+    dispatch(actionCreators.saveProfileSuccess('success'))
     dispatch(getUserProfile(getState().auth.userId))
-  } else if (data.resultCode === 1) {
+  } else if (data.resultCode === ResultCodesEnum.Error) {
     // const errorMessages = data.messages.length ? data.messages[0] : 'Wrong link';
 
-    const errorMessages = data.messages.reduce(function (obj: any, item: any) {
+    const errorMessages: FormErrors = data.messages.reduce((obj: { [key: string]: any}, item: string) => {
       const errorInputs = item.match(/(.*)\((\w+)->(\w+)\)/i);
-      const [errorMessage, errorGroup, errorInput] = [errorInputs[1].trim(), errorInputs[2].toLowerCase(), errorInputs[3].toLowerCase()];
+      if (errorInputs && errorInputs.length) {
+        const [errorMessage, errorGroup, errorInput] = [errorInputs[1].trim(), errorInputs[2].toLowerCase(), errorInputs[3].toLowerCase()];
 
-      if (obj[errorGroup]) {
-        obj[errorGroup][errorInput] = errorMessage
-      } else {
-        obj[errorGroup] = {
-          [errorInput]: errorMessage
+        if (obj[errorGroup]) {
+          obj[errorGroup][errorInput] = errorMessage
+        } else {
+          obj[errorGroup] = {
+            [errorInput]: errorMessage
+          }
         }
       }
+
       return obj;
     }, {})
-    dispatch(saveProfileSuccess('error'))
-    // @ts-ignore
+    dispatch(actionCreators.saveProfileSuccess('error'))
     dispatch(stopSubmit('edit-profile', errorMessages));
 
     // return Promise.reject(data.messages[0]);

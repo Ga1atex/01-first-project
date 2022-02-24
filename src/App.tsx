@@ -1,29 +1,27 @@
-import {
-  Routes,
-  Route,
-  BrowserRouter,
-  Navigate
-} from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { connect, Provider } from 'react-redux';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import React from 'react';
-import { initializeApp } from './redux/appReducer';
-import { connect } from 'react-redux';
 import Preloader from './components/common/Preloader/Preloader';
-import { Provider } from 'react-redux';
-import store from './redux/redux-store';
 import Footer from './components/Footer/Footer';
 import HeaderContainer from './components/Header/HeaderContainer';
-import SidebarContainer from './components/Sidebar/SidebarContainer';
 import LoginPage from './components/Login/Login';
-import { Suspense } from 'react';
+import SidebarContainer from './components/Sidebar/SidebarContainer';
+import { initializeApp } from './redux/appReducer';
+import store, { AppStateType } from './redux/redux-store';
 
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 
-class App extends React.Component {
-  catchAllUnhandledErrors = (promiseRejectionEvent) => {
-    alert(promiseRejectionEvent.reason, promiseRejectionEvent.target);
+type MapStateToPropsType = ReturnType<typeof mapStateToProps>
+type MapDispatchPropsType = {
+  initializeApp: () => void
+}
+
+class App extends React.Component<MapStateToPropsType & MapDispatchPropsType> {
+  catchAllUnhandledErrors = (promiseRejectionEvent: PromiseRejectionEvent) => {
+    alert(promiseRejectionEvent.reason + " in " + promiseRejectionEvent.target);
   }
   componentDidMount() {
     this.props.initializeApp();
@@ -65,7 +63,7 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppStateType) => {
   return {
     initialized: state.app.initialized
   };
@@ -75,7 +73,7 @@ const AppContainer = connect(mapStateToProps, {
   initializeApp
 })(App);
 
-const SocialNetworkApp = (props) => {
+const SocialNetworkApp: React.FC = () => {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Provider store={store}>

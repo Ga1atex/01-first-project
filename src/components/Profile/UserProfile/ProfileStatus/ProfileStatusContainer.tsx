@@ -9,6 +9,8 @@ type MapStatePropsType ={
 }
 type OwnPropsType = {
   status: string
+  isOwner: boolean
+  // userId: number
 }
 type MapDispatchPropsType = {
   getProfileStatus: (userId: number) => void

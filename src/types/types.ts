@@ -1,4 +1,4 @@
-import { AppStateType } from "../redux/redux-store"
+import { AppStateType } from "../redux/redux-store";
 
 export type GetStateType = () => AppStateType;
 
@@ -28,6 +28,7 @@ export type ProfileType = {
   fullName: string,
   contacts: ContactsType,
   photos: PhotosType
+  aboutMe: string
 }
 
 

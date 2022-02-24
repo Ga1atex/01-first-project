@@ -1,7 +1,13 @@
 import { NavLink } from 'react-router-dom';
+//@ts-ignore
 import styles from './Dialog.module.css'
 
-export default function DialogItem(props) {
+type PropsType = {
+  id: number
+  name: string
+}
+
+const DialogItem: React.FC<PropsType> = (props) => {
   return (
     <li className={styles.dialog}>
       <a className={styles.dialogAvatar} href=""><img src="@img" alt="" width={40} height={40}/></a>
@@ -9,3 +15,4 @@ export default function DialogItem(props) {
     </li>
   );
 }
+export default DialogItem
