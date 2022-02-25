@@ -7,7 +7,7 @@ import { ChangeEvent, useState } from "react";
 import ProfileDataForm from "./ProfileDataForm";
 import { ContactsType, ProfileType } from "../../../types/types";
 
-type PropsType ={
+type PropsType = {
   isOwner: boolean
   profile: ProfileType | null,
   // userId: number,
@@ -36,7 +36,9 @@ const UserProfile: React.FC<PropsType> = (props) => {
     if (props.profileUpdateStatus === 'success') {
       setEditMode(false);
     }
+
     // TODO: need to set profileUpdateStatus = 'none'
+    // BUG: if (props.profileUpdateStatus ===) happens earlier than action dispatch
   };
 
 
@@ -46,7 +48,7 @@ const UserProfile: React.FC<PropsType> = (props) => {
       {props.isOwner && <input type={"file"} onChange={onMainPhotoSelected} />}
       <ProfileStatusContainer status={props.status} isOwner={props.isOwner} />
       {editMode
-        ? <ProfileDataForm turnOffEditMode={() => { setEditMode(false); }} initialValues={props.profile} profile={props.profile} onSubmit={onSubmit} />
+        ? <ProfileDataForm initialValues={props.profile} profile={props.profile} onSubmit={onSubmit} />
         : <ProfileData goToEditMode={() => { setEditMode(true); }} profile={props.profile} isOwner={props.isOwner} />}
     </div>
   );

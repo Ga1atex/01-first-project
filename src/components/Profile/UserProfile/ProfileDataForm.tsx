@@ -5,12 +5,12 @@ import { Input, Textarea } from "../../common/FormsControls/FormsControls";
 
 type PropsType = {
   profile: ProfileType
-  turnOffEditMode: () => void
+  onSubmit: (formData: ProfileType) => void
 }
 
 const ProfileDataForm: React.FC<InjectedFormProps<ProfileType, PropsType> & PropsType> = (props) => {
   return (<form className="user-info__description" onSubmit={props.handleSubmit}>
-    <button onClick={props.turnOffEditMode}>Save</button>
+    <button type="submit">Save</button>
     <div className="">
       <label className="user-info__name">Full name:
         <Field component={Input} type="text" name={"fullName"} placeholder="Full Name..."
@@ -31,7 +31,7 @@ const ProfileDataForm: React.FC<InjectedFormProps<ProfileType, PropsType> & Prop
       </label>
     </div>
     <div className="user-info__contacts">
-      <h3 className="user-info__contacts-title"></h3>
+      <h3 className="user-info__contacts-title">Contacts: </h3>
       {Object.keys(props.profile.contacts)
         .map(item => {
           return <label className="contact" key={item}>

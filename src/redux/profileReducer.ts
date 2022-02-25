@@ -1,9 +1,8 @@
 import { FormAction, FormErrors, stopSubmit } from 'redux-form';
-import { ThunkAction } from 'redux-thunk';
 import { ResultCodesEnum } from '../api/api';
 import { profileAPI } from "../api/profileAPI";
 import { PhotosType, PostType, ProfileType } from '../types/types';
-import { AppStateType, BaseThunkType, InferActionTypes } from './redux-store';
+import { BaseThunkType, InferActionTypes } from './redux-store';
 
 const ADD_POST = 'social-network/profilePage/ADD_POST';
 const SET_USER_PROFILE = 'social-network/profilePage/SET_USER_PROFILE';
@@ -182,10 +181,9 @@ export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch,
 
       return obj;
     }, {})
+
     dispatch(actionCreators.saveProfileSuccess('error'))
     dispatch(stopSubmit('edit-profile', errorMessages));
-
-    // return Promise.reject(data.messages[0]);
   }
 };
 

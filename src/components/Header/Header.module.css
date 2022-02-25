@@ -8,7 +8,12 @@
   align-items: center;
 }
 .loginBlock {
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.loginBlock img {
+  border-radius: 50%;
 }
 .logo {
   /* display: flex;

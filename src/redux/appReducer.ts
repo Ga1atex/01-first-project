@@ -1,6 +1,5 @@
-import { ThunkAction } from 'redux-thunk';
 import { getAuthUserData } from './authReducer';
-import { AppStateType, BaseThunkType, InferActionTypes } from './redux-store';
+import { BaseThunkType, InferActionTypes } from './redux-store';
 
 const INITIALIZED_SUCCESS = 'social-network/app/INITIALIZED_SUCCESS';
 

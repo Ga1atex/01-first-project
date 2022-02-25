@@ -1,8 +1,7 @@
-import { ThunkAction } from 'redux-thunk';
 import { ResultCodesEnum } from '../api/api';
 import { usersAPI } from "../api/usersAPI";
 import { UserType } from '../types/types';
-import { AppStateType, BaseThunkType, InferActionTypes } from './redux-store';
+import { BaseThunkType, InferActionTypes } from './redux-store';
 
 const TOGGLE_FOLLOW = 'social-network/usersPage/TOGGLE_FOLLOW';
 const SET_USERS = 'social-network/usersPage/SET_USERS';
@@ -20,10 +19,10 @@ const initialState = {
   followingInProgress: [] as Array<number> // array of users ids
 };
 
-type initialStateType = typeof initialState
+export type initialUserStateType = typeof initialState
 type ActionsTypes = InferActionTypes<typeof actionCreators>
 
-const usersReducer = (state = initialState, action: ActionsTypes): initialStateType => {
+const usersReducer = (state = initialState, action: ActionsTypes): initialUserStateType => {
   switch (action.type) {
     case TOGGLE_FOLLOW: {
       const newState = {

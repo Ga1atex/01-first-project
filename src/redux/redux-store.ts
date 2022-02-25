@@ -8,8 +8,6 @@ import profileReducer from './profileReducer';
 import sidebarReducer from './sidebarReducer';
 import usersReducer from './usersReducer';
 
-
-
 const rootReducer = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
@@ -20,19 +18,9 @@ const rootReducer = combineReducers({
   app: appReducer,
 })
 
-type RootReducerType = typeof rootReducer;
-export type AppStateType = ReturnType<RootReducerType>
-// const store = createStore(reducers, applyMiddleware(thunkMiddleware));
-
-// type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never
-// export type InferActionTypes<T extends { [key: string]: (...args: Array<any>)=>any }> = ReturnType<PropertiesTypes<T>>
-
+export type AppStateType = ReturnType<typeof rootReducer>
 export type InferActionTypes<T> = T extends { [keys: string]: (...args: Array<any>) => infer U} ? U : never
-
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
-
-
-
 
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
