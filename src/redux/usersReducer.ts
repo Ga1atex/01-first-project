@@ -9,6 +9,7 @@ const SET_CURRENT_PAGE = 'social-network/usersPage/SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'social-network/usersPage/SET_TOTAL_USERS_COUNT';
 const TOGGLE_IS_FETCHING = 'social-network/usersPage/TOGGLE_IS_FETCHING';
 const TOGGLE_IS_FOLLOWING_PROGRESS = 'social-network/usersPage/TOGGLE_IS_FOLLOWING_PROGRESS';
+const SET_FILTER = 'social-network/usersPage/SET_FILTER';
 
 const initialState = {
   usersData: [] as Array<UserType>,
@@ -16,9 +17,14 @@ const initialState = {
   totalUsersCount: 0,
   currentPage: 1,
   isFetching: false,
-  followingInProgress: [] as Array<number> // array of users ids
+  followingInProgress: [] as Array<number>, // array of users ids
+  filter: {
+    term: '',
+    friend: null as null | boolean
+  }
 };
 
+export type FilterType = typeof initialState.filter
 export type initialUserStateType = typeof initialState
 type ActionsTypes = InferActionTypes<typeof actionCreators>
 
@@ -73,6 +79,13 @@ const usersReducer = (state = initialState, action: ActionsTypes): initialUserSt
       };
       return newState;
     }
+    case SET_FILTER: {
+      const newState = {
+        ...state,
+        filter: action.payload
+      };
+      return newState;
+    }
     default:
       return state;
   }
@@ -103,6 +116,12 @@ export const actionCreators = {
       count: totalUsersCount
     } as const
   },
+  setFilter: (filter: FilterType) => {
+    return {
+      type: SET_FILTER,
+      payload: filter
+    } as const
+  },
   toggleIsFetching: (isFetching: boolean) => {
     return {
       type: TOGGLE_IS_FETCHING,
@@ -121,11 +140,12 @@ export const actionCreators = {
 
 type ThunkType = BaseThunkType<ActionsTypes>
 // 2 ways to set a type, 2nd is "async (dispatch: DispatchType, getState: GetStateType)""
-export const requestUsers = (pageNumber: number, pageSize: number): ThunkType => async (dispatch, getState) => {
+export const requestUsers = (pageNumber: number, pageSize: number, filter: FilterType): ThunkType => async (dispatch, getState) => {
   dispatch(actionCreators.toggleIsFetching(true));
   dispatch(actionCreators.setCurrentPage(pageNumber));
+  dispatch(actionCreators.setFilter(filter));
 
-  const data = await usersAPI.getUsers(pageNumber, pageSize)
+  const data = await usersAPI.getUsers(pageNumber, pageSize, filter.term, filter.friend)
   dispatch(actionCreators.toggleIsFetching(false));
   dispatch(actionCreators.setUsers(data.items));
   dispatch(actionCreators.setTotalUsersCount(data.totalCount)); // should be replaced somewhere
