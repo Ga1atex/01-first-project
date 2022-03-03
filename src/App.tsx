@@ -1,18 +1,25 @@
+import { LaptopOutlined, MessageOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import { Breadcrumb, Layout, Menu } from 'antd';
+import 'antd/dist/antd.css';
 import React, { Suspense } from 'react';
 import { connect, Provider } from 'react-redux';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Preloader from './components/common/Preloader/Preloader';
-import Footer from './components/Footer/Footer';
-import HeaderContainer from './components/Header/HeaderContainer';
+import AppHeader from './components/Header/Header';
+// import Footer from './components/Footer/Footer';
 import LoginPage from './components/Login/Login';
 import SidebarContainer from './components/Sidebar/SidebarContainer';
 import { initializeApp } from './redux/appReducer';
 import store, { AppStateType } from './redux/redux-store';
 
+const { SubMenu } = Menu;
+const { Content, Footer, Sider } = Layout;
+
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
+const ChatPage = React.lazy(() => import('./pages/chat/ChatPage'));
 
 type MapStateToPropsType = ReturnType<typeof mapStateToProps>
 type MapDispatchPropsType = {
@@ -36,29 +43,34 @@ class App extends React.Component<MapStateToPropsType & MapDispatchPropsType> {
     }
 
     return (
-      <>
-        <HeaderContainer />
-        <main className='page'>
-          <div className='page__container'>
-            <SidebarContainer />
-            <div className='page__content-wrapper'>
+      <Layout>
+        <AppHeader />
+        <Content style={{ padding: '0 50px' }}>
+          <Breadcrumb style={{ margin: '16px 0' }}>
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item>List</Breadcrumb.Item>
+            <Breadcrumb.Item>App</Breadcrumb.Item>
+          </Breadcrumb>
+          <Layout className="site-layout-background" style={{ padding: '24px 0' }}>
+            <SidebarContainer/>
+            <Content style={{ padding: '0 24px', minHeight: 280 }}>
               <Suspense fallback={<Preloader />}>
                 <Routes>
-                  <Route path='' element={<Navigate to="profile" />}/>
+                  <Route path='' element={<Navigate to="profile" />} />
                   <Route path='profile' element={<ProfileContainer />}>
                     <Route path=':userId' element={<ProfileContainer />} />
                   </Route>
                   <Route path='dialogs' element={<DialogsContainer />} />
-                  <Route path='users' element={<UsersContainer pageTitle={'All users'}/>} />
+                  <Route path='users' element={<UsersContainer pageTitle={'All users'} />} />
                   <Route path='login' element={<LoginPage />} />
+                  <Route path='chat' element={<ChatPage />} />
                   <Route path='*' element={<div>404 Not Found</div>} />
                 </Routes>
-              </Suspense>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </>
+              </Suspense></Content>
+          </Layout>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>Social Network Pet-project 2022</Footer>
+      </Layout>
     );
   }
 }

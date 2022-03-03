@@ -1,9 +1,8 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 // @ts-ignore
 import userPhoto from '../../assets/images/user.png';
-import { NavLink } from 'react-router-dom';
 import { UserType } from '../../types/types';
-import { BaseThunkType } from '../../redux/redux-store';
 
 type PropsType = {
   user: UserType
