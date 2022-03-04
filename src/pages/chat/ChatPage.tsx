@@ -1,18 +1,11 @@
-import { Avatar, Button } from "antd"
-import React, { useEffect, useState } from "react"
-//@ts-ignore
-import photo from "../../assets/images/user.png"
-import { LaptopOutlined, MessageOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import { Field, Form, Formik } from "formik";
+import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Button as button } from "antd";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { ChatMessageAPIType } from '../../api/chatAPI';
+import { sendMessage, startMessagesListening } from '../../redux/chatReducer';
+import { AppStateType } from '../../redux/redux-store';
 
-const wsChannel = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
-
-export type ChatMessageType = {
-  message: string,
-  photo: string,
-  userId: number,
-  userName: string
-}
 
 const ChatPage: React.FC = () => {
   return (
@@ -20,8 +13,16 @@ const ChatPage: React.FC = () => {
   )
 }
 
-
 const Chat: React.FC = () => {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(startMessagesListening())
+    return () => {
+      dispatch(startMessagesListening())
+    }
+  }, [])
 
   return (<>
     <Messages />
@@ -31,13 +32,7 @@ const Chat: React.FC = () => {
 }
 
 const Messages: React.FC = () => {
-  const [messages, setMessages] = useState<ChatMessageType[]>([])
-  useEffect(() => {
-    wsChannel.addEventListener('message', (e: MessageEvent) => {
-      const newMessages = JSON.parse(e.data);
-      setMessages((prevMessages) => [...prevMessages, ...newMessages]);
-    })
-  }, [])
+  const messages = useSelector((state:AppStateType) => state.chat.messages)
 
   return (<div className="" style={{ height: '400px', overflowY: 'auto' }}>
     {messages.map((messageObj, i) => <Message key={i} message={messageObj} />)}
@@ -45,7 +40,7 @@ const Messages: React.FC = () => {
   )
 }
 
-const Message: React.FC<{ message: ChatMessageType }> = ({ message }) => {
+const Message: React.FC<{ message: ChatMessageAPIType }> = ({ message }) => {
   return (<div className="">
     <Avatar src={message.photo} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} size={50} />
     {message.userName}<br></br>
@@ -57,26 +52,40 @@ const Message: React.FC<{ message: ChatMessageType }> = ({ message }) => {
 
 const AddMessageForm: React.FC = () => {
   const [message, setMessage] = useState('')
-  const sendMessage = () => {
-    if (message) {
-      wsChannel.send(message)
-      setMessage('')
+  const dispatch = useDispatch()
+  const status = useSelector((state: AppStateType) => state.chat.status)
+  const sendMessageHandler = () => {
+    if (!message) {
+      return
     }
+    dispatch(sendMessage(message))
+    setMessage('')
   }
+
+  // const sendMessage = (values: { message: string }, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void; }) => {
+  //   if (!values.message) {
+  //     return
+  //   }
+  //   wsChannel.send(values.message)
+  //   setSubmitting(false)
+  // }
+
   return (<div className="">
-    {/* <textarea onChange={(e: any) => setMessage(e.currentTarget.value)} value={message} name="" id="" cols={30} rows={10}></textarea> */}
-    {/* <Button onClick={sendMessage}>Send</Button> */}
-    <Formik
+    <textarea onChange={(e: any) => setMessage(e.currentTarget.value)} value={message} name="" id="" cols={30} rows={10}></textarea>
+    <button disabled={status !== 'ready'} onClick={sendMessageHandler}>Send</button>
+    {/* <Formik
       enableReinitialize
       initialValues={{ message: '' }}
       validate={undefined}
       onSubmit={sendMessage}
     >
-      <Form>
-        <Field onChange={(e: any) => setMessage(e.currentTarget.value)} value={message} type="textarea" name="message" id="" cols={30} rows={5} />
-        <Button>Send</Button>
-      </Form>
-    </Formik>
+      {({ isSubmitting }) => (
+        <Form>
+          <Field type="textarea" name="message" id="" cols={30} rows={5} />
+          <button type="submit" disabled={isSubmitting}>Send</button>
+        </Form>
+      )}
+    </Formik> */}
   </div>
   )
 }
