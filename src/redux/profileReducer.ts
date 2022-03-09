@@ -15,10 +15,10 @@ const SAVE_PROFILE_SUCCESS = 'social-network/profilePage/SAVE_PROFILE_SUCCESS';
 
 const initialState = {
   postsData: [
-    { id: 1, message: 'Post1', likesCount: 431 },
-    { id: 2, message: 'Hey', likesCount: 431 },
-    { id: 3, message: 'Hi', likesCount: 431 },
-    { id: 4, message: 'How is your day123', likesCount: 222 },
+    { id: 1, message: 'Post1', likesCount: 1 },
+    { id: 2, message: 'Hey', likesCount: 0 },
+    { id: 3, message: 'Hi', likesCount: 20 },
+    { id: 4, message: 'How is your day123', likesCount: 11 },
   ] as Array<PostType>,
   profile: null as ProfileType | null,
   profileUpdateStatus: 'none',

@@ -32,7 +32,7 @@ const Pagination: React.FC<PaginationPropsType> = ({ totalItemsCount, pageSize, 
         {pages
           .filter(pageNumber => (leftPortionPageNumber <= pageNumber && pageNumber <= rightPortionPageNumber))
           .map(pageNumber => {
-            return <li className="pagging__item" key={pageNumber}><a className={"pagging__link" + (currentPage === pageNumber ? " pagging__link--active" : '')} onClick={(e) => { onPageChanged(pageNumber); }}>{pageNumber}</a></li>;
+              return <li className="pagging__item" key={pageNumber}><a className={"pagging__link" + (currentPage === pageNumber ? " pagging__link--active" : '')} onClick={(e) => { onPageChanged(pageNumber); }}>{pageNumber}</a></li>;
           })}
       </ul>
       {portionCount > portionNumber && <a className="pagging__link pagging__arrow" onClick={() => setPortionNumber(portionNumber+1)}>→</a>}

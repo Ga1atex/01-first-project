@@ -5,17 +5,17 @@ import Message from './Message/Message';
 import React from 'react';
 import { maxLengthCreator } from '../../utils/validators/validators';
 import AddMessageForm from './AddMessageForm';
-import { InitialStateType } from '../../redux/dialogsReducer';
+import { useRedirect } from '../../hoc/useRedirect';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppStateType } from '../../redux/redux-store';
+import { actionCreators } from '../../redux/dialogsReducer';
 
 export const maxLength50 = maxLengthCreator(50);
 
-type OwnPropsType ={
-  dialogsPage: InitialStateType
-  sendMessage: (messageText: string) => void
-}
+const Dialogs: React.FC = (props) => {
+  const state = useSelector((state:AppStateType) => state.dialogsPage);
 
-const Dialogs: React.FC<OwnPropsType> = (props) => {
-  const state = props.dialogsPage;
+  const dispatch = useDispatch()
 
   const dialogsElements = state.dialogsData.map(dialog => {
     return <DialogItem name={dialog.name} key={dialog.id} id={dialog.id} />;
@@ -26,9 +26,11 @@ const Dialogs: React.FC<OwnPropsType> = (props) => {
 
   const addNewMessage = (values: { newMessageValue: string}) => {
     if (values.newMessageValue) {
-      props.sendMessage(values.newMessageValue);
+      dispatch(actionCreators.sendMessage(values.newMessageValue));
     }
   }
+
+  useRedirect()
 
   return (
     <div className={styles.dialogs}>

@@ -1,11 +1,9 @@
-import { FormAction, stopSubmit, StopSubmitAction } from 'redux-form';
-import { ThunkAction } from 'redux-thunk';
+import { FormAction, stopSubmit } from 'redux-form';
 import { ResultCodeForCaptcha, ResultCodesEnum } from '../api/api';
-import { securityAPI } from "../api/securityAPI";
 import { authAPI } from "../api/authAPI";
 import { profileAPI } from "../api/profileAPI";
-import { AppStateType, BaseThunkType, InferActionTypes } from './redux-store';
-import { Action } from 'redux';
+import { securityAPI } from "../api/securityAPI";
+import { BaseThunkType, InferActionTypes } from './redux-store';
 
 const SET_USER_DATA = 'social-network/auth/SET_USER_DATA';
 const GET_CAPTCHA_URL_SUCCESS = 'social-network/auth/GET_CAPTCHA_URL_SUCCESS';

@@ -37,19 +37,18 @@ export const UsersSearchForm: React.FC<PropsType> = (props) => {
       onSubmit={onSubmit}
     >
       {({ isSubmitting }) => (
-        <Form>
+        <Form style={{display: 'flex', gap: '15px', marginBottom: '16px'}}>
           <Field type="text" name="term" />
           {/* <ErrorMessage name="email" component="div" /> */}
-          {/* <Field type="checkbox" name="password" /> */}
           <Field name="friend" as="select">
             <option value="null">All</option>
             <option value="true">Only followed</option>
             <option value="false">Only unfollowed</option>
           </Field>
-          {/* <ErrorMessage name="password" component="div" /> */}
-          <button type="submit" disabled={isSubmitting}>
-            Find
-          </button>
+            <button type="submit" disabled={isSubmitting}>
+              Find
+            </button>
+
         </Form>
       )}
     </Formik>

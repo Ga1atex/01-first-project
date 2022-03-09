@@ -1,23 +1,36 @@
-import { ProfileType } from '../../types/types';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { useRedirect } from '../../hoc/useRedirect';
+import { getProfileStatus, getUserProfile } from '../../redux/profileReducer';
+import { selectAuthorizedUserId, selectProfile, selectProfileUpdateStatus, selectStatus } from '../../redux/profileSelectors';
 import PostsContainer from './Posts/PostsContainer';
 import UserProfile from './UserProfile/UserProfile';
 
-type PropsType = {
-  savePhoto: (file: File) => void
-  isOwner: boolean
-  profile: ProfileType | null
-  // userId: number
-  status: string
-  saveProfile: (profile: ProfileType) => void
-  profileUpdateStatus: string
-}
+const Profile: React.FC = (props) => {
+  const profile = useSelector(selectProfile)
+  const authorizedUserId = useSelector(selectAuthorizedUserId)
+  const status = useSelector(selectStatus)
+  const profileUpdateStatus = useSelector(selectProfileUpdateStatus)
+  const dispatch = useDispatch()
+  const params = useParams();
 
-const Profile: React.FC<PropsType> = (props) => {
+  const userId = Number(params.userId) || authorizedUserId
+  useRedirect();
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getUserProfile(userId));
+      dispatch(getProfileStatus(userId));
+    } else {
+      console.error('ID should exist un URI params or in state')
+    }
+  }, [userId])
+
   return (
     <div className="page__profile profile">
-      {/* <UserProfile {...props} /> */}
-      {/* userId={props.userId} */}
-      <UserProfile savePhoto={props.savePhoto} isOwner={props.isOwner} profile={props.profile} status={props.status} saveProfile={props.saveProfile} profileUpdateStatus={props.profileUpdateStatus}/>
+      {/* userId={userId} */}
+      <UserProfile isOwner={!params.userId} profile={profile} status={status} profileUpdateStatus={profileUpdateStatus}/>
       <PostsContainer />
     </div>
   );

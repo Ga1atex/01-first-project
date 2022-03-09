@@ -1,10 +1,10 @@
-import { LaptopOutlined, MessageOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import 'antd/dist/antd.css';
 import React, { Suspense } from 'react';
 import { connect, Provider } from 'react-redux';
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
+import { Breadcrumbs } from './components/common/Breadcrumbs/Breadcrumbs';
 import Preloader from './components/common/Preloader/Preloader';
 import AppHeader from './components/Header/Header';
 // import Footer from './components/Footer/Footer';
@@ -17,8 +17,8 @@ const { SubMenu } = Menu;
 const { Content, Footer, Sider } = Layout;
 
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
-const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
-const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
+const Profile = React.lazy(() => import('./components/Profile/Profile'));
+const Dialogs = React.lazy(() => import('./components/Dialogs/Dialogs'));
 const ChatPage = React.lazy(() => import('./pages/chat/ChatPage'));
 
 type MapStateToPropsType = ReturnType<typeof mapStateToProps>
@@ -43,24 +43,20 @@ class App extends React.Component<MapStateToPropsType & MapDispatchPropsType> {
     }
 
     return (
-      <Layout>
+      <Layout >
         <AppHeader />
         <Content style={{ padding: '0 50px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
+          <Breadcrumbs />
           <Layout className="site-layout-background" style={{ padding: '24px 0' }}>
             <SidebarContainer/>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
               <Suspense fallback={<Preloader />}>
                 <Routes>
                   <Route path='' element={<Navigate to="profile" />} />
-                  <Route path='profile' element={<ProfileContainer />}>
-                    <Route path=':userId' element={<ProfileContainer />} />
+                  <Route path='profile' element={<Profile />}>
+                    <Route path=':userId' element={<Profile />} />
                   </Route>
-                  <Route path='dialogs' element={<DialogsContainer />} />
+                  <Route path='dialogs' element={<Dialogs />} />
                   <Route path='users' element={<UsersContainer pageTitle={'All users'} />} />
                   <Route path='login' element={<LoginPage />} />
                   <Route path='chat' element={<ChatPage />} />

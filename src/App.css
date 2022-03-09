@@ -10,7 +10,7 @@
   	min-height: 100%;
   	display: grid;
   	overflow: hidden;
-  	grid-template-rows: auto 1fr auto;
+  	/* grid-template-rows: auto 1fr auto; */
 }
 
 .page {

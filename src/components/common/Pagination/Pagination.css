@@ -1,6 +1,7 @@
 .pagging {
   display: flex;
   align-items: center;
+  margin-bottom: 1em;
   /* justify-content: center; */
 }
 
@@ -8,6 +9,7 @@
 
 .pagging__list {
   display: flex;
+  margin: 0;
 }
 
 .pagging__item:not(:last-child) {

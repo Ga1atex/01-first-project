@@ -6,6 +6,8 @@ import './UserProfile.css';
 import { ChangeEvent, useState } from "react";
 import ProfileDataForm from "./ProfileDataForm";
 import { ContactsType, ProfileType } from "../../../types/types";
+import { useDispatch } from "react-redux";
+import { savePhoto, saveProfile } from "../../../redux/profileReducer";
 
 type PropsType = {
   isOwner: boolean
@@ -13,13 +15,11 @@ type PropsType = {
   // userId: number,
   status: string,
   profileUpdateStatus: string
-  // profileUpdateStatus: (status: string) => void
-  savePhoto: (file: File) => void
-  saveProfile: (profile: ProfileType) => void
 }
 
 const UserProfile: React.FC<PropsType> = (props) => {
   const [editMode, setEditMode] = useState(false);
+  const dispatch = useDispatch()
 
   if (!props.profile) {
     return <Preloader />;
@@ -27,12 +27,12 @@ const UserProfile: React.FC<PropsType> = (props) => {
 
   const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) { // "?" instead of "e.target.files && "
-      props.savePhoto(e.target.files[0]);
+      dispatch(savePhoto(e.target.files[0]));
     }
   };
 
   const onSubmit = (formData: ProfileType) => {
-    props.saveProfile(formData);
+    dispatch(saveProfile(formData));
     if (props.profileUpdateStatus === 'success') {
       setEditMode(false);
     }

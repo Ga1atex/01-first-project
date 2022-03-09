@@ -32,11 +32,12 @@ export default function AppHeader(props: PropsType) {
             Social Network
           </a></div>
         </Col>
-        <Col span={16}>
+        {/* <Col span={16}>
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
             <Menu.Item key="1">nav 1</Menu.Item>
             <Menu.Item key="2">nav 2</Menu.Item>
-          </Menu></Col>
+          </Menu>
+          </Col> */}
         <Col span={4}>
           <div className={styles.loginBlock} >
             {isAuth

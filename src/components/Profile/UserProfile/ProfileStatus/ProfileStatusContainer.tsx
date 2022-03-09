@@ -4,7 +4,7 @@ import ProfileStatus from "./ProfileStatus";
 import { getProfileStatus, updateProfileStatus } from "../../../../redux/profileReducer";
 import { AppStateType } from "../../../../redux/redux-store";
 
-type MapStatePropsType ={
+type MapStatePropsType = {
 
 }
 type OwnPropsType = {
@@ -14,7 +14,7 @@ type OwnPropsType = {
 }
 type MapDispatchPropsType = {
   getProfileStatus: (userId: number) => void
-  updateProfileStatus: (newStatus:string) => void
+  updateProfileStatus: (newStatus: string) => void
 }
 type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
 
@@ -27,17 +27,19 @@ const ProfileStatusContainer = (props: PropsType) => {
 
   useEffect(() => {
     setStatus(props.status)
-  },[props.status])
+  }, [props.status])
 
   const activateEditMode = () => {
-    setEditMode(true);
+    if (props.isOwner) {
+      setEditMode(true);
+    }
   };
   const deactivateEditMode = () => {
     setEditMode(false);
     props.updateProfileStatus(status);
   };
 
-  const onStatusChange = (e:ChangeEvent<HTMLInputElement>) => {
+  const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
     setStatus(e.currentTarget.value);
   };
 
@@ -53,7 +55,7 @@ const mapStateToProps = (state: AppStateType) => {
   };
 };
 
-export default connect<MapStatePropsType,MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
+export default connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
   getProfileStatus,
   updateProfileStatus
 })(ProfileStatusContainer);

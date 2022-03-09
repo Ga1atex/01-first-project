@@ -15,7 +15,6 @@ type MapStateToPropsType = {
 
 //Use "extends unknown" or ", " on the generic parameter to hint the compiler that it's a generic
 export const withAuthRedirect = <WCP,>(WrappedComponent: React.ComponentType<WCP>) => {
-
   const RedirectComponent: React.FC<MapStateToPropsType> = (props)=> {
     const {isAuth, ...componentProps} = props
     if (!isAuth) return <Navigate replace to="/login" />
