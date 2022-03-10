@@ -1,6 +1,5 @@
 import React from 'react';
 import { BaseFieldProps, GenericFieldHTMLAttributes, WrappedFieldProps } from 'redux-form';
-// @ts-ignore
 import styles from './FormsControls.module.css';
 
 // type FormControlPropsType = {

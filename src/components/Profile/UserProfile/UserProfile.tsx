@@ -1,13 +1,12 @@
 import Preloader from "../../common/Preloader/Preloader";
 import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
-// @ts-ignore
 import userPhoto from '../../../assets/images/user.png';
 import './UserProfile.css';
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import ProfileDataForm from "./ProfileDataForm";
 import { ContactsType, ProfileType } from "../../../types/types";
 import { useDispatch } from "react-redux";
-import { savePhoto, saveProfile } from "../../../redux/profileReducer";
+import { actionCreators, savePhoto, saveProfile } from "../../../redux/profileReducer";
 
 type PropsType = {
   isOwner: boolean
@@ -21,10 +20,6 @@ const UserProfile: React.FC<PropsType> = (props) => {
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch()
 
-  if (!props.profile) {
-    return <Preloader />;
-  }
-
   const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) { // "?" instead of "e.target.files && "
       dispatch(savePhoto(e.target.files[0]));
@@ -33,14 +28,18 @@ const UserProfile: React.FC<PropsType> = (props) => {
 
   const onSubmit = (formData: ProfileType) => {
     dispatch(saveProfile(formData));
-    if (props.profileUpdateStatus === 'success') {
-      setEditMode(false);
-    }
-
-    // TODO: need to set profileUpdateStatus = 'none'
-    // BUG: if (props.profileUpdateStatus ===) happens earlier than action dispatch
   };
 
+  useEffect(() => {
+    if (props.profileUpdateStatus === 'success') {
+      setEditMode(false);
+      dispatch(actionCreators.saveProfileSuccess('none'))
+    }
+  }, [props.profileUpdateStatus])
+
+  if (!props.profile) {
+    return <Preloader />;
+  }
 
   return (
     <div className="profile__info user-info">

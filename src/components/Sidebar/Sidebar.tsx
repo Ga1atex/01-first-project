@@ -1,13 +1,9 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { MessageOutlined, UserOutlined } from '@ant-design/icons';
+import { Layout, Menu } from 'antd';
+import { Link, useLocation } from "react-router-dom";
 import { SidebarInitialStateType } from "../../redux/sidebarReducer";
-//@ts-ignore
-import styles from './Sidebar.module.css';
-import { Avatar, Breadcrumb, Layout, Menu } from 'antd';
-import { LaptopOutlined, MessageOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 
-const { SubMenu } = Menu;
-const { Content, Footer, Sider } = Layout;
-
+const { Sider } = Layout;
 
 type MapStateToPropsType = {
   sidebar: SidebarInitialStateType

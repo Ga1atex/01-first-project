@@ -1,5 +1,4 @@
 import DialogItem from './Dialog/Dialog'
-//@ts-ignore
 import styles from './Dialogs.module.css'
 import Message from './Message/Message';
 import React from 'react';

@@ -5,7 +5,6 @@ import { login } from '../../redux/authReducer';
 import { AppStateType } from '../../redux/redux-store';
 import { required } from '../../utils/validators/validators';
 import { Input } from '../common/FormsControls/FormsControls';
-//  @ts-ignore
 import styles from '../common/FormsControls/FormsControls.module.css';
 
 type LoginFormOwnProps = {

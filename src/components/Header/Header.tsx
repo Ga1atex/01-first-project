@@ -2,11 +2,9 @@ import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Col, Layout, Menu, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-// @ts-ignore
 import logo from '../../assets/images/logo.svg';
 import { logout } from '../../redux/authReducer';
 import { selectFullName, selectIsAuth, selectPhotoSmall } from '../../redux/authSelectors';
-// @ts-ignore
 import styles from './Header.module.css';
 
 const { Header } = Layout;

@@ -39,7 +39,7 @@ const notifySubscribersAboutStatus = (status: StatusType) => {
 }
 
 
-function createChannel() {
+const createChannel = () => {
   cleanUp()
   ws?.close()
   ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx');
@@ -79,12 +79,10 @@ export const chatAPI = {
   }
 }
 
-
-type EventNamesType = 'messages-received' | 'status-changed'
+type EventNamesType = keyof typeof subscribers
 type MessagesReceivedSubscriberType = (messages: ChatMessageAPIType[]) => void
 type StatusChangedSubscriberType = (status: StatusType) => void
 export type StatusType = 'pending' | 'ready' | 'error'
-
 export type ChatMessageAPIType = {
   message: string,
   photo: string,

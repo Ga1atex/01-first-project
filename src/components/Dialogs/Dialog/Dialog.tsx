@@ -1,7 +1,6 @@
 import { Avatar } from 'antd';
 import { NavLink } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
-//@ts-ignore
 import styles from './Dialog.module.css'
 
 type PropsType = {

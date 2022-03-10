@@ -1,4 +1,3 @@
-// @ts-ignore
 import styles from './Message.module.css'
 
 type ProptsType = {
