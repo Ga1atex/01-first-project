@@ -26,8 +26,9 @@ const UserProfile: React.FC<PropsType> = (props) => {
     }
   };
 
-  const onSubmit = (formData: ProfileType) => {
-    dispatch(saveProfile(formData));
+  const onSubmit = (formData: ProfileType, submitProps: any) => {
+    // dispatch(saveProfile(formData, submitProps.setStatus));
+    dispatch(saveProfile(formData, submitProps.setErrors));
   };
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const UserProfile: React.FC<PropsType> = (props) => {
       {props.isOwner && <input type={"file"} onChange={onMainPhotoSelected} />}
       <ProfileStatusContainer status={props.status} isOwner={props.isOwner} />
       {editMode
-        ? <ProfileDataForm initialValues={props.profile} profile={props.profile} onSubmit={onSubmit} />
+        ? <ProfileDataForm profile={props.profile} onSubmit={onSubmit} />
         : <ProfileData goToEditMode={() => { setEditMode(true); }} profile={props.profile} isOwner={props.isOwner} />}
     </div>
   );

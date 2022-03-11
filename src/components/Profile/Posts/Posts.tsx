@@ -16,7 +16,7 @@ const Posts: React.FC<MapStateToPropsType & DispatchPropsType> = props => {
     return <Post message={post.message} key={post.id} id={post.id} likesCount={post.likesCount} />;
   });
 
-  const addPost = (values: AddPostFormValuesType) => {
+  const addPost = (values: any) => {
     props.addPost(values.newPostValue);
   };
 

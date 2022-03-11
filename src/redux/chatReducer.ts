@@ -1,5 +1,4 @@
 import { Dispatch } from 'redux';
-import { FormAction } from 'redux-form';
 import { chatAPI, ChatMessageAPIType, StatusType } from '../api/chatAPI';
 import { BaseThunkType, InferActionTypes } from './redux-store';
 import { v1 as uuidv1 } from 'uuid';
@@ -57,7 +56,7 @@ export const actionCreators = {
 
 }
 
-type ThunkType = BaseThunkType<ActionsTypes | FormAction>
+type ThunkType = BaseThunkType<ActionsTypes>
 
 let _newMessageHandler: ((messages: ChatMessageAPIType[]) => void) | null = null
 const newMessageHandlerCreator = (dispatch: Dispatch) => {

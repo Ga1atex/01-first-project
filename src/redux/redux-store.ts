@@ -1,5 +1,4 @@
 import { Action, applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import { reducer as formReducer } from 'redux-form';
 import thunkMiddleware, { ThunkAction } from 'redux-thunk';
 import appReducer from './appReducer';
 import authReducer from './authReducer';
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
   sidebar: sidebarReducer,
   usersPage: usersReducer,
   auth: authReducer,
-  form: formReducer,
   app: appReducer,
   chat: chatReducer,
 })

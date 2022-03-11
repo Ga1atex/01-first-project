@@ -1,6 +1,6 @@
+import { Field, Form, Formik, FormikHelpers } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { login } from '../../redux/authReducer';
 import { AppStateType } from '../../redux/redux-store';
 import { required } from '../../utils/validators/validators';
@@ -9,19 +9,26 @@ import styles from '../common/FormsControls/FormsControls.module.css';
 
 type LoginFormOwnProps = {
   captchaUrl: string | null
+  onSubmit: (formData: LoginFormValuesType, submitProps: any) => void
 }
 
-const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnProps> & LoginFormOwnProps> = (props) => {
+const LoginForm: React.FC<LoginFormOwnProps> = (props) => {
   return (
-    <form className="" action="" onSubmit={props.handleSubmit}>
+    <Formik
+      enableReinitialize
+      initialValues={{ email: '' , password: '', rememberMe: true, captcha: null}}
+      validate={undefined}
+      onSubmit={props.onSubmit}
+    >
+    <Form className="" action="">
       <label htmlFor="">
         <Field component={Input} type="email" name={"email"} placeholder="E-mail"
-          validate={[required]}
+          validate={required}
         />
       </label>
       <label htmlFor="">
         <Field component={Input} type="password" name={"password"} placeholder="password"
-          validate={[required]}
+          validate={required}
         />
       </label>
       <label htmlFor="">
@@ -29,18 +36,15 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnPro
         Remember me
       </label>
       {props.captchaUrl && <div className=""><img src={props.captchaUrl} alt={"Captcha"} />
-        <Field component={Input} type="text" name={"captcha"} validate={[required]} placeholder={'Enter symbols from the image'} />
+        <Field component={Input} type="text" name={"captcha"} validate={required} placeholder={'Enter symbols from the image'} />
       </div>}
-      {props.error && <div className={styles.formSummaryError}>{props.error}</div>}
+      {/* {props.error && <div className={styles.formSummaryError}>{props.error}</div>} */}
 
       <button type="submit">Log-in</button>
-    </form>
+    </Form>
+    </Formik>
   )
 }
-
-const LoginReduxForm = reduxForm<LoginFormValuesType, LoginFormOwnProps>({
-  form: 'login'
-})(LoginForm)
 
 type LoginFormValuesType = {
   email: string,
@@ -56,8 +60,8 @@ const Login: React.FC = () => {
 
   const dispatch = useDispatch()
 
-  const onSubmit = (formData: LoginFormValuesType) => {
-    dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha))
+  const onSubmit = (formData: LoginFormValuesType, submitProps: FormikHelpers<LoginFormValuesType>) => {
+    dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha, submitProps.setErrors))
   }
 
   if (isAuth) {
@@ -67,7 +71,7 @@ const Login: React.FC = () => {
   return (
     <div className="">
       <h1>Login</h1>
-      <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl} />
+      <LoginForm onSubmit={onSubmit} captchaUrl={captchaUrl} />
     </div>
   );
 }

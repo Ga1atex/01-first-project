@@ -1,4 +1,4 @@
-import { FormAction, FormErrors, stopSubmit } from 'redux-form';
+import { FormikHelpers } from 'formik';
 import { ResultCodesEnum } from '../api/api';
 import { profileAPI } from "../api/profileAPI";
 import { PhotosType, PostType, ProfileType } from '../types/types';
@@ -128,7 +128,7 @@ export const actionCreators = {
   }
 }
 
-type ThunkType = BaseThunkType<ActionsTypes | FormAction>
+type ThunkType = BaseThunkType<ActionsTypes>
 //Thunk Creators
 export const getUserProfile = (userId: null | number): ThunkType => async (dispatch) => {
   const data = await profileAPI.getProfile(userId);
@@ -156,7 +156,7 @@ export const savePhoto = (file: File):ThunkType => async (dispatch) => {
     alert(errorMessage)
   }
 };
-export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch, getState) => {
+export const saveProfile = (profile: ProfileType, setStatus: any): ThunkType => async (dispatch, getState) => {
   const data = await profileAPI.saveProfile(profile);
 
   if (data.resultCode === ResultCodesEnum.Success) {
@@ -165,7 +165,7 @@ export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch,
   } else if (data.resultCode === ResultCodesEnum.Error) {
     // const errorMessages = data.messages.length ? data.messages[0] : 'Wrong link';
 
-    const errorMessages: FormErrors = data.messages.reduce((obj: { [key: string]: any}, item: string) => {
+    const errorMessages = data.messages.reduce((obj: { [key: string]: any}, item: string) => {
       const errorInputs = item.match(/(.*)\((\w+)->(\w+)\)/i);
       if (errorInputs && errorInputs.length) {
         const [errorMessage, errorGroup, errorInput] = [errorInputs[1].trim(), errorInputs[2].toLowerCase(), errorInputs[3].toLowerCase()];
@@ -183,7 +183,8 @@ export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch,
     }, {})
 
     dispatch(actionCreators.saveProfileSuccess('error'))
-    dispatch(stopSubmit('edit-profile', errorMessages));
+    // setStatus({errors: errorMessages})
+    setStatus(errorMessages)
   }
 };
 

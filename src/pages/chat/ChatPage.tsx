@@ -1,5 +1,6 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar } from "antd";
+import { Field, Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { ChatMessageAPIType } from '../../api/chatAPI';
@@ -74,42 +75,45 @@ const Message: React.FC<{ message: ChatMessageAPIType }> = React.memo(({ message
   )
 })
 
-const AddMessageForm: React.FC = () => {
-  const [message, setMessage] = useState('')
-  const dispatch = useDispatch()
-  const status = useSelector((state: AppStateType) => state.chat.status)
-  const sendMessageHandler = () => {
-    if (!message) {
-      return
-    }
-    dispatch(sendMessage(message))
-    setMessage('')
-  }
+// BUG: messages are repeating when switch to other pages and back
 
-  // const sendMessage = (values: { message: string }, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void; }) => {
-  //   if (!values.message) {
+const AddMessageForm: React.FC = () => {
+  const dispatch = useDispatch()
+  // const status = useSelector((state: AppStateType) => state.chat.status)
+  // const [message, setMessage] = useState('')
+  // const sendMessageHandler = () => {
+  //   if (!message) {
   //     return
   //   }
-  //   wsChannel.send(values.message)
-  //   setSubmitting(false)
+  //   dispatch(sendMessage(message))
+  //   setMessage('')
   // }
 
+  const sendMessageHandler = (values: { message: string }, { setSubmitting, resetForm }: { setSubmitting: (isSubmitting: boolean) => void; resetForm: any}) => {
+    if (!values.message) {
+      return
+    }
+    dispatch(sendMessage(values.message))
+    setSubmitting(false)
+    resetForm()
+  }
+
   return (<div className="">
-    <textarea onChange={(e: any) => setMessage(e.currentTarget.value)} value={message} name="" id="" cols={30} rows={10}></textarea>
-    <button disabled={status !== 'ready'} onClick={sendMessageHandler}>Send</button>
-    {/* <Formik
+    {/* <textarea onChange={(e: any) => setMessage(e.currentTarget.value)} value={message} name="" id="" cols={30} rows={10}></textarea>
+    <button disabled={status !== 'ready'} onClick={sendMessageHandler}>Send</button> */}
+    <Formik
       enableReinitialize
       initialValues={{ message: '' }}
       validate={undefined}
-      onSubmit={sendMessage}
+      onSubmit={sendMessageHandler}
     >
       {({ isSubmitting }) => (
         <Form>
-          <Field type="textarea" name="message" id="" cols={30} rows={5} />
+          <Field component="textarea" name="message" id="" cols={30} rows={5} />
           <button type="submit" disabled={isSubmitting}>Send</button>
         </Form>
       )}
-    </Formik> */}
+    </Formik>
   </div>
   )
 }

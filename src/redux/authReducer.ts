@@ -1,4 +1,3 @@
-import { FormAction, stopSubmit } from 'redux-form';
 import { ResultCodeForCaptcha, ResultCodesEnum } from '../api/api';
 import { authAPI } from "../api/authAPI";
 import { profileAPI } from "../api/profileAPI";
@@ -66,7 +65,7 @@ export const actionCreators = {
   }
 }
 
-type ThunkType = BaseThunkType<ActionsTypes | FormAction>
+type ThunkType = BaseThunkType<ActionsTypes>
 
 export const getAuthUserData = (): ThunkType => async (dispatch, getState) => {
   const data = await authAPI.getAuthData();
@@ -81,7 +80,7 @@ export const getAuthUserData = (): ThunkType => async (dispatch, getState) => {
 };
 
 
-export const login = (email: string, password: string, rememberMe: boolean, captcha: null | string): ThunkType => async (dispatch, getState) => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: null | string, setErrors: any): ThunkType => async (dispatch, getState) => {
   const data = await authAPI.login(email, password, rememberMe, captcha);
   if (data.resultCode === ResultCodesEnum.Success) {
     // success, get auth data
@@ -91,9 +90,10 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
       dispatch(getCaptchaUrl());
     }
     const errorMessage = data.messages.length > 0 ? data.messages[0] : 'E-mail or password is wrong';
-    dispatch(stopSubmit('login', {
-      _error: errorMessage
-    }));
+    // dispatch(stopSubmit('login', {
+    //   _error: errorMessage
+    // }));
+    setErrors(errorMessage)
   }
 };
 
