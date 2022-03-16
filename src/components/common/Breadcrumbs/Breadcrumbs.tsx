@@ -2,7 +2,7 @@ import { Breadcrumb } from "antd"
 import { Link, useLocation } from "react-router-dom"
 
 export const Breadcrumbs = () => {
-  const breadcrumbNameMap: any = {
+  const breadcrumbNameMap: Record<string, string> = {
     '/profile': 'Profile',
     '/dialogs': 'Dialogs',
     '/users': 'User List',

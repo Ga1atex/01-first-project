@@ -7,6 +7,7 @@ import ProfileDataForm from "./ProfileDataForm";
 import { ContactsType, ProfileType } from "../../../types/types";
 import { useDispatch } from "react-redux";
 import { actionCreators, savePhoto, saveProfile } from "../../../redux/profileReducer";
+import { FormikHelpers } from "formik";
 
 type PropsType = {
   isOwner: boolean
@@ -26,7 +27,7 @@ const UserProfile: React.FC<PropsType> = (props) => {
     }
   };
 
-  const onSubmit = (formData: ProfileType, submitProps: any) => {
+  const onSubmit = (formData: ProfileType, submitProps: FormikHelpers<ProfileType>) => {
     // dispatch(saveProfile(formData, submitProps.setStatus));
     dispatch(saveProfile(formData, submitProps.setErrors));
   };

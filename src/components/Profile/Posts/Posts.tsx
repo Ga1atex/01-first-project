@@ -1,7 +1,8 @@
-import Post from './Post/Post';
+import { FormikValues } from 'formik';
 import React from 'react';
-import AddNewPostForm, {AddPostFormValuesType } from './AddNewPostForm';
 import { PostType } from '../../../types/types';
+import AddNewPostForm from './AddNewPostForm';
+import Post from './Post/Post';
 
 export type MapStateToPropsType ={
   postsData: Array<PostType>
@@ -16,7 +17,7 @@ const Posts: React.FC<MapStateToPropsType & DispatchPropsType> = props => {
     return <Post message={post.message} key={post.id} id={post.id} likesCount={post.likesCount} />;
   });
 
-  const addPost = (values: any) => {
+  const addPost = (values: FormikValues) => {
     props.addPost(values.newPostValue);
   };
 

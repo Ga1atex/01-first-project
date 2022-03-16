@@ -12,8 +12,8 @@ export const maxLengthCreator = (maxLength: number): FieldValidatorType => (valu
   }
 }
 
-// export const emailValidator = (values: any) => {
-//   const errors: any = {};
+// export const emailValidator = (values: Record<string,any>) => {
+//   const errors: Record<string,any> = {};
 //   if (values && !values.email) {
 //     errors.email = 'Required';
 //   } else if (

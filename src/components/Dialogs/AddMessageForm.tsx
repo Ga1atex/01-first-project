@@ -5,14 +5,14 @@ import { maxLength50 } from './Dialogs';
 import { Field, Form, Formik } from 'formik';
 
 type NewMessageFormValuesType = {
-  onSubmit: any
+  onSubmit: (values: { newMessageValue: string }) => void
 }
 
 const AddMessageForm: React.FC<NewMessageFormValuesType> = (props) => {
   return (
     <Formik
       enableReinitialize
-      initialValues={{ }}
+      initialValues={{ newMessageValue: '' }}
       validate={undefined}
       onSubmit={props.onSubmit}>
     <Form >

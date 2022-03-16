@@ -9,7 +9,6 @@ const mapStateToProps = (state: AppStateType) => {
   }
 }
 
-
 const PostsContainer = connect<MapStateToPropsType, DispatchPropsType, {}, AppStateType>(mapStateToProps,{
   addPost: actionCreators.addPost
 })(Posts);

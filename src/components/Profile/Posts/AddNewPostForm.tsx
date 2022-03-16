@@ -1,23 +1,19 @@
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FormikValues } from 'formik';
 import React from 'react';
 import { maxLengthCreator, required } from '../../../utils/validators/validators';
 import { Textarea } from '../../common/FormsControls/FormsControls';
 
 export const maxLength20 = maxLengthCreator(20);
 
-type PropsType = {
-
-}
-
 export type AddPostFormValuesType = {
-  onSubmit: any
+  onSubmit: (values: FormikValues) => void
 }
 
 const AddNewPostForm: React.FC<AddPostFormValuesType> = (props) => {
   return (
     <Formik
       enableReinitialize
-      initialValues={{ }}
+      initialValues={{ newPostValue: '' }}
       validate={undefined}
       onSubmit={props.onSubmit}
     >

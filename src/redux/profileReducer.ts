@@ -156,7 +156,7 @@ export const savePhoto = (file: File):ThunkType => async (dispatch) => {
     alert(errorMessage)
   }
 };
-export const saveProfile = (profile: ProfileType, setStatus: any): ThunkType => async (dispatch, getState) => {
+export const saveProfile = (profile: ProfileType, setErrors: Function): ThunkType => async (dispatch, getState) => {
   const data = await profileAPI.saveProfile(profile);
 
   if (data.resultCode === ResultCodesEnum.Success) {
@@ -164,8 +164,8 @@ export const saveProfile = (profile: ProfileType, setStatus: any): ThunkType => 
     dispatch(getUserProfile(getState().auth.userId))
   } else if (data.resultCode === ResultCodesEnum.Error) {
     // const errorMessages = data.messages.length ? data.messages[0] : 'Wrong link';
-
-    const errorMessages = data.messages.reduce((obj: { [key: string]: any}, item: string) => {
+    // (obj: { [key: string]: any}
+    const errorMessages = data.messages.reduce((obj: Record<string, any>, item: string) => {
       const errorInputs = item.match(/(.*)\((\w+)->(\w+)\)/i);
       if (errorInputs && errorInputs.length) {
         const [errorMessage, errorGroup, errorInput] = [errorInputs[1].trim(), errorInputs[2].toLowerCase(), errorInputs[3].toLowerCase()];
@@ -184,7 +184,7 @@ export const saveProfile = (profile: ProfileType, setStatus: any): ThunkType => 
 
     dispatch(actionCreators.saveProfileSuccess('error'))
     // setStatus({errors: errorMessages})
-    setStatus(errorMessages)
+    setErrors(errorMessages)
   }
 };
 

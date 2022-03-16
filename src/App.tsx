@@ -13,8 +13,7 @@ import SidebarContainer from './components/Sidebar/SidebarContainer';
 import { initializeApp } from './redux/appReducer';
 import store, { AppStateType } from './redux/redux-store';
 
-const { SubMenu } = Menu;
-const { Content, Footer, Sider } = Layout;
+const { Content, Footer } = Layout;
 
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 const Profile = React.lazy(() => import('./components/Profile/Profile'));

@@ -21,7 +21,9 @@ const chatReducer = (state = initialState, action: ActionsTypes): InitialStateTy
       const newState = {
         ...state,
         messages: [...state.messages, ...action.payload.messages.map(m => ({...m, id: uuidv1
-          ()}))].filter((m, index, array) => index >= array.length - 100)
+          ()}))]
+          // ()}))].filter((m, index, array) => index >= array.length - 100)
+          // BUG: messages are repeating when switch to other pages and back when amount of messages is less then 100, also problem might be in ID
       };
       return newState;
     }

@@ -9,14 +9,20 @@ import styles from '../common/FormsControls/FormsControls.module.css';
 
 type LoginFormOwnProps = {
   captchaUrl: string | null
-  onSubmit: (formData: LoginFormValuesType, submitProps: any) => void
+  onSubmit: (formData: LoginFormValuesType, submitProps: FormikHelpers<LoginFormValuesType>) => void
+}
+export type LoginFormValuesType = {
+  email: string,
+  password: string,
+  rememberMe: boolean,
+  captcha: null | string
 }
 
 const LoginForm: React.FC<LoginFormOwnProps> = (props) => {
   return (
     <Formik
       enableReinitialize
-      initialValues={{ email: '' , password: '', rememberMe: true, captcha: null}}
+      initialValues={{ email: '', password: '', rememberMe: true, captcha: null } as LoginFormValuesType}
       validate={undefined}
       onSubmit={props.onSubmit}
     >
@@ -46,12 +52,7 @@ const LoginForm: React.FC<LoginFormOwnProps> = (props) => {
   )
 }
 
-type LoginFormValuesType = {
-  email: string,
-  password: string,
-  rememberMe: boolean,
-  captcha: null | string
-}
+
 // type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string>
 
 const Login: React.FC = () => {

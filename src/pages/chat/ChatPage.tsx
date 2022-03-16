@@ -1,11 +1,11 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar } from "antd";
 import { Field, Form, Formik } from 'formik';
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { ChatMessageAPIType } from '../../api/chatAPI';
 import { useRedirect } from '../../hoc/useRedirect';
-import { sendMessage, startMessagesListening } from '../../redux/chatReducer';
+import { sendMessage, startMessagesListening, stopMessagesListening } from '../../redux/chatReducer';
 import { AppStateType } from '../../redux/redux-store';
 
 
@@ -24,7 +24,7 @@ const Chat: React.FC = () => {
   useEffect(() => {
     dispatch(startMessagesListening())
     return () => {
-      dispatch(startMessagesListening())
+      dispatch(stopMessagesListening())
     }
   }, [])
 
@@ -37,6 +37,7 @@ const Chat: React.FC = () => {
 }
 
 const Messages: React.FC = () => {
+
   const messages = useSelector((state: AppStateType) => state.chat.messages)
   const messagesAnchorRef = useRef<HTMLDivElement>(null)
 
@@ -57,9 +58,10 @@ const Messages: React.FC = () => {
       messagesAnchorRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
   }, [messages])
+  console.log(messages);
 
   return (<div className="" style={{ height: '400px', overflowY: 'auto' }} onScroll={scrollHandler}>
-    {messages.map((messageObj, i) => <Message key={messageObj.id} message={messageObj} />)}
+    {messages.map((messageObj) => <Message key={messageObj.id} message={messageObj} />)}
     <div className="" ref={messagesAnchorRef}></div>
   </div>
   )
@@ -75,10 +77,18 @@ const Message: React.FC<{ message: ChatMessageAPIType }> = React.memo(({ message
   )
 })
 
-// BUG: messages are repeating when switch to other pages and back
-
 const AddMessageForm: React.FC = () => {
   const dispatch = useDispatch()
+  const sendMessageHandler = (values: { message: string }, { setSubmitting, resetForm }: { setSubmitting: (isSubmitting: boolean) => void; resetForm: Function}) => {
+    if (!values.message) {
+      return
+    }
+
+    dispatch(sendMessage(values.message))
+    setSubmitting(false)
+    resetForm()
+  }
+
   // const status = useSelector((state: AppStateType) => state.chat.status)
   // const [message, setMessage] = useState('')
   // const sendMessageHandler = () => {
@@ -89,17 +99,8 @@ const AddMessageForm: React.FC = () => {
   //   setMessage('')
   // }
 
-  const sendMessageHandler = (values: { message: string }, { setSubmitting, resetForm }: { setSubmitting: (isSubmitting: boolean) => void; resetForm: any}) => {
-    if (!values.message) {
-      return
-    }
-    dispatch(sendMessage(values.message))
-    setSubmitting(false)
-    resetForm()
-  }
-
   return (<div className="">
-    {/* <textarea onChange={(e: any) => setMessage(e.currentTarget.value)} value={message} name="" id="" cols={30} rows={10}></textarea>
+    {/* <textarea onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setMessage(e.currentTarget.value)} value={message} name="" id="" cols={30} rows={10}></textarea>
     <button disabled={status !== 'ready'} onClick={sendMessageHandler}>Send</button> */}
     <Formik
       enableReinitialize
