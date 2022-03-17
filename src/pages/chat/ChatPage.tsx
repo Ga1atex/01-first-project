@@ -5,8 +5,9 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { ChatMessageAPIType } from '../../api/chatAPI';
 import { useRedirect } from '../../hoc/useRedirect';
-import { sendMessage, startMessagesListening, stopMessagesListening } from '../../redux/chatReducer';
+import { actionCreators, sendMessage, startMessagesListening, stopMessagesListening } from '../../redux/chatReducer';
 import { AppStateType } from '../../redux/redux-store';
+import { v1 as uuidv1 } from 'uuid';
 
 
 const ChatPage: React.FC = () => {
@@ -25,6 +26,7 @@ const Chat: React.FC = () => {
     dispatch(startMessagesListening())
     return () => {
       dispatch(stopMessagesListening())
+      dispatch(actionCreators.clearState())
     }
   }, [])
 
@@ -58,7 +60,6 @@ const Messages: React.FC = () => {
       messagesAnchorRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
   }, [messages])
-  console.log(messages);
 
   return (<div className="" style={{ height: '400px', overflowY: 'auto' }} onScroll={scrollHandler}>
     {messages.map((messageObj) => <Message key={messageObj.id} message={messageObj} />)}

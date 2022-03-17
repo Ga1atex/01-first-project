@@ -48,7 +48,7 @@ const createChannel = () => {
   ws.addEventListener('close', closeHandler)
   ws.addEventListener('message', messageHandler)
   ws.addEventListener('open', openHandler)
-  ws.addEventListener('error', openHandler)
+  ws.addEventListener('error', errorHandler)
 }
 
 
@@ -67,12 +67,12 @@ export const chatAPI = {
     subscribers[eventName].push(callback)
     return () => {
       //@ts-ignore
-      subscribers[eventName] = subscribers[eventName].filter((sub: Function) => sub !== callback)
+      subscribers[eventName] = subscribers[eventName].filter((sub: MessagesReceivedSubscriberType | StatusChangedSubscriberType) => sub !== callback)
     }
   },
   unsubscribe(eventName: EventNamesType, callback: MessagesReceivedSubscriberType | StatusChangedSubscriberType) {
     //@ts-ignore
-    subscribers[eventName] = subscribers[eventName].filter((sub: Function) => sub !== callback)
+    subscribers[eventName] = subscribers[eventName].filter((sub: MessagesReceivedSubscriberType | StatusChangedSubscriberType) => sub !== callback)
   },
   sendMessage(message: string) {
     ws?.send(message)
