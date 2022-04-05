@@ -65,10 +65,12 @@ export const chatAPI = {
   subscribe(eventName: EventNamesType, callback: MessagesReceivedSubscriberType | StatusChangedSubscriberType) {
     //@ts-ignore
     subscribers[eventName].push(callback)
-    return () => {
-      //@ts-ignore
-      subscribers[eventName] = subscribers[eventName].filter((sub: MessagesReceivedSubscriberType | StatusChangedSubscriberType) => sub !== callback)
-    }
+
+    // can use this instead of unsubscribe method
+    // return () => {
+    //   //@ts-ignore
+    //   subscribers[eventName] = subscribers[eventName].filter((sub: MessagesReceivedSubscriberType | StatusChangedSubscriberType) => sub !== callback)
+    // }
   },
   unsubscribe(eventName: EventNamesType, callback: MessagesReceivedSubscriberType | StatusChangedSubscriberType) {
     //@ts-ignore

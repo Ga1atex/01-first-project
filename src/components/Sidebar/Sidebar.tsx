@@ -18,26 +18,31 @@ const Sidebar: React.FC<MapStateToPropsType> = (props) => {
   const location = useLocation();
   const currentPath = location.pathname.split('/')[1];
 
-    return (
-      <Sider className="site-layout-background" width={200}>
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={[currentPath]}
-          // defaultOpenKeys={['sub1']}
-          style={{ height: '100%' }}
-        >
-          {/* <SubMenu key="sub1" icon={<UserOutlined />} title="My profile"> */}
-          <Menu.Item key="profile" icon={<UserOutlined />}><Link to="/profile">Profile</Link></Menu.Item>
-          <Menu.Item key="dialogs" icon={<MessageOutlined />}><Link to="/dialogs">Messages</Link></Menu.Item>
-          <Menu.Item key="users"><Link to="/users">Users</Link></Menu.Item>
-          <Menu.Item key="chat"><Link to="/chat">Chat</Link></Menu.Item>
-          {/* </SubMenu> */}
-          {/* <ul className={styles.friends}>
+  return (
+    <Sider
+      className="site-layout-background"
+      width={200}
+      breakpoint="lg"
+      collapsedWidth="0"
+    >
+      <Menu
+        mode="inline"
+        defaultSelectedKeys={[currentPath]}
+        // defaultOpenKeys={['sub1']}
+        style={{ height: '100%' }}
+      >
+        {/* <SubMenu key="sub1" icon={<UserOutlined />} title="My profile"> */}
+        <Menu.Item key="profile" icon={<UserOutlined />}><Link to="/profile">Profile</Link></Menu.Item>
+        <Menu.Item key="dialogs" icon={<MessageOutlined />}><Link to="/dialogs">Messages</Link></Menu.Item>
+        <Menu.Item key="users"><Link to="/users">Users</Link></Menu.Item>
+        <Menu.Item key="chat"><Link to="/chat">Chat</Link></Menu.Item>
+        {/* </SubMenu> */}
+        {/* <ul className={styles.friends}>
             {friendsList}
           </ul> */}
-        </Menu>
-      </Sider>
-    )
+      </Menu>
+    </Sider>
+  )
 }
 
 export default Sidebar

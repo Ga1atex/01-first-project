@@ -1,11 +1,12 @@
 import { Breadcrumb, Layout, Menu } from 'antd';
 import 'antd/dist/antd.css';
-import React, { Suspense } from 'react';
-import { connect, Provider } from 'react-redux';
+import React, { Suspense, useEffect } from 'react';
+import { connect, Provider, useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Breadcrumbs } from './components/common/Breadcrumbs/Breadcrumbs';
 import Preloader from './components/common/Preloader/Preloader';
+import FooterComponent from './components/Footer/Footer';
 import AppHeader from './components/Header/Header';
 // import Footer from './components/Footer/Footer';
 import LoginPage from './components/Login/Login';
@@ -20,31 +21,30 @@ const Profile = React.lazy(() => import('./components/Profile/Profile'));
 const Dialogs = React.lazy(() => import('./components/Dialogs/Dialogs'));
 const ChatPage = React.lazy(() => import('./pages/chat/ChatPage'));
 
-type MapStateToPropsType = ReturnType<typeof mapStateToProps>
-type MapDispatchPropsType = {
-  initializeApp: () => void
-}
 
-class App extends React.Component<MapStateToPropsType & MapDispatchPropsType> {
-  catchAllUnhandledErrors = (promiseRejectionEvent: PromiseRejectionEvent) => {
+const App:React.FC = () => {
+  const initialized = useSelector((state: AppStateType) => state.app.initialized)
+  const dispatch = useDispatch()
+
+  const catchAllUnhandledErrors = (promiseRejectionEvent: PromiseRejectionEvent) => {
     alert(promiseRejectionEvent.reason + " in " + promiseRejectionEvent.target);
   }
-  componentDidMount() {
-    this.props.initializeApp();
-    window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors);
-  }
-  componentWillUnmount() {
-    window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors);
-  }
-  render() {
-    if (!this.props.initialized) {
+  useEffect(() => {
+    dispatch(initializeApp());
+    window.addEventListener("unhandledrejection", catchAllUnhandledErrors);
+
+    return () => {
+      window.removeEventListener("unhandledrejection", catchAllUnhandledErrors);
+    }
+  })
+    if (!initialized) {
       return <Preloader />;
     }
 
     return (
       <Layout >
         <AppHeader />
-        <Content style={{ padding: '0 50px' }}>
+        <Content className='container'>
           <Breadcrumbs />
           <Layout className="site-layout-background" style={{ padding: '24px 0' }}>
             <SidebarContainer/>
@@ -64,27 +64,16 @@ class App extends React.Component<MapStateToPropsType & MapDispatchPropsType> {
               </Suspense></Content>
           </Layout>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Social Network Pet-project 2022</Footer>
+        <FooterComponent/>
       </Layout>
     );
-  }
 }
-
-const mapStateToProps = (state: AppStateType) => {
-  return {
-    initialized: state.app.initialized
-  };
-};
-
-const AppContainer = connect(mapStateToProps, {
-  initializeApp
-})(App);
 
 const SocialNetworkApp: React.FC = () => {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Provider store={store}>
-        <AppContainer />
+        <App />
       </Provider>
     </BrowserRouter>
   );

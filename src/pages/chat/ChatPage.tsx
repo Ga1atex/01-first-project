@@ -8,6 +8,7 @@ import { useRedirect } from '../../hoc/useRedirect';
 import { actionCreators, sendMessage, startMessagesListening, stopMessagesListening } from '../../redux/chatReducer';
 import { AppStateType } from '../../redux/redux-store';
 import { v1 as uuidv1 } from 'uuid';
+import { Link } from 'react-router-dom';
 
 
 const ChatPage: React.FC = () => {
@@ -70,8 +71,11 @@ const Messages: React.FC = () => {
 
 const Message: React.FC<{ message: ChatMessageAPIType }> = React.memo(({ message }) => {
   return (<div className="">
-    <Avatar src={message.photo} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} size={50} />
-    {message.userName}
+    <Link to={`/profile/${message.userId}`}>
+      <Avatar src={message.photo} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} size={50} />
+      {message.userName}
+    </Link>
+
     <div className="">{message.message}</div>
     <hr />
   </div>
