@@ -1,4 +1,4 @@
-import { AppStateType } from "../redux/redux-store";
+import { AppStateType } from "../redux/store";
 
 export type GetStateType = () => AppStateType;
 

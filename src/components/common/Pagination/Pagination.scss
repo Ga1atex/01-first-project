@@ -1,0 +1,45 @@
+.pagging {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+  /* justify-content: center; */
+}
+
+.pagging__arrow {
+  border: 0;
+}
+
+.pagging__list {
+  display: flex;
+  margin: 0;
+}
+
+.pagging__item:not(:last-child) {
+  margin-right: 6px;
+}
+
+.pagging__link,
+.pagging__item span {
+  box-shadow: 0px 1px 2px 0px rgba(205, 214, 222, 0.75);
+  width: 43px;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  /* font-size: rem(16); */
+  color: red;
+  font-weight: 500;
+  transition: background-color .3s;
+}
+
+/* .pagging__item */
+.pagging__link--active {
+  background-color: red;
+  color: #fff;
+}
+
+.pagging__link:hover:not(.pagging__link--active) {
+  background-color: #ddd;
+  cursor: pointer;
+}

@@ -1,3 +1,6 @@
+# Pet-project mini Social Network
+Used: React, Redux, react-router, redux-thunk, redux-form -> formik, axios, AntDesign
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

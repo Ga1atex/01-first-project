@@ -1,18 +1,13 @@
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { AppStateType } from '../../redux/redux-store';
+import { useSelector } from 'react-redux';
+import { selectSidebar } from '../../redux/reducers/sidebarReducer/sidebarSelectors';
 import Sidebar from "./Sidebar";
 
-const mapStateToProps = (state: AppStateType)=> {
-  return {
-    sidebar: state.sidebar
-  }
+const SidebarContainer = () => {
+  const sidebar = useSelector(selectSidebar)
+
+  return (
+    <Sidebar sidebar={sidebar} />
+  )
 }
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//   };
-// }
-export default compose(
-  connect(mapStateToProps)
-)(Sidebar);
+export default SidebarContainer;

@@ -1,8 +1,8 @@
 import { MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from "react-router-dom";
-import { SidebarInitialStateType } from "../../redux/sidebarReducer";
-
+import { SidebarInitialStateType } from "../../redux/reducers/sidebarReducer/sidebarReducer";
+// import styles from './Sidebar.module.scss';
 const { Sider } = Layout;
 
 type MapStateToPropsType = {
@@ -11,7 +11,7 @@ type MapStateToPropsType = {
 
 const Sidebar: React.FC<MapStateToPropsType> = (props) => {
   // const friendsList = props.sidebar.friendsData.map((friend => <li className={styles.friendsItem} key={friend.id}>
-  //   <a className={styles.friendsImg} href=""><Avatar src={''} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} size={40} /></a>
+  //   <Link className={styles.friendsImg} href=""><Avatar src={''} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} size={40} /></Link>
   //   <span className={styles.friendsFirstName}>{friend.firstName}</span>
   // </li>));
 

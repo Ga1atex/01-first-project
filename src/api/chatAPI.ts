@@ -82,10 +82,10 @@ export const chatAPI = {
 }
 
 type EventNamesType = keyof typeof subscribers
-type MessagesReceivedSubscriberType = (messages: ChatMessageAPIType[]) => void
+type MessagesReceivedSubscriberType = (messages: MessageAPIType[]) => void
 type StatusChangedSubscriberType = (status: StatusType) => void
 export type StatusType = 'pending' | 'ready' | 'error'
-export type ChatMessageAPIType = {
+export type MessageAPIType = {
   message: string,
   photo: string,
   userId: number,

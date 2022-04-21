@@ -1,8 +1,8 @@
-import './Preloader.css';
+import './Preloader.scss';
 // import loaderImg from '../../../assets/images/preloader.svg'
 
 
-const Preloader:React.FC = () => {
+const Preloader: React.FC = () => {
   return (
     <div className="loader-wrap hide" id="loader">
       <div className="lds-ripple">

@@ -1,0 +1,28 @@
+.wrapper {
+  /* display: grid;
+  grid-template-areas: "header header"
+                      "sidebar main"
+                      "footer footer";
+  grid-template-rows: max-content 1fr 1fr;
+  grid-template-columns: 1fr 5fr;
+  gap: 10px; */
+  min-height: 100%;
+  display: grid;
+  overflow: hidden;
+  /* grid-template-rows: auto 1fr auto; */
+}
+
+.page {
+  background-color: wheat;
+  min-width: 0;
+  /* grid-area: main; */
+
+  &__content-wrapper {
+    padding: 15px;
+  }
+
+  &__container {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+  }
+}

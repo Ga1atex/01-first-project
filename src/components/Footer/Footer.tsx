@@ -1,9 +1,16 @@
 import { Footer } from "antd/lib/layout/layout";
 import styles from "./Footer.module.css";
 
- const FooterComponent:React.FC = () => {
+const FooterComponent: React.FC = () => {
   return (
-    <Footer style={{ textAlign: 'center' }}>Pet-project Social Network 2022</Footer>
+    <Footer className={styles.footer}>
+      <div className="container">
+        <div className="">
+          Pet-project Social Network 2022
+        </div>
+      </div>
+    </Footer>
+
   )
 }
 
