@@ -1,12 +1,13 @@
 import { FormikHelpers } from 'formik';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import AddMessageForm, { AddMessageFormPropsType } from '../../../components/AddMessageForm/AddMessageForm';
-import { PostType } from '../../../types/types';
+import AddMessageForm, { AddMessageFormPropsType } from '../AddMessageForm/AddMessageForm';
+import { PostType } from '../../types/types';
 import Post from './Post/Post';
 
 export type MapStateToPropsType = {
-  postsData: Array<PostType>
+  postsData: Array<PostType>,
+  isOwner: boolean
 }
 
 export type DispatchPropsType = {
@@ -14,27 +15,27 @@ export type DispatchPropsType = {
 }
 
 const Posts: React.FC<MapStateToPropsType & DispatchPropsType> = (props) => {
-  const { postsData, addPost } = props;
+  const { postsData, addPost, isOwner } = props;
   const dispatch = useDispatch()
-  const postsElements = postsData.map(post => {
-    const { message, likesCount, id } = post;
-    return <Post message={message} key={id} id={id} likesCount={likesCount} />;
-  });
 
   const addPostHandler = (values: AddMessageFormPropsType, helpers: FormikHelpers<AddMessageFormPropsType>) => {
     const { setSubmitting, resetForm } = helpers;
-    if (!values.newMessageValue) {
-      return
-    }
-    dispatch(addPost(values.newMessageValue));
+
+    dispatch(addPost(values.message));
     setSubmitting(false)
     resetForm()
   };
 
+  const postsElements = postsData.map(post => {
+    // const { message, likesCount, id, isLiked } = post;
+    // return <Post message={message} id={id} key={id} likesCount={likesCount} isLiked={isLiked} />
+    return <Post key={post.id} {...post} />;
+  });
+
   return (
     <section className="profile__posts posts">
-      <h2 className="posts__title">My Posts</h2>
-      <AddMessageForm onSubmit={addPostHandler} />
+      <h2 className="posts__title">Posts</h2>
+      {isOwner && <AddMessageForm onSubmit={addPostHandler} />}
       {postsElements}
     </section>
   );

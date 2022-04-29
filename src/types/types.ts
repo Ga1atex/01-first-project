@@ -6,7 +6,8 @@ export type GetStateType = () => AppStateType;
 export type PostType = {
   id: number,
   message: string,
-  likesCount: number
+  likesCount: number,
+  isLiked: boolean
 }
 export type ContactsType = {
   github: string
@@ -17,7 +18,7 @@ export type ContactsType = {
   website: string
   mainLink: string
 }
-export type PhotosType ={
+export type PhotosType = {
   small: string | null,
   large: string | null
 }
@@ -34,11 +35,11 @@ export type ProfileType = {
 
 
 export type UserType = {
-    "name": string,
-    "id": number,
-    "photos": PhotosType
-    "status": string,
-    "followed": boolean
+  "name": string,
+  "id": number,
+  "photos": PhotosType
+  "status": string,
+  "followed": boolean
 }
 
 export type FriendType = {

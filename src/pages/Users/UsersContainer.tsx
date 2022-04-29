@@ -29,6 +29,7 @@ const UsersContainer: React.FC<PropsType> = ({ pageTitle }) => {
   const usersData = useSelector(selectUsers)
   const followingInProgress = useSelector(selectFollowingInProgress)
 
+  const navigate = useNavigate();
 
   const onFilterChanged = useCallback((filter: FilterType) => {
     dispatch(requestUsers(1, pageSize, filter));
@@ -37,10 +38,6 @@ const UsersContainer: React.FC<PropsType> = ({ pageTitle }) => {
   const onPageChanged = useCallback((pageNumber: number) => {
     dispatch(requestUsers(pageNumber, pageSize, filter));
   }, [])
-
-
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     // const urlParams = new URLSearchParams(window.location.search);

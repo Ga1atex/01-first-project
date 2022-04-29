@@ -54,10 +54,10 @@ const Pagination: React.FC<PaginationPropsType> = ({ totalItemsCount, pageSize, 
   const rightPortionPageNumber = portionNumber * portionSize;
 
   const decreasePortionNumber: MouseEventHandler<HTMLButtonElement> = (e) => {
-    setPortionNumber(portionNumber - 1);
+    setPortionNumber(prev => prev - 1);
   }
   const increasePortionNumber: MouseEventHandler<HTMLButtonElement> = (e) => {
-    setPortionNumber(portionNumber + 1);
+    setPortionNumber(prev => prev + 1);
   }
   // useEffect(() => setPortionNumber(Math.ceil(currentPage / portionSize)), [currentPage]);
   if (isFetching) {

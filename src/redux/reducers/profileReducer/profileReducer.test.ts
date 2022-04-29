@@ -2,12 +2,12 @@ import profileReducer, { actionCreators } from './profileReducer';
 
 const state = {
   postsData: [
-    { id: 1, message: 'Post1', likesCount: 431 },
-    { id: 2, message: 'Hey', likesCount: 431 },
-    { id: 3, message: 'Hi', likesCount: 431 },
-    { id: 4, message: 'How is your day123', likesCount: 222 },
+    { id: 1, message: 'Post1', likesCount: 431, isLiked: false },
+    { id: 2, message: 'Hey', likesCount: 431, isLiked: false },
+    { id: 3, message: 'Hi', likesCount: 431, isLiked: false },
+    { id: 4, message: 'How is your day123', likesCount: 222, isLiked: false },
   ],
-  profile: null ,
+  profile: null,
   profileUpdateStatus: 'none',
   status: '',
   isFetching: false

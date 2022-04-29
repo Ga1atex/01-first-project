@@ -1,7 +1,7 @@
 import { getAuthUserData } from '../authReducer/authReducer';
 import { BaseThunkType, InferActionTypes } from '../../store';
 
-const INITIALIZED_SUCCESS = 'social-network/app/INITIALIZED_SUCCESS';
+const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
 
 let initialState = {
   initialized: false

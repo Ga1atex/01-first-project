@@ -4,8 +4,8 @@ import { profileAPI } from "../../../api/profileAPI";
 import { securityAPI } from "../../../api/securityAPI";
 import { BaseThunkType, InferActionTypes } from '../../store';
 
-const SET_USER_DATA = 'social-network/auth/SET_USER_DATA';
-const GET_CAPTCHA_URL_SUCCESS = 'social-network/auth/GET_CAPTCHA_URL_SUCCESS';
+const SET_USER_DATA = 'auth/SET_USER_DATA';
+const GET_CAPTCHA_URL_SUCCESS = 'auth/GET_CAPTCHA_URL_SUCCESS';
 
 const initialState = {
   userId: null as null | number,
@@ -19,7 +19,7 @@ const initialState = {
 
 export type InitialStateType = typeof initialState
 
-const authReducer = (state = initialState, action: ActionsTypes):InitialStateType => {
+const authReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
     case SET_USER_DATA: {
       const newState = {

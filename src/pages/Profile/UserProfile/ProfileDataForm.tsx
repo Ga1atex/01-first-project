@@ -18,50 +18,49 @@ const ProfileDataForm: React.FC<PropsType> = (props) => {
     validate={undefined}
     onSubmit={onSubmit}
   >
-    {/* {({ isSubmitting }) => ( */}
-    {({ errors, touched, isValidating }) => (
-      <Form className="user-info__description">
-        <Button htmlType="submit">Save</Button>
-        <div className="">
-          <label className="user-info__name">Full name:
-            <Field
-              component={Input}
-              type="text"
-              name={"fullName"}
-              placeholder="Full Name..."
-              validate={required}
-            />
-          </label>
-          <label className="user-info__job">Looking for a job:
-            <Field
-              component={Input}
-              type="checkbox" name={"lookingForAJob"} placeholder="Looking For A Job..."
-              validate={[]} />
-          </label>
-          {<label className="user-info__job-description">My professional skills:
-            <Field component={Textarea} name={"lookingForAJobDescription"} placeholder="My professional skills..." cols={50} rows={4}
-              validate={required} />
-          </label>}
+    {/* {({ errors, touched, isValidating, isSubmitting }) => ( */}
+    <Form className="user-info__description">
+      <Button htmlType="submit">Save</Button>
+      <div className="">
+        <label className="user-info__name">Full name:
+          <Field
+            component={Input}
+            type="text"
+            name={"fullName"}
+            placeholder="Full Name..."
+            validate={required}
+          />
+        </label>
+        <label className="user-info__job">Looking for a job:
+          <Field
+            component={Input}
+            type="checkbox" name={"lookingForAJob"} placeholder="Looking For A Job..."
+            validate={[]} />
+        </label>
+        {<label className="user-info__job-description">My professional skills:
+          <Field component={Textarea} name={"lookingForAJobDescription"} placeholder="My professional skills..." cols={50} rows={4}
+            validate={required} />
+        </label>}
 
-          <label className="user-info__job">About me:
-            <Field component={Textarea} name={"aboutMe"} placeholder="About me..." cols={50} rows={4}
-              validate={required} />
-          </label>
-        </div>
-        <div className="user-info__contacts">
-          <h3 className="user-info__contacts-title">Contacts: </h3>
-          {Object.keys(profile.contacts)
-            .map(item => {
-              return <label className="contact" key={item}>
-                {item}: <Field component={Input} type="text" name={"contacts." + item} placeholder={`Enter the ${item} link...`}
-                  validate={[]} />
-              </label>;
-            })}
-        </div>
-        {/* {props.error && <div className={''}>{props.error}</div>} */}
+        <label className="user-info__job">About me:
+          <Field component={Textarea} name={"aboutMe"} placeholder="About me..." cols={50} rows={4}
+            validate={required} />
+        </label>
+      </div>
+      <div className="user-info__contacts">
+        <h3 className="user-info__contacts-title">Contacts: </h3>
+        {Object.keys(profile.contacts)
+          .map(item => {
+            return <label className="contact" key={item}>
+              {item}: <Field component={Input} type="text" name={"contacts." + item} placeholder={`Enter the ${item} link...`}
+                validate={[]} />
+            </label>;
+          })}
+      </div>
+      {/* {props.error && <div className={''}>{props.error}</div>} */}
 
-      </Form>
-    )}
+    </Form>
+    {/* )} */}
   </Formik>
   );
 };

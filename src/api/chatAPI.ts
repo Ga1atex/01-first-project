@@ -1,5 +1,3 @@
-
-
 const subscribers = {
   'messages-received': [] as MessagesReceivedSubscriberType[],
   'status-changed': [] as StatusChangedSubscriberType[]
@@ -87,7 +85,7 @@ type StatusChangedSubscriberType = (status: StatusType) => void
 export type StatusType = 'pending' | 'ready' | 'error'
 export type MessageAPIType = {
   message: string,
-  photo: string,
-  userId: number,
-  userName: string
+  photo: null | string,
+  userId: null | number,
+  userName: null | string
 }

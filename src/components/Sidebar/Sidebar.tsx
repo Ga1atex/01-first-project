@@ -16,7 +16,7 @@ const Sidebar: React.FC<MapStateToPropsType> = (props) => {
   // </li>));
 
   const location = useLocation();
-  const currentPath = location.pathname.split('/')[1];
+  const currentPath = location.pathname.split('/')[1] || 'profile';
 
   return (
     <Sider

@@ -5,7 +5,7 @@ import { MessageAPIType } from '../../../api/chatAPI'
 import styles from './Message.module.scss'
 import { UserOutlined } from '@ant-design/icons';
 
-const Message: React.FC<{ message: MessageAPIType }> = React.memo(({ message }) => {
+const ChatMessage: React.FC<{ message: MessageAPIType }> = React.memo(({ message }) => {
   return (<div className="">
     <Link to={`/profile/${message.userId}`}>
       <Avatar src={message.photo} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} size={50} />
@@ -18,4 +18,4 @@ const Message: React.FC<{ message: MessageAPIType }> = React.memo(({ message }) 
   )
 })
 
-export default Message
+export default ChatMessage

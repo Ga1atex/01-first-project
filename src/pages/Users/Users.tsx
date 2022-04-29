@@ -5,6 +5,7 @@ import Preloader from '../../components/common/Preloader/Preloader';
 import { toggleFollow } from '../../redux/reducers/userReducer/usersReducer';
 import { UserType } from '../../types/types';
 import User from './User';
+import styles from './Users.module.scss';
 
 
 type PropsType = {
@@ -26,7 +27,7 @@ export const Users: React.FC<PropsType> = ({ isFetching, usersData, followingInP
 
   return (
     <>
-      <div className="page__users users">
+      <div className={styles.users}>
         {
           usersData.map(user => {
             return <User key={user.id} user={user} followingInProgress={followingInProgress} toggleFollow={toggleFollowCB} />;

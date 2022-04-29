@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 })
 
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__  || compose;
-const store = createStore(rootReducer, /* preloadedState, */ composeWithDevToolsDevelopmentOnly(
+const store = createStore(rootReducer, composeWithDevToolsDevelopmentOnly(
   applyMiddleware(thunkMiddleware)
 ));
 

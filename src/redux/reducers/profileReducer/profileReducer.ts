@@ -3,22 +3,24 @@ import { profileAPI } from "../../../api/profileAPI";
 import { PhotosType, PostType, ProfileType } from '../../../types/types';
 import { BaseThunkType, InferActionTypes } from '../../store';
 
-const ADD_POST = 'social-network/profilePage/ADD_POST';
-const GET_USER_PROFILE = 'social-network/profilePage/GET_USER_PROFILE';
-const SET_USER_PROFILE = 'social-network/profilePage/SET_USER_PROFILE';
-const SET_PROFILE_STATUS = 'social-network/profilePage/SET_PROFILE_STATUS';
-const DELETE_POST = 'social-network/profilePage/DELETE_POST';
-const SAVE_PHOTO_SUCCESS = 'social-network/profilePage/SAVE_PHOTO_SUCCESS';
-const SAVE_PROFILE_SUCCESS = 'social-network/profilePage/SAVE_PROFILE_SUCCESS';
+const ADD_POST = 'profilePage/ADD_POST';
+const GET_USER_PROFILE = 'profilePage/GET_USER_PROFILE';
+const SET_USER_PROFILE = 'profilePage/SET_USER_PROFILE';
+const SET_PROFILE_STATUS = 'profilePage/SET_PROFILE_STATUS';
+const DELETE_POST = 'profilePage/DELETE_POST';
+const SAVE_PHOTO_SUCCESS = 'profilePage/SAVE_PHOTO_SUCCESS';
+const SAVE_PROFILE_SUCCESS = 'profilePage/SAVE_PROFILE_SUCCESS';
+const ADD_LIKE = 'profilePage/ADD_LIKE';
+const REMOVE_LIKE = 'profilePage/REMOVE_LIKE';
 
 
 
 const initialState = {
   postsData: [
-    { id: 1, message: 'Post1', likesCount: 1 },
-    { id: 2, message: 'Hey', likesCount: 0 },
-    { id: 3, message: 'Hi', likesCount: 20 },
-    { id: 4, message: 'How is your day123', likesCount: 11 },
+    // { id: 1, message: 'Post1', likesCount: 1, isLiked: false },
+    // { id: 2, message: 'Hey', likesCount: 0, isLiked: false },
+    // { id: 3, message: 'Hi', likesCount: 20, isLiked: false },
+    // { id: 4, message: 'How is your day123', likesCount: 11, isLiked: false },
   ] as Array<PostType>,
   profile: null as ProfileType | null,
   profileUpdateStatus: 'none',
@@ -33,7 +35,6 @@ type ActionsTypes = InferActionTypes<typeof actionCreators>
 const profileReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
     case ADD_POST: {
-
       const newState = {
         ...state,
         postsData: [...state.postsData]
@@ -42,7 +43,8 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
       const newPost = {
         id: state.postsData.length + 1,
         message: action.text,
-        likesCount: 0
+        likesCount: 0,
+        isLiked: false
       };
       newState.postsData.push(newPost);
 
@@ -60,6 +62,32 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
         ...state,
         profile: action.profile,
         isFetching: false
+      };
+      return newState;
+    }
+    case ADD_LIKE: {
+      const newState = {
+        ...state,
+        postsData: state.postsData.map(item => {
+          if (item.id === action.payload) {
+            item.likesCount += 1;
+            item.isLiked = true;
+          }
+          return item
+        })
+      };
+      return newState;
+    }
+    case REMOVE_LIKE: {
+      const newState = {
+        ...state,
+        postsData: state.postsData.map(item => {
+          if (item.id === action.payload) {
+            item.likesCount -= 1;
+            item.isLiked = false;
+          }
+          return item
+        })
       };
       return newState;
     }
@@ -85,7 +113,6 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
       return newState;
     }
     case SAVE_PROFILE_SUCCESS: {
-
       const newState = {
         ...state,
         profileUpdateStatus: action.profileUpdateStatus
@@ -109,6 +136,18 @@ export const actionCreators = {
     return {
       type: ADD_POST,
       text
+    } as const
+  },
+  addLike: (id: number) => {
+    return {
+      type: ADD_LIKE,
+      payload: id
+    } as const
+  },
+  removeLike: (id: number) => {
+    return {
+      type: REMOVE_LIKE,
+      payload: id
     } as const
   },
   setUserProfile: (profile: ProfileType) => {

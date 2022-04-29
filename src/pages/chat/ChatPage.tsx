@@ -3,6 +3,7 @@ import { FormikHelpers } from 'formik';
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import AddMessageForm, { AddMessageFormPropsType } from "../../components/AddMessageForm/AddMessageForm";
+import ChatMessage from '../../components/common/ChatMessage/ChatMessage';
 import Messages from "../../components/Messages/Messages";
 import { actionCreators, sendChatMessage, startMessagesListening, stopMessagesListening } from '../../redux/reducers/chatReducer/chatReducer';
 import { selectChatMessages, selectChatStatus } from '../../redux/reducers/chatReducer/chatSelectors';
@@ -30,12 +31,9 @@ const Chat: React.FC = () => {
   }, [dispatch])
 
   const sendMessageHandler = (values: AddMessageFormPropsType, helpers: FormikHelpers<AddMessageFormPropsType>) => {
-    if (!values.newMessageValue) {
-      return
-    }
     const { setSubmitting, resetForm } = helpers;
 
-    dispatch(sendChatMessage(values.newMessageValue))
+    dispatch(sendChatMessage(values.message))
     setSubmitting(false)
     resetForm()
   }
@@ -43,7 +41,11 @@ const Chat: React.FC = () => {
   const messages = useSelector(selectChatMessages)
   return (<>
     {status === 'error' && <div>Some error occured. Please refresh page</div>}
-    <Messages messages={messages} />
+    <Messages>
+      {messages.map((messageObj) => {
+        return messageObj.message && <ChatMessage key={messageObj.id} message={messageObj} />
+      })}
+    </Messages>
     <AddMessageForm onSubmit={sendMessageHandler} />
   </>
   )

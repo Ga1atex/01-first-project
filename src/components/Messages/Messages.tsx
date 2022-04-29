@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import Message from "../common/Message/Message";
-import { ChatMessageType } from "../../redux/reducers/chatReducer/chatReducer"
 
-type PropsType = {
-  messages: ChatMessageType[]
-}
-
-const Messages: React.FC<PropsType> = ({ messages }) => {
+const Messages: React.FC = ({ children }) => {
   const messagesAnchorRef = useRef<HTMLDivElement>(null)
   const [isAutoScroll, setIsAutoScroll] = useState(true)
 
@@ -24,10 +18,10 @@ const Messages: React.FC<PropsType> = ({ messages }) => {
     if (isAutoScroll) {
       messagesAnchorRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [messages, isAutoScroll])
+  }, [children, isAutoScroll])
 
   return (<div className="" style={{ height: '60vh', overflowY: 'auto' }} onScroll={scrollHandler}>
-    {messages.map((messageObj) => <Message key={messageObj.id} message={messageObj} />)}
+    {children}
     <div className="" ref={messagesAnchorRef}></div>
   </div>
   )

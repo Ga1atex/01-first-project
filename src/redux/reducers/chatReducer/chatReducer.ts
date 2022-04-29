@@ -3,11 +3,11 @@ import { chatAPI, MessageAPIType, StatusType } from '../../../api/chatAPI';
 import { BaseThunkType, InferActionTypes } from '../../store';
 import { v1 as uuidv1 } from 'uuid';
 
-const MESSAGES_RECEIVED = 'social-network/chat/MESSAGES_RECEIVED';
-const STATUS_CHANGED = 'social-network/chat/STATUS_CHANGED';
-const CLEAR_STATE = 'social-network/chat/CLEAR_STATE';
+const MESSAGES_RECEIVED = 'chat/MESSAGES_RECEIVED';
+const STATUS_CHANGED = 'chat/STATUS_CHANGED';
+const CLEAR_STATE = 'chat/CLEAR_STATE';
 
-export type ChatMessageType = MessageAPIType & {id: string}
+export type ChatMessageType = MessageAPIType & { id: string }
 
 const initialState = {
   messages: [] as ChatMessageType[],
@@ -24,7 +24,7 @@ const chatReducer = (state = initialState, action: ActionsTypes): InitialStateTy
         messages: [...state.messages, ...action.payload.messages]
           .map(m => ({ ...m, id: uuidv1() }))
           .filter((m, index, array) => index >= array.length - 100)
-       };
+      };
       return newState;
     }
     case STATUS_CHANGED: {
@@ -97,7 +97,7 @@ export const startMessagesListening = (): ThunkType => async (dispatch) => {
   chatAPI.subscribe('status-changed', statusChangedHandlerCreator(dispatch))
 };
 export const stopMessagesListening = (): ThunkType => async (dispatch) => {
-  chatAPI.unsubscribe('messages-received',newMessageHandlerCreator(dispatch))
+  chatAPI.unsubscribe('messages-received', newMessageHandlerCreator(dispatch))
   chatAPI.unsubscribe('status-changed', statusChangedHandlerCreator(dispatch))
   chatAPI.stop()
 };

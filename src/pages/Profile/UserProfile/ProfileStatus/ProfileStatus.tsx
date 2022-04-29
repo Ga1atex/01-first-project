@@ -1,4 +1,5 @@
 import React, { ChangeEvent } from "react";
+import styles from './ProfileStatus.module.scss'
 
 type PropsType = {
   editMode: boolean
@@ -15,7 +16,10 @@ export function ProfileStatus(props: PropsType) {
     <div>
       {editMode
         ? <div className=""><input name="" id="" type="text" value={status} onChange={onStatusChange} onBlur={deactivateEditMode} autoFocus /></div>
-        : <span className="" onClick={activateEditMode}>{status || 'Status'}</span>}
+        : <>
+          <span>Status: </span>
+          <span className={styles.status} onClick={activateEditMode}>{status || 'Status'}</span>
+        </>}
     </div>
   );
 }

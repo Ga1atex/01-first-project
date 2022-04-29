@@ -8,22 +8,27 @@ import { ContactsType, ProfileType } from "../../../types/types";
 import { useDispatch } from "react-redux";
 import { actionCreators, savePhoto, saveProfile } from "../../../redux/reducers/profileReducer/profileReducer";
 import { FormikHelpers } from "formik";
+import { Button, Image } from "antd";
+import { Link } from "react-router-dom";
+import { RouteNames } from "../../../App";
 
 type PropsType = {
   isOwner: boolean
   profile: ProfileType | null,
-  // userId: number,
+  userId: number | null,
   status: string,
   profileUpdateStatus: string
 }
 
 const UserProfile: React.FC<PropsType> = (props) => {
-  const { profileUpdateStatus, profile, isOwner, status } = props;
+  const { profileUpdateStatus, profile, isOwner, status, userId } = props;
 
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch()
 
   const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
+
     if (e.target.files?.length) { // "?" instead of "e.target.files && "
       dispatch(savePhoto(e.target.files[0]));
     }
@@ -41,18 +46,25 @@ const UserProfile: React.FC<PropsType> = (props) => {
     }
   }, [profileUpdateStatus, dispatch])
 
-  if (!profile) {
-    return <Preloader />;
-  }
-
   const goToEditMode = () => {
     setEditMode(true);
   }
 
+  if (!profile) {
+    return <Preloader />;
+  }
+
   return (
     <div className="profile__info user-info">
-      <img className="user-info__avatar" src={profile.photos.large || userPhoto} alt="" width={250} height={250} />
-      {isOwner && <input type={"file"} onChange={onMainPhotoSelected} />}
+      <Image className="user-info__avatar" src={profile.photos.large || userPhoto} alt="" width={250} height={250} />
+      {isOwner && <div>
+        <span>Photo:</span>
+        <input type={"file"} onChange={onMainPhotoSelected} />
+      </div>
+      }
+      {!isOwner &&
+        <Button><Link to={`/${RouteNames.DIALOGS}/${userId}`}>Написать сообщение</Link></Button>
+      }
       <ProfileStatusContainer status={status} isOwner={isOwner} />
       {editMode
         ? <ProfileDataForm profile={profile} onSubmit={onSubmit} />
@@ -81,7 +93,7 @@ const ProfileData: React.FC<ProfileDataPropsType> = (props) => {
   const { isOwner, goToEditMode, profile } = props;
 
   return (<div className="user-info__description">
-    {isOwner && <button onClick={goToEditMode}>Edit</button>}
+    {isOwner && <Button onClick={goToEditMode}>Edit</Button>}
     <div className="">
       <h3 className="user-info__name">Full name: {profile.fullName}</h3>
       <p className="user-info__job">Looking for a job: {profile.lookingForAJob ? "Yes" : "No"} </p>

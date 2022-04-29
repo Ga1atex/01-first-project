@@ -2,14 +2,14 @@ import { Layout } from 'antd';
 import 'antd/dist/antd.min.css';
 import React, { Suspense, useEffect } from 'react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.scss';
 import { Breadcrumbs } from './components/common/Breadcrumbs/Breadcrumbs';
 import Preloader from './components/common/Preloader/Preloader';
 import FooterComponent from './components/Footer/Footer';
 import AppHeader from './components/Header/Header';
-import LoginPage from './pages/Login/Login';
 import SidebarContainer from './components/Sidebar/SidebarContainer';
+import LoginPage from './pages/Login/Login';
 import { initializeApp } from './redux/reducers/appReducer/appReducer';
 import { selectInitialized } from './redux/reducers/appReducer/appSelectors';
 import store from './redux/store';
@@ -23,7 +23,7 @@ const ChatPage = React.lazy(() => import('./pages/Chat/ChatPage'));
 
 export enum RouteNames {
   PROFILE = 'profile',
-  PROFILE_USERID = ':userId',
+  PAGE_USERID = ':userId',
   DIALOGS = 'dialogs',
   USERS = 'users',
   LOGIN = 'login',
@@ -55,20 +55,24 @@ const App: React.FC = () => {
         <Breadcrumbs />
         <Layout className="site-layout-background" style={{ paddingBottom: '24px' }}>
           <SidebarContainer />
-          <Content style={{ padding: '0 24px', minHeight: 280 }}>
+          <Content style={{ padding: '0 12px', minHeight: 280 }}>
             <Suspense fallback={<Preloader />}>
               <Routes>
-                <Route path='' element={<Navigate to="profile" />} />
+                {/* <Route path='' element={<Navigate to="profile" />} /> */}
+                <Route path='' element={<Profile />} />
                 <Route path={RouteNames.PROFILE} element={<Profile />}>
-                  <Route path=':userId' element={<Profile />} />
+                  <Route path={RouteNames.PAGE_USERID} element={<Profile />} />
                 </Route>
-                <Route path={RouteNames.DIALOGS} element={<Dialogs />} />
+                <Route path={RouteNames.DIALOGS} element={<Dialogs />} >
+                  <Route path={RouteNames.PAGE_USERID} element={<Dialogs />} />
+                </Route>
                 <Route path={RouteNames.USERS} element={<UsersContainer pageTitle={'All users'} />} />
                 <Route path={RouteNames.LOGIN} element={<LoginPage />} />
                 <Route path={RouteNames.CHAT} element={<ChatPage />} />
                 <Route path='*' element={<div>404 Not Found</div>} />
               </Routes>
-            </Suspense></Content>
+            </Suspense>
+          </Content>
         </Layout>
       </Content>
       <FooterComponent />

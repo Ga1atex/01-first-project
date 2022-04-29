@@ -3,13 +3,13 @@ import { usersAPI } from "../../../api/usersAPI";
 import { UserType } from '../../../types/types';
 import { BaseThunkType, InferActionTypes } from '../../store';
 
-const TOGGLE_FOLLOW = 'social-network/usersPage/TOGGLE_FOLLOW';
-const SET_USERS = 'social-network/usersPage/SET_USERS';
-const SET_CURRENT_PAGE = 'social-network/usersPage/SET_CURRENT_PAGE';
-const SET_TOTAL_USERS_COUNT = 'social-network/usersPage/SET_TOTAL_USERS_COUNT';
-const TOGGLE_IS_FETCHING = 'social-network/usersPage/TOGGLE_IS_FETCHING';
-const TOGGLE_IS_FOLLOWING_PROGRESS = 'social-network/usersPage/TOGGLE_IS_FOLLOWING_PROGRESS';
-const SET_FILTER = 'social-network/usersPage/SET_FILTER';
+const TOGGLE_FOLLOW = 'usersPage/TOGGLE_FOLLOW';
+const SET_USERS = 'usersPage/SET_USERS';
+const SET_CURRENT_PAGE = 'usersPage/SET_CURRENT_PAGE';
+const SET_TOTAL_USERS_COUNT = 'usersPage/SET_TOTAL_USERS_COUNT';
+const TOGGLE_IS_FETCHING = 'usersPage/TOGGLE_IS_FETCHING';
+const TOGGLE_IS_FOLLOWING_PROGRESS = 'usersPage/TOGGLE_IS_FOLLOWING_PROGRESS';
+const SET_FILTER = 'usersPage/SET_FILTER';
 
 const initialState = {
   usersData: [] as Array<UserType>,
