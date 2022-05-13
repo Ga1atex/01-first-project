@@ -4,6 +4,7 @@ import { Avatar, Comment, Tooltip } from 'antd';
 import moment from 'moment';
 import React, { createElement, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import userPhoto from '../../../assets/images/user.png';
 import { actionCreators } from '../../../redux/reducers/profileReducer/profileReducer';
 import { PostType } from '../../../types/types';
@@ -32,7 +33,7 @@ const Post: React.FC<PostType> = ({ message, likesCount, id, isLiked }) => {
   return (
     <Comment
       actions={actions}
-      author={<a>You</a>}
+      author={<Link to={''}>You</Link>}
       avatar={<Avatar src={userPhoto} alt="Users avatar" />}
       content={
         <p>

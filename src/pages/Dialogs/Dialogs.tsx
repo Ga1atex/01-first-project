@@ -4,21 +4,35 @@ import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import AddMessageForm, { AddMessageFormPropsType } from '../../components/AddMessageForm/AddMessageForm';
-import DialogMessage from '../../components/common/DialogMessage/DialogMessage';
 import Messages from '../../components/Messages/Messages';
-import { selectAuthorizedUserId, selectPhotoSmall } from '../../redux/reducers/authReducer/authSelectors';
+import { selectAuthorizedUserId, selectIsAuth, selectPhotoSmall } from '../../redux/reducers/authReducer/authSelectors';
 import { actionCreators, getMessagesNewerThen, requestDialogs, sendMessage, startDialog } from '../../redux/reducers/dialogsReducer/dialogsReducer';
 import { selectCurrentDialogId, selectDialogsData, selectMessagesData } from '../../redux/reducers/dialogsReducer/dialogsSelectors';
-import { useRedirect } from '../../utils/hooks/useRedirect';
 import { maxLengthCreator } from '../../utils/validators/validators';
 import DialogItem from './Dialog/Dialog';
+import DialogMessage from './DialogMessage/DialogMessage';
 import styles from './Dialogs.module.scss';
 
 export const maxLength50 = maxLengthCreator(50);
 
-const Dialogs: React.FC = React.memo(() => {
-  useRedirect();
+// const DialogsPage: React.FC = () => {
+//   const isAuth = useSelector(selectIsAuth)
 
+//   // if (!isAuth) {
+//   //   return <Navigate to={"/login"} />
+//   // }
+//   let navigate = useNavigate();
+//   useEffect(() => {
+//     if (!isAuth) {
+//       return navigate("/login", { replace: true });
+//     }
+//   }, [isAuth, navigate]);
+//   return (
+//     <Dialogs />
+//   )
+// }
+const Dialogs: React.FC = React.memo(() => {
+  const isAuth = useSelector(selectIsAuth)
   const dialogsData = useSelector(selectDialogsData);
   const messagesData = useSelector(selectMessagesData);
   const authPhoto = useSelector(selectPhotoSmall)
@@ -38,9 +52,11 @@ const Dialogs: React.FC = React.memo(() => {
     resetForm()
   }
 
+  // useRedirect();
   useEffect(() => {
+    // if (isAuth)
     dispatch(requestDialogs())
-  }, [dispatch])
+  }, [dispatch, isAuth])
 
   useEffect(() => {
     if (userId) {
@@ -68,22 +84,27 @@ const Dialogs: React.FC = React.memo(() => {
       <ul className={styles.dialogsItems}>
         {dialogsElements}
       </ul>
-      {!!userId && (<div className={styles.message}>
-        <Card style={{ marginBottom: 20 }} >
-          <DatePicker onChange={dateOnChange} style={{ marginBottom: 12 }} />
-          <Messages>
-            {selectedMessages.map((messageObj) => {
-              const photo = messageObj.senderId === authId ? authPhoto : null
-              return <DialogMessage key={messageObj.id} message={messageObj} photo={photo
-              } />
-            })}
-          </Messages>
-        </Card>
-        <AddMessageForm onSubmit={addNewMessage} />
-      </div>)
+      {!!userId
+        ? (<div className={styles.message}>
+          <Card style={{ marginBottom: 20 }} >
+            <DatePicker onChange={dateOnChange} style={{ marginBottom: 12 }} />
+            <Messages>
+              {selectedMessages.map((messageObj) => {
+                const photo = messageObj.senderId === authId ? authPhoto : null
+                return <DialogMessage key={messageObj.id} message={messageObj} photo={photo
+                } />
+              })}
+            </Messages>
+          </Card>
+          <AddMessageForm onSubmit={addNewMessage} />
+        </div>)
+        : <div className={styles.message}>
+          <Card style={{ marginBottom: 20 }} >Please select companion</Card>
+        </div>
       }
     </div>
   );
 })
 
+// export default compose<React.ComponentType>(withAuthRedirect)(Dialogs);
 export default Dialogs;

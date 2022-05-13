@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import QueryString from 'qs';
-import React, { MouseEventHandler, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { QueryParamsType } from '../../../pages/Users/UsersContainer';
-import Preloader from '../Preloader/Preloader';
+import { RouteNames } from '../../../utils/redirectRules';
 import './Pagination.scss';
 
 type PaginationPropsType = {
@@ -30,7 +30,7 @@ const PaginationItem: React.FC<PaginationItemPropsType> = ({ pageNumber, current
     onPageChanged(pageNumber);
   }
 
-  const link = `users?${urlParams.term ? `term=${urlParams.term}&` : ''}page=${pageNumber}${urlParams.friend ? `&friend=${urlParams.friend}` : ''}`
+  const link = `${RouteNames.USERS}?${urlParams.term ? `term=${urlParams.term}&` : ''}page=${pageNumber}${urlParams.friend ? `&friend=${urlParams.friend}` : ''}`
 
   return (
     <li className="pagging__item">
@@ -48,8 +48,7 @@ const Pagination: React.FC<PaginationPropsType> = ({ totalItemsCount, pageSize, 
   }
 
   const portionCount = Math.ceil(pagesCount / portionSize);
-  // const [portionNumber, setPortionNumber] = useState(Math.floor(currentPage / 10) + 1)
-  const [portionNumber, setPortionNumber] = useState(1)
+  const [portionNumber, setPortionNumber] = useState(Math.floor(currentPage / 10) + 1);
   const leftPortionPageNumber = (portionNumber - 1) * portionSize + 1;
   const rightPortionPageNumber = portionNumber * portionSize;
 
@@ -59,22 +58,23 @@ const Pagination: React.FC<PaginationPropsType> = ({ totalItemsCount, pageSize, 
   const increasePortionNumber: MouseEventHandler<HTMLButtonElement> = (e) => {
     setPortionNumber(prev => prev + 1);
   }
-  // useEffect(() => setPortionNumber(Math.ceil(currentPage / portionSize)), [currentPage]);
+
+  useEffect(() => setPortionNumber(Math.ceil(currentPage / portionSize)), [currentPage, portionSize]);
+
   if (isFetching) {
     return null
   }
   return (
     <div className="pagging">
-      {portionNumber > 1 && <button className="pagging__link pagging__arrow" type="button" onClick={decreasePortionNumber}>←</button>}
-
       <ul className="pagging__list">
+        <li className={"pagging__item"}><button disabled={!(portionNumber > 1)} className="pagging__link pagging__arrow" type="button" onClick={decreasePortionNumber}>←</button></li>
         {pagesCount > 1 && pages
           .filter(pageNumber => (leftPortionPageNumber <= pageNumber && pageNumber <= rightPortionPageNumber))
           .map(pageNumber => {
             return (<PaginationItem key={pageNumber} pageNumber={pageNumber} currentPage={currentPage} onPageChanged={onPageChanged} />)
           })}
+        <li className={"pagging__item"}><button disabled={!(portionCount > portionNumber)} type="button" className="pagging__link pagging__arrow" onClick={increasePortionNumber}>→</button></li>
       </ul>
-      {portionCount > portionNumber && <button type="button" className="pagging__link pagging__arrow" onClick={increasePortionNumber}>→</button>}
     </div>
   );
 };

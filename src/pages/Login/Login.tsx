@@ -5,7 +5,7 @@ import { login } from '../../redux/reducers/authReducer/authReducer';
 import { required } from '../../utils/validators/validators';
 import { selectCaptchaUrl, selectIsAuth } from '../../redux/reducers/authReducer/authSelectors';
 import styles from './Login.module.scss'
-import { Button, Card } from 'antd';
+import { Button, Card, Space } from 'antd';
 import { Input } from '../../components/common/FormsControls/FormsControls';
 
 type LoginFormOwnProps = {
@@ -30,27 +30,29 @@ const LoginForm: React.FC<LoginFormOwnProps> = (props) => {
         onSubmit={onSubmit}
       >
         <Form className="" action="">
-          <label>
-            <Field component={Input} type="email" name={"email"} placeholder="E-mail"
-              validate={required}
-            />
-          </label>
-          <label htmlFor="">
-            <Field component={Input} type="password" name={"password"} placeholder="password"
-              validate={required} style={{ appearance: 'auto' }}
-            />
-          </label>
-          <label htmlFor="" style={{ display: 'flex', alignItems: 'center' }} >
-            <Field component={Input} type="checkbox" name={"rememberMe"} />
-            <span> Remember me</span>
-          </label>
-          {captchaUrl && <div className="">
-            <img src={captchaUrl} alt={"Captcha"} />
-            <Field component={Input} type="text" name={"captcha"} validate={required} placeholder={'Enter symbols from the image'} />
-          </div>}
-          {/* {props.error && <div className={styles.formSummaryError}>{props.error}</div>} */}
+          <Space direction='vertical'>
+            <label>
+              <Field component={Input} type="email" name={"email"} placeholder="E-mail"
+                validate={required}
+              />
+            </label>
+            <label htmlFor="">
+              <Field component={Input} type="password" name={"password"} placeholder="password"
+                validate={required} style={{ appearance: 'auto' }}
+              />
+            </label>
+            <label htmlFor="" style={{ display: 'flex', alignItems: 'center' }} >
+              <Field component={Input} type="checkbox" name={"rememberMe"} />
+              <span> Remember me</span>
+            </label>
+            {captchaUrl && <div className="">
+              <img src={captchaUrl} alt={"Captcha"} />
+              <Field component={Input} type="text" name={"captcha"} validate={required} placeholder={'Enter symbols from the image'} />
+            </div>}
+            {/* {props.error && <div className={styles.formSummaryError}>{props.error}</div>} */}
 
-          <Button type='primary' htmlType='submit'>Log-in</Button>
+            <Button type='primary' htmlType='submit'>Log-in</Button>
+          </Space>
         </Form>
       </Formik>
     </Card>

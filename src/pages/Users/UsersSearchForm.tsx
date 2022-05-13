@@ -5,19 +5,21 @@ import { useSelector } from 'react-redux';
 import { Input } from '../../components/common/FormsControls/FormsControls';
 import { FilterType } from '../../redux/reducers/userReducer/usersReducer';
 import { selectUsersFilter } from '../../redux/reducers/userReducer/usersSelectors';
+import styles from './Users.module.scss'
 
 type PropsType = {
-  onFilterChanged: (filter: FilterType) => void
+  onFilterChanged: (filter: FilterType) => void,
+  isAuth: boolean
 }
 
 type FriendType = 'true' | 'false' | 'null'
 
 type FormType = {
   term: string
-  friend: FriendType
+  friend: FriendType,
 }
 
-export const UsersSearchForm: React.FC<PropsType> = ({ onFilterChanged }) => {
+export const UsersSearchForm: React.FC<PropsType> = ({ onFilterChanged, isAuth }) => {
   const onSubmit = (values: FormType, formikHelpers: FormikHelpers<FormType>) => {
     const { setSubmitting } = formikHelpers;
 
@@ -42,14 +44,16 @@ export const UsersSearchForm: React.FC<PropsType> = ({ onFilterChanged }) => {
       onSubmit={onSubmit}
     >
       {({ isSubmitting }) => (
-        <Form style={{ display: 'flex', gap: '15px', marginBottom: '16px' }}>
+        <Form className={styles.usersForm}>
           <Field component={Input} name="term" />
           {/* <ErrorMessage name="email" component="div" /> */}
-          <Field name="friend" as="select">
-            <option value="null">All</option>
-            <option value="true">Only followed</option>
-            <option value="false">Only unfollowed</option>
-          </Field>
+          {isAuth &&
+            <Field name="friend" as="select">
+              <option value="null">All</option>
+              <option value="true">Only followed</option>
+              <option value="false">Only unfollowed</option>
+            </Field>
+          }
           <Button htmlType="submit" disabled={isSubmitting}>
             Find
           </Button>

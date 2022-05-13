@@ -1,7 +1,9 @@
 .formControl.error input,
 .formControl.error textarea,
 .formSummaryError {
-  border: 2px red solid;
+  // border: 2px red solid;
+  // border-radius: 4px;
+  outline: rgb(255, 0, 0) auto 1px;
 }
 
 .formControl {
@@ -15,6 +17,10 @@
   textarea {
     appearance: auto;
   }
+}
+
+.formInput {
+  flex: 1 1 auto;
 }
 
 /* .formControl.error span {

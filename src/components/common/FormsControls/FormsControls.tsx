@@ -13,9 +13,8 @@ const FormControl = (Element: string | React.FC<React.HTMLProps<HTMLInputElement
   // const hasError = form.touched[field.name] && form.errors[field.name]
 
   return (
-    <div className={styles.formControl + " " + (hasError ? styles.error : "")}>
-      {/* <div className={styles.formControl}> */}
-      <Element placeholder={placeholder} type={type} {...field} {...restProps} />
+    <div className={[styles.formControl, (hasError ? styles.error : "")].join(" ")}>
+      <Element className={styles.formInput} placeholder={placeholder} type={type} {...field} {...restProps} />
       {/* {hasError && <span> {form.errors[field.name]} </span>} */}
       <ErrorMessage name={field.name} className={styles.error} component={'span'} />
     </div>

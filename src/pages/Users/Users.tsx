@@ -11,15 +11,16 @@ import styles from './Users.module.scss';
 type PropsType = {
   usersData: UserType[]
   isFetching: boolean
-  followingInProgress: number[]
+  followingInProgress: number[],
+  isAuth: boolean;
 }
 
-export const Users: React.FC<PropsType> = ({ isFetching, usersData, followingInProgress }) => {
+export const Users: React.FC<PropsType> = ({ isFetching, usersData, followingInProgress, isAuth }) => {
   const dispatch = useDispatch()
 
   const toggleFollowCB = useCallback((followed: boolean, id: number) => {
     dispatch(toggleFollow(followed, id))
-  }, [])
+  }, [dispatch])
 
   if (isFetching) {
     return <Preloader />
@@ -30,7 +31,7 @@ export const Users: React.FC<PropsType> = ({ isFetching, usersData, followingInP
       <div className={styles.users}>
         {
           usersData.map(user => {
-            return <User key={user.id} user={user} followingInProgress={followingInProgress} toggleFollow={toggleFollowCB} />;
+            return <User key={user.id} user={user} followingInProgress={followingInProgress} toggleFollow={toggleFollowCB} isAuth={isAuth} />;
           })
         }
       </div>

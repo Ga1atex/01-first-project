@@ -11,7 +11,7 @@ import styles from './Profile.module.scss'
 import { selectAuthorizedUserId } from '../../redux/reducers/authReducer/authSelectors';
 
 const Profile: React.FC = () => {
-  useRedirect();
+  // useRedirect();
   const profile = useSelector(selectProfile)
   const authorizedUserId = useSelector(selectAuthorizedUserId)
   const isFetching = useSelector(selectProfileIsFetching)

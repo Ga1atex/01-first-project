@@ -26,11 +26,12 @@ const Posts: React.FC<MapStateToPropsType & DispatchPropsType> = (props) => {
     resetForm()
   };
 
-  const postsElements = postsData.map(post => {
+  const postsElements = postsData.length ? postsData.map(post => {
     // const { message, likesCount, id, isLiked } = post;
     // return <Post message={message} id={id} key={id} likesCount={likesCount} isLiked={isLiked} />
     return <Post key={post.id} {...post} />;
-  });
+  })
+    : <div>There are no posts</div>
 
   return (
     <section className="profile__posts posts">

@@ -1,32 +1,34 @@
-import { Button } from 'antd';
+import { Avatar, Button, Space } from 'antd';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import userPhoto from '../../assets/images/user.png';
 import { UserType } from '../../types/types';
+import { RouteNames } from '../../utils/redirectRules';
 
 type PropsType = {
   user: UserType
   followingInProgress: Array<number>
-  toggleFollow: (followed: boolean, id: number) => void
+  toggleFollow: (followed: boolean, id: number) => void,
+  isAuth: boolean
 }
 
-const User: React.FC<PropsType> = ({ user, followingInProgress, toggleFollow, ...props }) => {
+const User: React.FC<PropsType> = ({ user, followingInProgress, toggleFollow, isAuth, ...props }) => {
   const followHandler = () => {
     toggleFollow(user.followed, user.id);
   }
 
   return (<div key={user.id} className="users__item user">
-    <div className="">
-      <NavLink className="" to={"/profile/" + user.id}>
-        <img src={user.photos.small != null ? user.photos.small : userPhoto} alt={user.name + " avatar image"} width={60} height={60} />
+    <Space className="">
+      <NavLink className="" to={`${RouteNames.PROFILE}/${user.id}`}>
+        <Avatar src={user.photos.small !== null ? user.photos.small : userPhoto} alt={user.name + "'s avatar"} size={60} />
       </NavLink>
-      <Button disabled={followingInProgress.some(id => id === user.id)} className="" onClick={followHandler}>{user.followed ? 'Unfollow' : 'Follow'}</Button>
-    </div>
+      {isAuth && <Button disabled={followingInProgress.some(id => id === user.id)} className="" onClick={followHandler}>{user.followed ? 'Unfollow' : 'Follow'}</Button>}
+    </Space>
     <div className="user__info">
-      <div className="user__description">
+      <Space className="user__description">
         <div className="user__name">{user.name}</div>
-        <div className="user__status">{user.status}</div>
-      </div>
+        {/* <div className="user__status">{user.status}</div> */}
+      </Space>
     </div>
   </div>
   );

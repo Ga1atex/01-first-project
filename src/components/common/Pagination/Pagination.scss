@@ -2,44 +2,59 @@
   display: flex;
   align-items: center;
   margin-top: 1em;
+
   /* justify-content: center; */
-}
+  &__arrow {
+    border: 0;
 
-.pagging__arrow {
-  border: 0;
-}
+    &[disabled],
+    &[disabled]:active,
+    &[disabled]:focus,
+    &[disabled]:hover {
+      color: rgba(0, 0, 0, .25);
+      border-color: #d9d9d9;
+      background: #f5f5f5;
+      text-shadow: none;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
 
-.pagging__list {
-  display: flex;
-  margin: 0;
-}
+  &__list {
+    display: flex;
+    margin: 0;
+  }
 
-.pagging__item:not(:last-child) {
-  margin-right: 6px;
-}
+  &__item:not(:last-child) {
+    margin-right: 6px;
+  }
 
-.pagging__link,
-.pagging__item span {
-  box-shadow: 0px 1px 2px 0px rgba(205, 214, 222, 0.75);
-  width: 43px;
-  height: 38px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #fff;
-  /* font-size: rem(16); */
-  color: red;
-  font-weight: 500;
-  transition: background-color .3s;
-}
+  &__link {
+    box-shadow: 0px 1px 2px 0px rgba(205, 214, 222, 0.75);
+    width: 19px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    /* font-size: rem(16); */
+    color: red;
+    font-weight: 500;
+    transition: background-color .3s;
 
-/* .pagging__item */
-.pagging__link--active {
-  background-color: red;
-  color: #fff;
-}
+    @media (min-width: 468px) {
+      width: 43px;
+    }
+  }
 
-.pagging__link:hover:not(.pagging__link--active) {
-  background-color: #ddd;
-  cursor: pointer;
+  &__link--active {
+    background-color: red;
+    color: #fff;
+  }
+
+  &__link:hover:not(.pagging__link--active, [disabled]) {
+    background-color: #ddd;
+    cursor: pointer;
+  }
+
 }

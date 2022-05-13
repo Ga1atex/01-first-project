@@ -1,4 +1,13 @@
 .users {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  @media (min-width: 767px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.usersForm {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
 }

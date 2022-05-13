@@ -1,16 +1,20 @@
-import Preloader from "../../../components/common/Preloader/Preloader";
-import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
-import userPhoto from '../../../assets/images/user.png';
-import './UserProfile.css';
-import { ChangeEvent, useEffect, useState } from "react";
-import ProfileDataForm from "./ProfileDataForm";
-import { ContactsType, ProfileType } from "../../../types/types";
-import { useDispatch } from "react-redux";
-import { actionCreators, savePhoto, saveProfile } from "../../../redux/reducers/profileReducer/profileReducer";
+import { Button, Image, message, Space } from "antd";
+import { UploadFile } from "antd/lib/upload/interface";
 import { FormikHelpers } from "formik";
-import { Button, Image } from "antd";
+import { UploadRequestOption } from 'rc-upload/lib/interface';
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { RouteNames } from "../../../App";
+import userPhoto from '../../../assets/images/user.png';
+import FileInput from "../../../components/common/FormsControls/FileInput";
+import Preloader from "../../../components/common/Preloader/Preloader";
+import { actionCreators, savePhoto, saveProfile } from "../../../redux/reducers/profileReducer/profileReducer";
+import { ContactsType, ProfileType } from "../../../types/types";
+import { RouteNames } from "../../../utils/redirectRules";
+import Contact from "./Contact";
+import ProfileDataForm from "./ProfileDataForm";
+import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
+import './UserProfile.scss';
 
 type PropsType = {
   isOwner: boolean
@@ -25,14 +29,20 @@ const UserProfile: React.FC<PropsType> = (props) => {
 
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch()
-
-  const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
-
-    if (e.target.files?.length) { // "?" instead of "e.target.files && "
-      dispatch(savePhoto(e.target.files[0]));
-    }
-  };
+  // for the native input:file
+  // const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files?.length) {
+  //     dispatch(savePhoto(e.target.files[0]));
+  //   }
+  // };
+  // const onMainPhotoSelected = (info: UploadChangeParam<UploadFile<unknown>>) => {
+  //   if (info.fileList.length) {
+  //     dispatch(savePhoto(info.fileList[0]));
+  //   }
+  // };
+  const onMainPhotoSelected = (options: UploadRequestOption) => {
+    dispatch(savePhoto(options.file));
+  }
 
   const onSubmit = (formData: ProfileType, submitProps: FormikHelpers<ProfileType>) => {
     // dispatch(saveProfile(formData, submitProps.setStatus));
@@ -54,35 +64,38 @@ const UserProfile: React.FC<PropsType> = (props) => {
     return <Preloader />;
   }
 
+  const beforeUpload = (file: UploadFile<unknown>) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt4M = file.size! / 1024 / 1024 < 4;
+    if (!isLt4M) {
+      message.error('Image must smaller than 4MB!');
+    }
+    return isLt4M && isJpgOrPng;
+  }
+
   return (
-    <div className="profile__info user-info">
-      <Image className="user-info__avatar" src={profile.photos.large || userPhoto} alt="" width={250} height={250} />
-      {isOwner && <div>
-        <span>Photo:</span>
-        <input type={"file"} onChange={onMainPhotoSelected} />
-      </div>
+    <Space className="profile__info user-info" direction="vertical" size="small">
+      <Image className="user-info__avatar" src={profile.photos.large || userPhoto} alt="" width={250} />
+      {isOwner && (
+        <div>
+          <span>Upload photo: </span>
+          {/* <input type={"file"} onChange={onMainPhotoSelected} /> */}
+          <FileInput customRequest={onMainPhotoSelected} beforeUpload={beforeUpload} name={'avatar'} accept=".png,.jpg,.jpeg" showUploadList={false} />
+        </div>)
       }
       {!isOwner &&
-        <Button><Link to={`/${RouteNames.DIALOGS}/${userId}`}>Написать сообщение</Link></Button>
+        <Button><Link to={`${RouteNames.DIALOGS}/${userId}`}>Start dialog</Link></Button>
       }
       <ProfileStatusContainer status={status} isOwner={isOwner} />
       {editMode
         ? <ProfileDataForm profile={profile} onSubmit={onSubmit} />
         : <ProfileData goToEditMode={goToEditMode} profile={profile} isOwner={isOwner} />}
-    </div>
+    </Space>
   );
 }
-type ContactPropsType = {
-  contactTitle: string
-  contactValue: string
-}
-
-const Contact: React.FC<ContactPropsType> = ({ contactTitle, contactValue, }) => {
-  return <div className="contact__title">
-    {contactTitle}: <a target="_blank" href={`https://www.${contactValue}`} rel="noreferrer" className={"contact__value"}>{contactValue}</a>
-  </div>;
-};
-
 type ProfileDataPropsType = {
   profile: ProfileType
   isOwner: boolean
@@ -93,12 +106,12 @@ const ProfileData: React.FC<ProfileDataPropsType> = (props) => {
   const { isOwner, goToEditMode, profile } = props;
 
   return (<div className="user-info__description">
-    {isOwner && <Button onClick={goToEditMode}>Edit</Button>}
+    {isOwner && <Button onClick={goToEditMode}>Edit Profile</Button>}
     <div className="">
       <h3 className="user-info__name">Full name: {profile.fullName}</h3>
       <p className="user-info__job">Looking for a job: {profile.lookingForAJob ? "Yes" : "No"} </p>
       {profile.lookingForAJob && <p className="user-info__job-description">My professional skills: {profile.lookingForAJobDescription}</p>}
-      <p className="user-info__job">About me: {profile.aboutMe} </p>
+      <p className="user-info__job">About me: {profile.aboutMe || 'No Info'} </p>
     </div>
     <div className="user-info__contacts">
       <h3 className="user-info__contacts-title">My contacts:</h3>

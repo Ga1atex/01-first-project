@@ -1,11 +1,11 @@
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Layout, Menu, Row } from 'antd';
+import { Avatar, Button, Col, Layout, Menu, Row, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { RouteNames } from '../../App';
 import logo from '../../assets/images/logo.svg';
 import { logout } from '../../redux/reducers/authReducer/authReducer';
 import { selectFullName, selectIsAuth, selectPhotoSmall } from '../../redux/reducers/authReducer/authSelectors';
+import { RouteNames } from '../../utils/redirectRules';
 import styles from './Header.module.scss';
 
 const { Header } = Layout;
@@ -20,6 +20,18 @@ export default function AppHeader() {
 
   const logoutCallback = () => { dispatch(logout()) }
 
+  const authMenuItems = [
+    {
+      label: <Link to={RouteNames.PROFILE}>
+        <Avatar alt={fullName || ''} src={photoSmall} style={{ backgroundColor: '#87d068', flex: "0 0 auto" }} icon={<UserOutlined />} size={50} />
+      </Link>, key: 'item-1'
+    }, // remember to pass the key prop
+    { label: <Button onClick={logoutCallback}>Log out</Button>, key: 'item-2' },
+  ];
+  const nonAuthMenuItems = [
+    { label: <Button><Link to={RouteNames.LOGIN}>Login</Link></Button>, key: 'item-1' },
+  ];
+
   return (
     <Header className={styles.header} >
       <div className="container">
@@ -31,41 +43,22 @@ export default function AppHeader() {
             </Link></div>
           </Col>
 
-          {/* <Col span={12}>
-            {isAuth
-              ? (<>
-                <Menu theme="dark" selectable={false} className={styles.loginBlock} >
-                  <Menu.Item key="1"  >
-                    <Link to={RouteNames.PROFILE}>
-                      <Avatar alt={fullName || ''} src={photoSmall} style={{ backgroundColor: '#87d068', flex: "0 0 auto" }} icon={<UserOutlined />} size={50} />
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item key="2"  >
-                    <Button onClick={logoutCallback}>Log out</Button>
-                  </Menu.Item>
-                </Menu>
-              </>)
-              :
-              <Menu theme="dark" selectable={false} className={styles.loginBlock} >
-                <Menu.Item key="1">
-                  <Button><Link to={RouteNames.LOGIN}>Login</Link></Button>
-                </Menu.Item>
-              </Menu>
-            }
-          </Col> */}
-          <Col flex='0 0 auto'>
+          <Col >
+            <Menu theme="dark" selectable={false} mode="horizontal" items={isAuth ? authMenuItems : nonAuthMenuItems} disabledOverflow />
+          </Col>
+          {/* <Col flex='0 0 auto'>
             <div className={styles.loginBlock} >
               {isAuth
-                ? (<>
+                ? (<Space size="small">
                   <Link to={RouteNames.PROFILE}>
                     <Avatar alt={fullName || ''} src={photoSmall} style={{ backgroundColor: '#87d068', flex: "0 0 auto" }} icon={<UserOutlined />} size={50} />
                   </Link>
                   <Button onClick={logoutCallback}>Log out</Button>
-                </>)
-                : <Button><Link to={RouteNames.LOGIN}>Login</Link></Button>
+                </Space>)
+                : <Link to={RouteNames.LOGIN}><Button tabIndex={-1}>Login</Button></Link>
               }
             </div>
-          </Col>
+          </Col> */}
         </Row>
       </div>
     </Header>

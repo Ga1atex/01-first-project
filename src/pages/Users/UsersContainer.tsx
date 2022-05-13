@@ -7,6 +7,8 @@ import { selectCurrentPage, selectFollowingInProgress, selectIsFetching, selectP
 import { Users } from './Users';
 import { UsersSearchForm } from './UsersSearchForm';
 import QueryString from 'qs';
+import { RouteNames } from '../../utils/redirectRules';
+import { selectIsAuth } from '../../redux/reducers/authReducer/authSelectors';
 
 type PropsType = {
   pageTitle: string
@@ -28,16 +30,17 @@ const UsersContainer: React.FC<PropsType> = ({ pageTitle }) => {
   const isFetching = useSelector(selectIsFetching)
   const usersData = useSelector(selectUsers)
   const followingInProgress = useSelector(selectFollowingInProgress)
+  const isAuth = useSelector(selectIsAuth)
 
   const navigate = useNavigate();
 
   const onFilterChanged = useCallback((filter: FilterType) => {
     dispatch(requestUsers(1, pageSize, filter));
-  }, [])
+  }, [pageSize, dispatch])
 
   const onPageChanged = useCallback((pageNumber: number) => {
     dispatch(requestUsers(pageNumber, pageSize, filter));
-  }, [])
+  }, [pageSize, filter, dispatch])
 
   useEffect(() => {
     // const urlParams = new URLSearchParams(window.location.search);
@@ -45,13 +48,13 @@ const UsersContainer: React.FC<PropsType> = ({ pageTitle }) => {
 
     let actualPage = currentPage
     let actualFilter = filter
+
     if (!!urlParams.page)
       actualPage = Number(urlParams.page)
     if (!!urlParams.term)
       actualFilter = { ...actualFilter, term: urlParams.term }
     if (!!urlParams.friend)
       actualFilter = { ...actualFilter, friend: urlParams.friend === "null" ? null : urlParams.friend === "true" }
-
 
     dispatch(requestUsers(actualPage, pageSize, actualFilter))
   }, [])
@@ -64,15 +67,15 @@ const UsersContainer: React.FC<PropsType> = ({ pageTitle }) => {
     if (currentPage !== 1) queryParams.page = String(currentPage)
 
     navigate({
-      pathname: '/users',
+      pathname: RouteNames.USERS,
       search: QueryString.stringify(queryParams)
     })
   }, [filter, currentPage, navigate])
 
   return (<>
     <h2>{pageTitle}</h2>
-    <UsersSearchForm onFilterChanged={onFilterChanged} />
-    <Users isFetching={isFetching} usersData={usersData} followingInProgress={followingInProgress} />
+    <UsersSearchForm onFilterChanged={onFilterChanged} isAuth={isAuth} />
+    <Users isFetching={isFetching} usersData={usersData} followingInProgress={followingInProgress} isAuth={isAuth} />
     <Pagination totalItemsCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage} onPageChanged={onPageChanged} isFetching={isFetching} />
   </>);
 }

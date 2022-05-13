@@ -26,3 +26,20 @@
     grid-template-columns: min-content 1fr;
   }
 }
+
+a:active,
+a:focus {
+  outline: auto;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: auto auto 2px;
+}
+
+// .site-layout-background {
+//   column-gap: 12px;
+// }

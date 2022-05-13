@@ -20,7 +20,7 @@ const Messages: React.FC = ({ children }) => {
     }
   }, [children, isAutoScroll])
 
-  return (<div className="" style={{ height: '60vh', overflowY: 'auto' }} onScroll={scrollHandler}>
+  return (<div className="" style={{ height: '50vh', overflowY: 'auto', paddingRight: 8 }} onScroll={scrollHandler}>
     {children}
     <div className="" ref={messagesAnchorRef}></div>
   </div>

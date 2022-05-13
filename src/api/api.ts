@@ -1,7 +1,8 @@
 import axios from "axios";
 import { UserType } from "../types/types";
 
-const API_KEY = process.env.REACT_APP_API_KEY
+// const API_KEY = process.env.REACT_APP_API_KEY
+const API_KEY = 'e017ae69-e966-4945-ad4f-10686b5f9804'
 
 export const instance = axios.create({
   withCredentials: true,
@@ -26,12 +27,12 @@ export type GetItemsType = {
 }
 
 // export function sendResponseData<T>(response: AxiosResponse):T {
-  // return response.data;
-  // if (response.status === 200) {
-  //   return response.data;
-  // } else {
-  //   return {error: `${response.status} error`}
-  // }
+// return response.data;
+// if (response.status === 200) {
+//   return response.data;
+// } else {
+//   return {error: `${response.status} error`}
+// }
 // };
 
 

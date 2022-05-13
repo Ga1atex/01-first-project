@@ -1,3 +1,5 @@
+import { message } from 'antd';
+import { RcFile } from 'antd/lib/upload/interface';
 import { ResultCodesEnum } from '../../../api/api';
 import { profileAPI } from "../../../api/profileAPI";
 import { PhotosType, PostType, ProfileType } from '../../../types/types';
@@ -201,14 +203,16 @@ export const updateProfileStatus = (status: string): ThunkType => async (dispatc
     dispatch(actionCreators.setProfileStatus(status));
   }
 };
-export const savePhoto = (file: File): ThunkType => async (dispatch) => {
+export const savePhoto = (file: string | Blob | RcFile): ThunkType => async (dispatch) => {
+  // export const savePhoto = (file: UploadFile<unknown>): ThunkType => async (dispatch) => {
+  // export const savePhoto = (file: File): ThunkType => async (dispatch) => {
   const data = await profileAPI.savePhoto(file);
 
   if (data.resultCode === ResultCodesEnum.Success) {
     dispatch(actionCreators.savePhotoSuccess(data.data.photos));
   } else if (data.resultCode === ResultCodesEnum.Error) {
     const errorMessage = data.messages.length ? data.messages[0] : 'Image download fail';
-    alert(errorMessage)
+    message.error(errorMessage)
   }
 };
 export const saveProfile = (profile: ProfileType, setErrors: Function): ThunkType => async (dispatch, getState) => {

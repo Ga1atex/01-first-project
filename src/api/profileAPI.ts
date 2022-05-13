@@ -1,5 +1,6 @@
+import { RcFile } from "antd/lib/upload/interface";
 import { PhotosType, ProfileType } from "../types/types";
-import { instance, APIResponseType } from "./api";
+import { APIResponseType, instance } from "./api";
 
 type SavePhotoResponseDataType = {
   photos: PhotosType
@@ -21,13 +22,17 @@ export const profileAPI = {
     });
     return response.data;
   },
-  async savePhoto(photoFile: File) {
+  // async savePhoto(photoFile: UploadFile<unknown>) {
+  // async savePhoto(photoFile: File) {
+  async savePhoto(photoFile: string | Blob | RcFile) {
     const formData = new FormData();
     formData.append('image', photoFile);
+    // formData.append('image', photoFile.originFileObj as Blob);
+    //   formData.append('image', photoFile);
     const response = await instance.put<APIResponseType<SavePhotoResponseDataType>>(`profile/photo/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
-      }
+      },
     });
     return response.data;
   },

@@ -5,7 +5,7 @@ import styles from './Message.module.scss'
 import { UserOutlined } from '@ant-design/icons';
 import { addMessageToSpam, deleteMessage, DialogsMessageType } from '../../../redux/reducers/dialogsReducer/dialogsReducer';
 import { useDispatch } from 'react-redux';
-import { RouteNames } from '../../../App';
+import { RouteNames } from '../../../utils/redirectRules';
 
 type PropsType = {
   photo: string | null,
@@ -16,9 +16,10 @@ const DialogMessage: React.FC<PropsType> = React.memo(({ message, photo }) => {
   const dispatch = useDispatch()
 
   return (<div className="">
-    <Row justify='space-between'>
+    <Divider style={{ margin: '12px 0' }}></Divider>
+    <Row justify='space-between' align='middle'>
       <Space size={8}>
-        <Link to={`/${RouteNames.PROFILE}/${message.senderId}`}>
+        <Link to={`${RouteNames.PROFILE}/${message.senderId}`}>
           <Avatar src={photo} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} size={50} />
           {message.senderName}
         </Link>
@@ -33,7 +34,6 @@ const DialogMessage: React.FC<PropsType> = React.memo(({ message, photo }) => {
       </Col>
     </Row>
     <div className="">{message.body}</div>
-    <Divider style={{ margin: '12px 0' }}></Divider>
   </div>
   )
 })

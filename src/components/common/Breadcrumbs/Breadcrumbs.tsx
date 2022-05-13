@@ -1,6 +1,6 @@
 import { Breadcrumb } from "antd"
-import { Link, useLocation } from "react-router-dom"
-import { RouteNames } from "../../../App";
+import { NavLink, useLocation } from "react-router-dom"
+import { RouteNames } from "../../../utils/redirectRules";
 
 export const Breadcrumbs = () => {
   const breadcrumbNameMap: Record<string, string> = {
@@ -8,20 +8,22 @@ export const Breadcrumbs = () => {
     [RouteNames.DIALOGS]: 'Dialogs',
     [RouteNames.USERS]: 'User List',
     [RouteNames.CHAT]: 'Chat',
+    [RouteNames.LOGIN]: 'Login',
   };
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter(i => i);
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {
     const url = pathSnippets.slice(0, index + 1).join('/');
+
     return (
       <Breadcrumb.Item key={url}>
-        <Link to={url}>{breadcrumbNameMap[url]}</Link>
+        <NavLink to={url}>{breadcrumbNameMap["/" + url]}</NavLink>
       </Breadcrumb.Item>
     );
   });
   const breadcrumbItems = [
     <Breadcrumb.Item key="home">
-      <Link to="/">Home</Link>
+      <NavLink to="/">Home</NavLink>
     </Breadcrumb.Item>,
   ].concat(extraBreadcrumbItems);
 

@@ -1,17 +1,18 @@
 
 import { FormikHelpers } from 'formik';
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import AddMessageForm, { AddMessageFormPropsType } from "../../components/AddMessageForm/AddMessageForm";
-import ChatMessage from '../../components/common/ChatMessage/ChatMessage';
+import ChatMessage from './ChatMessage/ChatMessage';
 import Messages from "../../components/Messages/Messages";
 import { actionCreators, sendChatMessage, startMessagesListening, stopMessagesListening } from '../../redux/reducers/chatReducer/chatReducer';
 import { selectChatMessages, selectChatStatus } from '../../redux/reducers/chatReducer/chatSelectors';
-import { useRedirect } from '../../utils/hooks/useRedirect';
+import { Card } from 'antd';
 
 
 const ChatPage: React.FC = () => {
-  useRedirect()
+  // useRedirect()
+
   return (
     <Chat />
   )
@@ -38,14 +39,26 @@ const Chat: React.FC = () => {
     resetForm()
   }
 
+  const previousMessengerId = useRef<null | number>(null)
   const messages = useSelector(selectChatMessages)
+  const sortedMessages = useMemo(() => messages.map((message, i) => {
+    if (message.userId !== previousMessengerId.current) {
+      previousMessengerId.current = message.userId
+      return message.message && <ChatMessage key={message.id} message={message} />
+    } else {
+      previousMessengerId.current = message.userId
+      return <div key={message.id} className="">{message.message}</div>
+    }
+  }), [messages])
+  previousMessengerId.current = null // to reset it, so if an owner of the first and the last message is the same messages will work correctly
+
   return (<>
-    {status === 'error' && <div>Some error occured. Please refresh page</div>}
-    <Messages>
-      {messages.map((messageObj) => {
-        return messageObj.message && <ChatMessage key={messageObj.id} message={messageObj} />
-      })}
-    </Messages>
+    <Card style={{ marginBottom: 20 }} >
+      {status === 'error' && <div>Some error occured. Please refresh page</div>}
+      <Messages>
+        {sortedMessages}
+      </Messages>
+    </Card>
     <AddMessageForm onSubmit={sendMessageHandler} />
   </>
   )

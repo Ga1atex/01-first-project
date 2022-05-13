@@ -18,7 +18,7 @@ export function ProfileStatus(props: PropsType) {
         ? <div className=""><input name="" id="" type="text" value={status} onChange={onStatusChange} onBlur={deactivateEditMode} autoFocus /></div>
         : <>
           <span>Status: </span>
-          <span className={styles.status} onClick={activateEditMode}>{status || 'Status'}</span>
+          <span className={styles.status} onClick={activateEditMode}>{status || 'No Status'}</span>
         </>}
     </div>
   );
