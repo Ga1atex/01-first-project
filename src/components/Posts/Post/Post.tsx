@@ -1,23 +1,23 @@
 // import styles from './Post.module.css'
 import { LikeFilled, LikeOutlined } from '@ant-design/icons';
-import { Avatar, Comment, Tooltip } from 'antd';
+import { Comment, Tooltip } from 'antd';
 import moment from 'moment';
-import React, { createElement, useState } from 'react';
+import React, { createElement } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import userPhoto from '../../../assets/images/user.png';
-import { actionCreators } from '../../../redux/reducers/profileReducer/profileReducer';
+import { profileActionCreators } from "../../../redux/reducers/profileReducer/profileActions";
 import { PostType } from '../../../types/types';
+import UserAvatar from '../../common/UserAvatar/UserAvatar';
 
 
-const Post: React.FC<PostType> = ({ message, likesCount, id, isLiked }) => {
+const Post: React.FC<PostType> = ({ message, likesCount, id, isLiked, avatarImage, userName, userId }) => {
   const dispatch = useDispatch()
 
   const like = () => {
     if (isLiked) {
-      dispatch(actionCreators.removeLike(id))
+      dispatch(profileActionCreators.removeLike(id))
     } else {
-      dispatch(actionCreators.addLike(id))
+      dispatch(profileActionCreators.addLike(id))
     }
   };
 
@@ -33,8 +33,8 @@ const Post: React.FC<PostType> = ({ message, likesCount, id, isLiked }) => {
   return (
     <Comment
       actions={actions}
-      author={<Link to={''}>You</Link>}
-      avatar={<Avatar src={userPhoto} alt="Users avatar" />}
+      author={<Link to={'/' + userId}>{userName}</Link>}
+      avatar={<UserAvatar src={avatarImage} alt="Users avatar" />}
       content={
         <p>
           {message}

@@ -1,6 +1,7 @@
 import { Breadcrumb } from "antd"
 import { NavLink, useLocation } from "react-router-dom"
 import { RouteNames } from "../../../utils/redirectRules";
+import styles from "./Breadcrumbs.module.scss"
 
 export const Breadcrumbs = () => {
   const breadcrumbNameMap: Record<string, string> = {
@@ -27,5 +28,5 @@ export const Breadcrumbs = () => {
     </Breadcrumb.Item>,
   ].concat(extraBreadcrumbItems);
 
-  return <Breadcrumb style={{ margin: '16px 0' }}>{breadcrumbItems}</Breadcrumb>
+  return <Breadcrumb className={styles.breadcrumb}>{breadcrumbItems}</Breadcrumb>
 }

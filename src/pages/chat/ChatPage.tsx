@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddMessageForm, { AddMessageFormPropsType } from "../../components/AddMessageForm/AddMessageForm";
 import ChatMessage from './ChatMessage/ChatMessage';
 import Messages from "../../components/Messages/Messages";
-import { actionCreators, sendChatMessage, startMessagesListening, stopMessagesListening } from '../../redux/reducers/chatReducer/chatReducer';
+import { sendChatMessage, startMessagesListening, stopMessagesListening } from "../../redux/reducers/chatReducer/chatThunks";
+import { chatActionCreators } from "../../redux/reducers/chatReducer/chatActions";
 import { selectChatMessages, selectChatStatus } from '../../redux/reducers/chatReducer/chatSelectors';
 import { Card } from 'antd';
+import ContentWrapper from '../../components/common/ContentWrapper/ContentWrapper';
 
 
 const ChatPage: React.FC = () => {
@@ -22,12 +24,14 @@ const Chat: React.FC = () => {
   const dispatch = useDispatch()
 
   const status = useSelector(selectChatStatus)
+  const messages = useSelector(selectChatMessages)
+  const previousMessengerId = useRef<null | number>(null)
 
   useEffect(() => {
     dispatch(startMessagesListening())
     return () => {
       dispatch(stopMessagesListening())
-      dispatch(actionCreators.clearState())
+      dispatch(chatActionCreators.clearState())
     }
   }, [dispatch])
 
@@ -39,8 +43,6 @@ const Chat: React.FC = () => {
     resetForm()
   }
 
-  const previousMessengerId = useRef<null | number>(null)
-  const messages = useSelector(selectChatMessages)
   const sortedMessages = useMemo(() => messages.map((message, i) => {
     if (message.userId !== previousMessengerId.current) {
       previousMessengerId.current = message.userId
@@ -50,15 +52,15 @@ const Chat: React.FC = () => {
       return <div key={message.id} className="">{message.message}</div>
     }
   }), [messages])
-  previousMessengerId.current = null // to reset it, so if an owner of the first and the last message is the same messages will work correctly
+  previousMessengerId.current = null // to reset it, so if an owner of the first and the last message is the same, messages will work correctly
 
   return (<>
-    <Card style={{ marginBottom: 20 }} >
+    <ContentWrapper  >
       {status === 'error' && <div>Some error occured. Please refresh page</div>}
       <Messages>
         {sortedMessages}
       </Messages>
-    </Card>
+    </ContentWrapper>
     <AddMessageForm onSubmit={sendMessageHandler} />
   </>
   )

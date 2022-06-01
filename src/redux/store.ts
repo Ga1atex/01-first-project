@@ -6,7 +6,7 @@ import chatReducer from './reducers/chatReducer/chatReducer';
 import dialogsReducer from './reducers/dialogsReducer/dialogsReducer';
 import profileReducer from './reducers/profileReducer/profileReducer';
 import sidebarReducer from './reducers/sidebarReducer/sidebarReducer';
-import usersReducer from './reducers/userReducer/usersReducer';
+import usersReducer from './reducers/usersReducer/usersReducer';
 import { composeWithDevToolsDevelopmentOnly } from '@redux-devtools/extension';
 
 const rootReducer = combineReducers({

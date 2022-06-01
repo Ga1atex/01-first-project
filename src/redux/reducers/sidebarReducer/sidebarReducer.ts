@@ -1,22 +1,22 @@
 import { AnyAction } from "redux";
-import { FriendType } from "../../../types/types";
+import { UserType } from "../../../types/types";
 
-const initialState = {
-  friendsData: [
-    { id: 1, firstName: 'Andrew' },
-    { id: 2, firstName: 'Sasha' },
-    { id: 3, firstName: 'Sveta' },
-  ] as Array<FriendType>
+// enum sidebarActions { }
+
+const sidebarInitialState = {
+  friendsData: [] as Array<UserType>
 }
-export type SidebarInitialStateType = typeof initialState
+export type SidebarInitialStateType = typeof sidebarInitialState
 
 type ActionsTypes = AnyAction
 
-const sidebarReducer = (state = initialState, action: ActionsTypes): SidebarInitialStateType => {
+const sidebarReducer = (state = sidebarInitialState, action: ActionsTypes): SidebarInitialStateType => {
   switch (action.type) {
     default:
       return state;
   }
 }
+
+// const sidebarActionCreators = {}
 
 export default sidebarReducer;

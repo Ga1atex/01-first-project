@@ -1,4 +1,5 @@
-import usersReducer, { actionCreators, initialUserStateType } from './usersReducer';
+import usersReducer, { initialUserStateType } from './usersReducer';
+import { usersActionCreators } from "./usersActions";
 
 let state: initialUserStateType
 
@@ -26,7 +27,7 @@ describe('user reducer action tests', () => {
   test('toggle follow works', () => {
 
 
-    const newState = usersReducer(state, actionCreators.toggleFollowSuccess(1))
+    const newState = usersReducer(state, usersActionCreators.toggleFollowSuccess(1))
 
     expect(newState.usersData[0].followed).toBeFalsy();
     expect(newState.usersData[1].followed).toBeTruthy();

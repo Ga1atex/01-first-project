@@ -1,39 +1,68 @@
-import { Avatar, Button, Col, Divider, Row, Space } from 'antd'
+import { Button, Col, Divider, Image, Row, Space } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from './Message.module.scss'
-import { UserOutlined } from '@ant-design/icons';
-import { addMessageToSpam, deleteMessage, DialogsMessageType } from '../../../redux/reducers/dialogsReducer/dialogsReducer';
+import { DialogsMessageType } from '../../../redux/reducers/dialogsReducer/dialogsReducer';
+import { addMessageToSpam, deleteMessage } from "../../../redux/reducers/dialogsReducer/dialogsThunks";
 import { useDispatch } from 'react-redux';
 import { RouteNames } from '../../../utils/redirectRules';
+import UserAvatar from '../../../components/common/UserAvatar/UserAvatar';
+import doubleTick from '../../../assets/images/double-tick.png'
+import singleTick from '../../../assets/images/single-tick.png'
+import moment from 'moment';
 
 type PropsType = {
-  photo: string | null,
+  photo: string | null | undefined,
   message: DialogsMessageType
 }
 
 const DialogMessage: React.FC<PropsType> = React.memo(({ message, photo }) => {
   const dispatch = useDispatch()
+  const { senderId, senderName, viewed, body, addedAt, id } = message;
+
+  const deleteMessageHandler = () => {
+    dispatch(deleteMessage(id))
+  }
+
+  const messageDate = moment.utc(addedAt).local().format('DD.MM.YYYY, HH:mm:ss');
+  // const messageDate = new Date(addedAt).toLocaleString();
 
   return (<div className="">
-    <Divider style={{ margin: '12px 0' }}></Divider>
-    <Row justify='space-between' align='middle'>
-      <Space size={8}>
-        <Link to={`${RouteNames.PROFILE}/${message.senderId}`}>
-          <Avatar src={photo} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} size={50} />
-          {message.senderName}
-        </Link>
-        <span>{new Date(message.addedAt).toLocaleString()}</span>
-      </Space>
+    <Divider style={{ margin: '6px 0' }}></Divider>
+    <Row justify='space-between' align='middle' wrap={false}>
+      <Col>
+        <Space size={8}>
+          <Link to={`${RouteNames.PROFILE}/${senderId}`}>
+            <Space>
+              <UserAvatar src={photo} size={50} />
+              <span>{senderName}</span>
+            </Space>
+          </Link>
+          <span>{messageDate}</span>
+        </Space>
+      </Col>
       <Col>
         <Space size={12}>
-          <span>{message.viewed ? 'Viewed' : 'Not-viewed'}</span>
-          <Button danger type="primary" size={'small'} onClick={() => { dispatch(deleteMessage(message.id)) }} htmlType={'button'} title='Delete message'>&times;</Button>
-          {/* <Button danger onClick={() => { dispatch(addMessageToSpam(message.id)) }} htmlType={'button'}>Spam</Button> */}
+          <Image
+            src={viewed ? doubleTick : singleTick}
+            width={16}
+            preview={false}
+            title={viewed ? 'Viewed' : 'Not-viewed'}
+          />
+          <Button
+            danger
+            type="primary"
+            size={'small'}
+            onClick={deleteMessageHandler}
+            htmlType={'button'}
+            title='Delete message'>
+            &times;
+          </Button>
+          {/* <Button danger onClick={() => { dispatch(addMessageToSpam(id)) }} htmlType={'button'}>Spam</Button> */}
         </Space>
       </Col>
     </Row>
-    <div className="">{message.body}</div>
+    <div className="">{body}</div>
   </div>
   )
 })

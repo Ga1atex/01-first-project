@@ -1,0 +1,13 @@
+.contentWrapper {
+  border: 1px solid #f0f0f0;
+  color: rgba(0, 0, 0, .85);
+  font-size: 14px;
+  background: #fff;
+  border-radius: 2px;
+  padding: 10px;
+  margin-bottom: 20px;
+
+  @media (min-width: 767px) {
+    padding: 24px;
+  }
+}

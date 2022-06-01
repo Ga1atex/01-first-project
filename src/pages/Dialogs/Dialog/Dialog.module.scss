@@ -5,8 +5,12 @@
 
 .dialogAvatar {
   flex: 0 1 50px;
-  padding: 8px 7vw 8px 8px;
   border-radius: 12px;
+  padding: 8px;
+
+  @media (min-width: 476px) {
+    padding: 8px 7vw 8px 8px;
+  }
 
   &.active {
     background: rgb(81, 129, 184);

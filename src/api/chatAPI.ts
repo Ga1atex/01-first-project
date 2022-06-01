@@ -10,9 +10,6 @@ const closeHandler = () => {
     createChannel();
   }, 3000);
 };
-
-
-
 const messageHandler = (e: MessageEvent) => {
   const newMessages = JSON.parse(e.data);
   subscribers['messages-received'].forEach(sub => sub(newMessages))
@@ -31,11 +28,10 @@ const cleanUp = () => {
 }
 
 const notifySubscribersAboutStatus = (status: StatusType) => {
-  subscribers['status-changed'].forEach(s => {
-    s(status)
+  subscribers['status-changed'].forEach(subscriberCallback => {
+    subscriberCallback(status)
   });
 }
-
 
 const createChannel = () => {
   cleanUp()

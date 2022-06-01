@@ -1,48 +1,33 @@
-import { Card, DatePicker } from 'antd';
+import { DatePicker, List } from 'antd';
 import { FormikHelpers } from 'formik';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import AddMessageForm, { AddMessageFormPropsType } from '../../components/AddMessageForm/AddMessageForm';
+import ContentWrapper from '../../components/common/ContentWrapper/ContentWrapper';
+import Preloader from '../../components/common/Preloader/Preloader';
 import Messages from '../../components/Messages/Messages';
-import { selectAuthorizedUserId, selectIsAuth, selectPhotoSmall } from '../../redux/reducers/authReducer/authSelectors';
-import { actionCreators, getMessagesNewerThen, requestDialogs, sendMessage, startDialog } from '../../redux/reducers/dialogsReducer/dialogsReducer';
-import { selectCurrentDialogId, selectDialogsData, selectMessagesData } from '../../redux/reducers/dialogsReducer/dialogsSelectors';
-import { maxLengthCreator } from '../../utils/validators/validators';
+import { selectAuthorizedUserId, selectPhotoSmall } from '../../redux/reducers/authReducer/authSelectors';
+import { selectDialogsData, selectDialogsFetching, selectMessagesData, selectMessagesFetching } from '../../redux/reducers/dialogsReducer/dialogsSelectors';
+import { getMessages, getMessagesNewerThen, requestDialogs, sendMessage } from "../../redux/reducers/dialogsReducer/dialogsThunks";
 import DialogItem from './Dialog/Dialog';
 import DialogMessage from './DialogMessage/DialogMessage';
 import styles from './Dialogs.module.scss';
 
-export const maxLength50 = maxLengthCreator(50);
-
-// const DialogsPage: React.FC = () => {
-//   const isAuth = useSelector(selectIsAuth)
-
-//   // if (!isAuth) {
-//   //   return <Navigate to={"/login"} />
-//   // }
-//   let navigate = useNavigate();
-//   useEffect(() => {
-//     if (!isAuth) {
-//       return navigate("/login", { replace: true });
-//     }
-//   }, [isAuth, navigate]);
-//   return (
-//     <Dialogs />
-//   )
-// }
 const Dialogs: React.FC = React.memo(() => {
-  const isAuth = useSelector(selectIsAuth)
   const dialogsData = useSelector(selectDialogsData);
   const messagesData = useSelector(selectMessagesData);
   const authPhoto = useSelector(selectPhotoSmall)
   const authId = useSelector(selectAuthorizedUserId)
-  const currentDialogId = useSelector(selectCurrentDialogId)
-
+  const dialogsAreFetching = useSelector(selectDialogsFetching)
+  const messagesAreFetching = useSelector(selectMessagesFetching)
   const dispatch = useDispatch()
   const params = useParams()
 
   const userId = Number(params.userId)
+
+  const [currentDialogId, setCurrentDialogId] = useState(0)
+  const [currentDialogPhoto, setcurrentDialogPhoto] = useState<null | string | undefined>(null)
 
   const addNewMessage = (values: AddMessageFormPropsType, helpers: FormikHelpers<AddMessageFormPropsType>) => {
     const { setSubmitting, resetForm } = helpers;
@@ -52,57 +37,69 @@ const Dialogs: React.FC = React.memo(() => {
     resetForm()
   }
 
-  // useRedirect();
   useEffect(() => {
-    // if (isAuth)
     dispatch(requestDialogs())
-  }, [dispatch, isAuth])
+  }, [dispatch])
 
   useEffect(() => {
     if (userId) {
-      dispatch(startDialog(userId))
-      dispatch(actionCreators.setCurrentDialogId(userId))
+      const isNewDialog = !dialogsData.some(dialog => dialog.id === userId)
+      dispatch(getMessages(userId, isNewDialog))
+      setCurrentDialogId(userId)
+
+      if (isNewDialog) {
+        dispatch(requestDialogs())
+      }
+      const currentDialog = dialogsData.find(dialog => dialog.id === userId)
+      setcurrentDialogPhoto(currentDialog?.photos.small)
     }
-  }, [userId, dispatch])
+
+  }, [userId, dispatch, dialogsData])
 
   const dialogsElements = useMemo(() => dialogsData.map(dialog => {
     // return <Tabs.TabPane tab={<DialogItem {...dialog} />} key={dialog.id}></Tabs.TabPane>;
     return <DialogItem key={dialog.id} {...dialog} />;
   }), [dialogsData])
 
-  const selectedMessages = useMemo(() => messagesData.filter(item => item.recipientId === currentDialogId), [messagesData, currentDialogId]);
-
   const dateOnChange = (date: moment.Moment | null, dateString: string) => {
     if (dateString) {
       dispatch(getMessagesNewerThen(currentDialogId, dateString))
     }
-
   }
 
   return (
     <div className={styles.dialogs}>
-      <ul className={styles.dialogsItems}>
-        {dialogsElements}
-      </ul>
-      {!!userId
-        ? (<div className={styles.message}>
-          <Card style={{ marginBottom: 20 }} >
-            <DatePicker onChange={dateOnChange} style={{ marginBottom: 12 }} />
-            <Messages>
-              {selectedMessages.map((messageObj) => {
-                const photo = messageObj.senderId === authId ? authPhoto : null
-                return <DialogMessage key={messageObj.id} message={messageObj} photo={photo
-                } />
-              })}
-            </Messages>
-          </Card>
-          <AddMessageForm onSubmit={addNewMessage} />
-        </div>)
-        : <div className={styles.message}>
-          <Card style={{ marginBottom: 20 }} >Please select companion</Card>
-        </div>
+      {dialogsAreFetching
+        ? <Preloader />
+        : <ul className={styles.dialogsItems}>
+          {dialogsElements}
+        </ul>
       }
-    </div>
+      {/* <List loading={{ indicator: <Preloader />, spinning: dialogsAreFetching }} className={styles.dialogsItems} dataSource={dialogsData} renderItem={dialog => <DialogItem key={dialog.id} {...dialog} />} />
+      { */}
+      {messagesAreFetching ? <Preloader /> :
+        !!userId
+          ? (<div className={styles.messages}>
+            <ContentWrapper >
+              <DatePicker onChange={dateOnChange} className={styles.datePicker} />
+              <Messages>
+                <List dataSource={messagesData} renderItem={(messageObj) => {
+                  const photo = messageObj.senderId === authId ? authPhoto : currentDialogPhoto
+                  return <DialogMessage
+                    key={messageObj.id}
+                    message={messageObj}
+                    photo={photo}
+                  />
+                }} />
+              </Messages>
+            </ContentWrapper>
+            <AddMessageForm onSubmit={addNewMessage} />
+          </div>)
+          : <div className={styles.messages}>
+            <ContentWrapper className={styles.dialogsMessages}>Please select companion</ContentWrapper>
+          </div>
+      }
+    </div >
   );
 })
 

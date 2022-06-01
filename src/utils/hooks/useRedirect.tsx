@@ -22,26 +22,14 @@ export const useRedirect = () => {
         return rule
       }
     }
-    // return rules.find((rule) => {
-    //   if (rule.children) {
-    //     createRule(rule.children)
-    //   }
-    //   console.log(matchPath(String(rule.route.path), pathname))
-    //   return matchPath(String(rule.route.path), pathname)
-    // })
   }
-  let rule = createRule(appRoutesRules)
 
+  const rule = createRule(appRoutesRules)
   const shouldRedirect = rule?.role && !rule.role.includes(userRole);
 
   if (shouldRedirect) {
     return { redirect: isAuth ? RouteNames.PROFILE : RouteNames.LOGIN }
   }
+
   return {};
-  // let navigate = useNavigate();
-  // useEffect(() => {
-  //   if (!isAuth) {
-  //     return navigate("/login", { replace: true });
-  //   }
-  // }, [isAuth, navigate]);
 }

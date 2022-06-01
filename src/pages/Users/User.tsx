@@ -1,7 +1,7 @@
-import { Avatar, Button, Space } from 'antd';
+import { Button, List, Space } from 'antd';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import userPhoto from '../../assets/images/user.png';
+import UserAvatar from '../../components/common/UserAvatar/UserAvatar';
 import { UserType } from '../../types/types';
 import { RouteNames } from '../../utils/redirectRules';
 
@@ -9,10 +9,11 @@ type PropsType = {
   user: UserType
   followingInProgress: Array<number>
   toggleFollow: (followed: boolean, id: number) => void,
-  isAuth: boolean
+  isAuth: boolean,
+  avatarSize: number
 }
 
-const User: React.FC<PropsType> = ({ user, followingInProgress, toggleFollow, isAuth, ...props }) => {
+const User: React.FC<PropsType> = ({ user, followingInProgress, toggleFollow, isAuth, avatarSize, ...props }) => {
   const followHandler = () => {
     toggleFollow(user.followed, user.id);
   }
@@ -20,7 +21,7 @@ const User: React.FC<PropsType> = ({ user, followingInProgress, toggleFollow, is
   return (<div key={user.id} className="users__item user">
     <Space className="">
       <NavLink className="" to={`${RouteNames.PROFILE}/${user.id}`}>
-        <Avatar src={user.photos.small !== null ? user.photos.small : userPhoto} alt={user.name + "'s avatar"} size={60} />
+        <UserAvatar src={user.photos.small} alt={user.name + "'s avatar"} size={avatarSize} />
       </NavLink>
       {isAuth && <Button disabled={followingInProgress.some(id => id === user.id)} className="" onClick={followHandler}>{user.followed ? 'Unfollow' : 'Follow'}</Button>}
     </Space>

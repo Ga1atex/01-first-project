@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useRedirect } from '../../utils/hooks/useRedirect';
-import { getProfileStatus, getUserProfile } from '../../redux/reducers/profileReducer/profileReducer';
+import { getProfileStatus, getUserProfile } from "../../redux/reducers/profileReducer/profileThunks";
 import { selectProfile, selectProfileIsFetching, selectProfileUpdateStatus, selectStatus } from '../../redux/reducers/profileReducer/profileSelectors';
 import PostsContainer from '../../components/Posts/PostsContainer';
 import UserProfile from './UserProfile/UserProfile';

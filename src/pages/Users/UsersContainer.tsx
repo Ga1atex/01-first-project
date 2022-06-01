@@ -2,8 +2,9 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '../../components/common/Pagination/Pagination';
-import { FilterType, requestUsers } from '../../redux/reducers/userReducer/usersReducer';
-import { selectCurrentPage, selectFollowingInProgress, selectIsFetching, selectPageSize, selectTotalUsersCount, selectUsers, selectUsersFilter } from '../../redux/reducers/userReducer/usersSelectors';
+import { FilterType } from '../../redux/reducers/usersReducer/usersReducer';
+import { requestUsers } from "../../redux/reducers/usersReducer/usersThunks";
+import { selectCurrentPage, selectFollowingInProgress, selectIsFetching, selectPageSize, selectTotalUsersCount, selectUsers, selectUsersFilter } from '../../redux/reducers/usersReducer/usersSelectors';
 import { Users } from './Users';
 import { UsersSearchForm } from './UsersSearchForm';
 import QueryString from 'qs';
@@ -43,6 +44,10 @@ const UsersContainer: React.FC<PropsType> = ({ pageTitle }) => {
   }, [pageSize, filter, dispatch])
 
   useEffect(() => {
+    // if (usersData.length) {
+    //   return
+    // }
+
     // const urlParams = new URLSearchParams(window.location.search);
     const urlParams = QueryString.parse(window.location.search.slice(1)) as QueryParamsType
 
@@ -75,8 +80,8 @@ const UsersContainer: React.FC<PropsType> = ({ pageTitle }) => {
   return (<>
     <h2>{pageTitle}</h2>
     <UsersSearchForm onFilterChanged={onFilterChanged} isAuth={isAuth} />
-    <Users isFetching={isFetching} usersData={usersData} followingInProgress={followingInProgress} isAuth={isAuth} />
     <Pagination totalItemsCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage} onPageChanged={onPageChanged} isFetching={isFetching} />
+    <Users isFetching={isFetching} usersData={usersData} followingInProgress={followingInProgress} isAuth={isAuth} />
   </>);
 }
 

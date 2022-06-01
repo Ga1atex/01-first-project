@@ -2,7 +2,7 @@ import { Field, Form, Formik, FormikHelpers } from "formik";
 import { ProfileType } from "../../../types/types";
 import { required } from "../../../utils/validators/validators";
 import { Input, Textarea } from "../../../components/common/FormsControls/FormsControls";
-import { Button } from "antd";
+import { Button, Space } from "antd";
 
 type PropsType = {
   profile: ProfileType
@@ -22,7 +22,8 @@ const ProfileDataForm: React.FC<PropsType> = (props) => {
     <Form className="user-info__description">
       <Button htmlType="submit">Save</Button>
       <div className="">
-        <label className="user-info__name">Full name:
+        <label className="user-info__name">
+          <h3>Full name:</h3>
           <Field
             component={Input}
             type="text"
@@ -49,19 +50,23 @@ const ProfileDataForm: React.FC<PropsType> = (props) => {
       </div>
       <div className="user-info__contacts">
         <h3 className="user-info__contacts-title">Contacts: </h3>
-        {Object.keys(profile.contacts)
-          .map(item => {
-            return <label className="contact" key={item}>
-              {item}: <Field component={Input} type="text" name={"contacts." + item} placeholder={`Enter the ${item} link...`}
-                validate={[]} />
-            </label>;
-          })}
+        <Space direction="vertical">
+          {Object.keys(profile.contacts)
+            .map(item => {
+              return <label className="contact" key={item}>
+
+                {item}: <Field component={Input} type="text" name={"contacts." + item} placeholder={`Enter the ${item} link...`}
+                  validate={[]} />
+
+              </label>;
+            })}
+        </Space>
       </div>
       {/* {props.error && <div className={''}>{props.error}</div>} */}
 
     </Form>
     {/* )} */}
-  </Formik>
+  </Formik >
   );
 };
 

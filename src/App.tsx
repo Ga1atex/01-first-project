@@ -1,20 +1,21 @@
 import { Layout, message } from 'antd';
 import 'antd/dist/antd.min.css';
+import { createBrowserHistory } from "history";
 import React, { Suspense, useEffect } from 'react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import './App.scss';
 import { Breadcrumbs } from './components/common/Breadcrumbs/Breadcrumbs';
 import Preloader from './components/common/Preloader/Preloader';
-import FooterComponent from './components/Footer/Footer';
 import AppHeader from './components/Header/Header';
-import { RedirectHandler } from './components/RedirectHandler';
+import HistoryRouter from './components/HistoryRouter/HistoryRouter';
+import { RedirectHandler } from './components/RedirectHandler/RedirectHandler';
 import SidebarContainer from './components/Sidebar/SidebarContainer';
-import { initializeApp } from './redux/reducers/appReducer/appReducer';
 import { selectInitialized } from './redux/reducers/appReducer/appSelectors';
+import { initializeApp } from "./redux/reducers/appReducer/appThunks";
 import store from './redux/store';
 import AppRoutes, { appRoutesRules } from './utils/redirectRules';
 
+export const history = createBrowserHistory();
 const { Content } = Layout;
 
 const App: React.FC = () => {
@@ -39,31 +40,32 @@ const App: React.FC = () => {
   return (
     <Layout >
       <AppHeader />
-      <Content className='container'>
+      <Content className="container">
         <Breadcrumbs />
-        <Layout className="site-layout-background" style={{ paddingBottom: '24px' }}>
+        <Layout className="site-layout" >
           <SidebarContainer />
-          <Content style={{ padding: '0 12px', minHeight: 280 }}>
+          <div className="site-layout-content" >
             <Suspense fallback={<Preloader />}>
               <RedirectHandler>
                 <AppRoutes appRoutesRules={appRoutesRules} />
               </RedirectHandler>
             </Suspense>
-          </Content>
+          </div>
         </Layout>
       </Content>
-      <FooterComponent />
     </Layout>
   );
 }
 
 const SocialNetworkApp: React.FC = () => {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <HistoryRouter history={history} basename={process.env.PUBLIC_URL} >
+      {/* <BrowserRouter basename={process.env.PUBLIC_URL}> */}
       <Provider store={store}>
         <App />
       </Provider>
-    </BrowserRouter>
+      {/* </BrowserRouter> */}
+    </HistoryRouter>
   );
 };
 

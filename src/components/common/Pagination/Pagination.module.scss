@@ -1,7 +1,7 @@
 .pagging {
   display: flex;
   align-items: center;
-  margin-top: 1em;
+  margin-bottom: 1em;
 
   /* justify-content: center; */
   &__arrow {
@@ -42,7 +42,11 @@
     font-weight: 500;
     transition: background-color .3s;
 
-    @media (min-width: 468px) {
+    &:hover {
+      color: #fff;
+    }
+
+    @media (min-width: 615px) {
       width: 43px;
     }
   }

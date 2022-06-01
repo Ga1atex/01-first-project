@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateProfileStatus } from "../../../../redux/reducers/profileReducer/profileReducer";
+import { updateProfileStatus } from "../../../../redux/reducers/profileReducer/profileThunks";
 import ProfileStatus from "./ProfileStatus";
 
 const ProfileStatusContainer = (props: OwnPropsType) => {
@@ -9,9 +9,6 @@ const ProfileStatusContainer = (props: OwnPropsType) => {
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const [profileStatus, setProfileStatus] = useState(status);
-
-  // const userId = props.userId || props.authorizedUserId;
-  // getProfileStatus(userId);
 
   useEffect(() => {
     setProfileStatus(status)
@@ -30,9 +27,11 @@ const ProfileStatusContainer = (props: OwnPropsType) => {
   const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
     setProfileStatus(e.currentTarget.value);
   };
-
+  if (!status && !isOwner) {
+    return null
+  }
   return (
-    <ProfileStatus {...props} editMode={editMode} status={profileStatus} onStatusChange={onStatusChange} activateEditMode={activateEditMode} deactivateEditMode={deactivateEditMode} />
+    <ProfileStatus {...props} editMode={editMode} status={profileStatus} onStatusChange={onStatusChange} activateEditMode={activateEditMode} deactivateEditMode={deactivateEditMode} isOwner={isOwner} />
   );
 };
 

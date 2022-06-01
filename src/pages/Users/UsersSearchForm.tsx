@@ -3,8 +3,8 @@ import { Field, Form, Formik, FormikHelpers } from 'formik';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Input } from '../../components/common/FormsControls/FormsControls';
-import { FilterType } from '../../redux/reducers/userReducer/usersReducer';
-import { selectUsersFilter } from '../../redux/reducers/userReducer/usersSelectors';
+import { FilterType } from '../../redux/reducers/usersReducer/usersReducer';
+import { selectUsersFilter } from '../../redux/reducers/usersReducer/usersSelectors';
 import styles from './Users.module.scss'
 
 type PropsType = {
@@ -45,7 +45,7 @@ export const UsersSearchForm: React.FC<PropsType> = ({ onFilterChanged, isAuth }
     >
       {({ isSubmitting }) => (
         <Form className={styles.usersForm}>
-          <Field component={Input} name="term" />
+          <Field component={Input} name="term" placeholder={'Enter username...'} />
           {/* <ErrorMessage name="email" component="div" /> */}
           {isAuth &&
             <Field name="friend" as="select">

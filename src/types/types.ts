@@ -7,7 +7,10 @@ export type PostType = {
   id: number,
   message: string,
   likesCount: number,
-  isLiked: boolean
+  isLiked: boolean,
+  avatarImage?: string | null,
+  userName: string,
+  userId: number
 }
 export type ContactsType = {
   github: string
@@ -32,17 +35,10 @@ export type ProfileType = {
   aboutMe: string
 }
 
-
-
 export type UserType = {
   "name": string,
   "id": number,
   "photos": PhotosType
   "status": string,
   "followed": boolean
-}
-
-export type FriendType = {
-  id: number,
-  firstName: string
 }

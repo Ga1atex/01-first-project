@@ -1,7 +1,7 @@
 import { Field, Form, Formik, FormikHelpers } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { login } from '../../redux/reducers/authReducer/authReducer';
+import { login } from "../../redux/reducers/authReducer/authThunks";
 import { required } from '../../utils/validators/validators';
 import { selectCaptchaUrl, selectIsAuth } from '../../redux/reducers/authReducer/authSelectors';
 import styles from './Login.module.scss'
@@ -22,10 +22,10 @@ export type LoginFormValuesType = {
 const LoginForm: React.FC<LoginFormOwnProps> = (props) => {
   const { onSubmit, captchaUrl } = props;
   return (
-    <Card title={"Login"} style={{ maxWidth: '400px' }}>
+    <Card title={"Login"} >
       <Formik
         enableReinitialize
-        initialValues={{ email: '', password: '', rememberMe: true, captcha: null } as LoginFormValuesType}
+        initialValues={{ email: '', password: '', rememberMe: true, captcha: '' } as LoginFormValuesType}
         validate={undefined}
         onSubmit={onSubmit}
       >
@@ -38,12 +38,14 @@ const LoginForm: React.FC<LoginFormOwnProps> = (props) => {
             </label>
             <label htmlFor="">
               <Field component={Input} type="password" name={"password"} placeholder="password"
-                validate={required} style={{ appearance: 'auto' }}
+                validate={required}
               />
             </label>
-            <label htmlFor="" style={{ display: 'flex', alignItems: 'center' }} >
-              <Field component={Input} type="checkbox" name={"rememberMe"} />
-              <span> Remember me</span>
+            <label htmlFor=""  >
+              <Space size={0}>
+                <Field component={Input} type="checkbox" name={"rememberMe"} />
+                <span> Remember me</span>
+              </Space>
             </label>
             {captchaUrl && <div className="">
               <img src={captchaUrl} alt={"Captcha"} />

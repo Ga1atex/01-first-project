@@ -2,13 +2,13 @@ import { instance, APIResponseType, ResultCodeForCaptcha, ResultCodesEnum } from
 
 
 export type GetAuthDataType = {
-    id: number
-    email: string
-    login: string
-  }
+  id: number
+  email: string
+  login: string
+}
 export type LoginResponseDataType = {
-    id: number
-  }
+  id: number
+}
 
 export const authAPI = {
   async getAuthData() {

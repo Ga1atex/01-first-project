@@ -1,8 +1,9 @@
 import { FormikHelpers } from 'formik';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import AddMessageForm, { AddMessageFormPropsType } from '../AddMessageForm/AddMessageForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAuthorizedUserId, selectFullName, selectPhotoSmall } from '../../redux/reducers/authReducer/authSelectors';
 import { PostType } from '../../types/types';
+import AddMessageForm, { AddMessageFormPropsType } from '../AddMessageForm/AddMessageForm';
 import Post from './Post/Post';
 
 export type MapStateToPropsType = {
@@ -11,26 +12,27 @@ export type MapStateToPropsType = {
 }
 
 export type DispatchPropsType = {
-  addPost: (newPostValue: string) => void
+  addPost: (newPostValue: string, newPostAvatar: string | null, newPostUserName: string, userId: number) => void
 }
 
 const Posts: React.FC<MapStateToPropsType & DispatchPropsType> = (props) => {
   const { postsData, addPost, isOwner } = props;
   const dispatch = useDispatch()
+  const avatar = useSelector(selectPhotoSmall)
+  const userName = useSelector(selectFullName)
+  const userId = useSelector(selectAuthorizedUserId)
 
   const addPostHandler = (values: AddMessageFormPropsType, helpers: FormikHelpers<AddMessageFormPropsType>) => {
     const { setSubmitting, resetForm } = helpers;
-
-    dispatch(addPost(values.message));
+    dispatch(addPost(values.message, avatar, userName!, userId!));
     setSubmitting(false)
     resetForm()
   };
 
-  const postsElements = postsData.length ? postsData.map(post => {
-    // const { message, likesCount, id, isLiked } = post;
-    // return <Post message={message} id={id} key={id} likesCount={likesCount} isLiked={isLiked} />
-    return <Post key={post.id} {...post} />;
-  })
+  const postsElements = postsData.length
+    ? postsData.map(post => {
+      return <Post key={post.id} {...post} />;
+    })
     : <div>There are no posts</div>
 
   return (

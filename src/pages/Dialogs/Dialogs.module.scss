@@ -1,13 +1,23 @@
 .dialogs {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  column-gap: 10px;
+  @media (min-width: 476px) {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    column-gap: 10px;
+  }
 }
-.dialogsItems .active {
-  color: gold;
+
+.dialogsItems {
+  overflow-y: auto;
+  max-height: 60vh;
+
+  @media (max-width: 476px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-height: 190px;
+  }
+
 }
-.dialog {}
 
-.messages {}
-
-.message {}
+.datePicker {
+  margin-bottom: 8px;
+}

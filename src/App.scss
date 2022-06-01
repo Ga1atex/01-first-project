@@ -28,7 +28,8 @@
 }
 
 a:active,
-a:focus {
+a:focus,
+.ant-btn:focus {
   outline: auto;
 }
 
@@ -37,7 +38,34 @@ a:focus {
 }
 
 *:focus-visible {
-  outline: auto auto 2px;
+  outline: auto 2px;
+}
+
+.ant-layout-sider-zero-width-trigger {
+  position: fixed;
+  left: 0;
+  top: 30%;
+}
+
+.site-layout {
+  padding-bottom: 24px;
+}
+
+.ant-menu-dark.ant-menu-horizontal>.ant-menu-item {
+  padding: 0 6px;
+}
+
+.site-layout-content {
+  @media (min-width: 467px) {
+    padding-left: 12px;
+  }
+
+  flex: auto;
+  // min-height: 280;
+}
+
+.ant-menu-item .anticon {
+  font-size: unset;
 }
 
 // .site-layout-background {

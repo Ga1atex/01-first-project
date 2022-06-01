@@ -1,15 +1,40 @@
 import axios from "axios";
+import { history } from "../App";
 import { UserType } from "../types/types";
-
+import { RouteNames } from "../utils/redirectRules";
 // const API_KEY = process.env.REACT_APP_API_KEY
-const API_KEY = 'e017ae69-e966-4945-ad4f-10686b5f9804'
+const API_KEY = 'c80f3803-fc2f-4a2e-bfe2-8b3c68d180cf'
 
 export const instance = axios.create({
   withCredentials: true,
   baseURL: "https://social-network.samuraijs.com/api/1.0/",
   headers: {
-    "API-KEY": `${API_KEY}`
+    "API-KEY": API_KEY
   }
+});
+
+instance.interceptors.response.use(response => {
+  return response;
+}, error => {
+  if (error.response) {
+    // client received an error response (5xx, 4xx)
+    const status = error.response.status;
+    if (status === 401) {
+      history.replace(RouteNames.LOGIN)
+    }
+    if (status === 403) {
+      history.replace(RouteNames.NO_ACCESS)
+    }
+    if (status === 500) {
+      history.replace(RouteNames.SERVER_ERROR)
+    }
+  } else if (error.request) {
+    // client never received a response, or request never left
+  } else {
+    // anything else
+    throw error;
+  }
+  return Promise.reject(error);
 });
 
 export enum ResultCodesEnum {
@@ -25,16 +50,6 @@ export type GetItemsType = {
   totalCount: number
   error: string | null
 }
-
-// export function sendResponseData<T>(response: AxiosResponse):T {
-// return response.data;
-// if (response.status === 200) {
-//   return response.data;
-// } else {
-//   return {error: `${response.status} error`}
-// }
-// };
-
 
 export type APIResponseType<D = {}, RC = ResultCodesEnum> = {
   data: D,

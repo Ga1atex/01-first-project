@@ -5,17 +5,18 @@ import { UploadRequestOption } from 'rc-upload/lib/interface';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import userPhoto from '../../../assets/images/user.png';
 import FileInput from "../../../components/common/FormsControls/FileInput";
 import Preloader from "../../../components/common/Preloader/Preloader";
-import { actionCreators, savePhoto, saveProfile } from "../../../redux/reducers/profileReducer/profileReducer";
-import { ContactsType, ProfileType } from "../../../types/types";
+import { savePhoto, saveProfile } from "../../../redux/reducers/profileReducer/profileThunks";
+import { profileActionCreators } from "../../../redux/reducers/profileReducer/profileActions";
+import { ProfileType } from "../../../types/types";
 import { RouteNames } from "../../../utils/redirectRules";
-import Contact from "./Contact";
 import ProfileDataForm from "./ProfileDataForm";
 import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
 import './UserProfile.scss';
-
+import { ProfileData } from "./ProfileData";
+import { UserOutlined } from '@ant-design/icons';
+import UserAvatar from "../../../components/common/UserAvatar/UserAvatar";
 type PropsType = {
   isOwner: boolean
   profile: ProfileType | null,
@@ -52,7 +53,7 @@ const UserProfile: React.FC<PropsType> = (props) => {
   useEffect(() => {
     if (profileUpdateStatus === 'success') {
       setEditMode(false);
-      dispatch(actionCreators.saveProfileSuccess('none'))
+      dispatch(profileActionCreators.saveProfileSuccess('none'))
     }
   }, [profileUpdateStatus, dispatch])
 
@@ -78,7 +79,11 @@ const UserProfile: React.FC<PropsType> = (props) => {
 
   return (
     <Space className="profile__info user-info" direction="vertical" size="small">
-      <Image className="user-info__avatar" src={profile.photos.large || userPhoto} alt="" width={250} />
+      {profile.photos.large
+        ? <Image className="user-info__avatar" src={profile.photos.large} alt={profile.fullName + '\'s avatar'} width={280} />
+        : <UserAvatar size={280} shape='square' />
+      }
+
       {isOwner && (
         <div>
           <span>Upload photo: </span>
@@ -96,32 +101,5 @@ const UserProfile: React.FC<PropsType> = (props) => {
     </Space>
   );
 }
-type ProfileDataPropsType = {
-  profile: ProfileType
-  isOwner: boolean
-  goToEditMode: () => void
-}
-
-const ProfileData: React.FC<ProfileDataPropsType> = (props) => {
-  const { isOwner, goToEditMode, profile } = props;
-
-  return (<div className="user-info__description">
-    {isOwner && <Button onClick={goToEditMode}>Edit Profile</Button>}
-    <div className="">
-      <h3 className="user-info__name">Full name: {profile.fullName}</h3>
-      <p className="user-info__job">Looking for a job: {profile.lookingForAJob ? "Yes" : "No"} </p>
-      {profile.lookingForAJob && <p className="user-info__job-description">My professional skills: {profile.lookingForAJobDescription}</p>}
-      <p className="user-info__job">About me: {profile.aboutMe || 'No Info'} </p>
-    </div>
-    <div className="user-info__contacts">
-      <h3 className="user-info__contacts-title">My contacts:</h3>
-      {Object.keys(profile.contacts)
-        .map(item => {
-          return <Contact key={item} contactTitle={item} contactValue={profile.contacts[item as keyof ContactsType]} />;
-        })}
-    </div>
-  </div>);
-};
-
 
 export default UserProfile
