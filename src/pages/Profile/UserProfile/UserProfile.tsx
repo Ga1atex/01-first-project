@@ -10,12 +10,11 @@ import Preloader from "../../../components/common/Preloader/Preloader";
 import { savePhoto, saveProfile } from "../../../redux/reducers/profileReducer/profileThunks";
 import { profileActionCreators } from "../../../redux/reducers/profileReducer/profileActions";
 import { ProfileType } from "../../../types/types";
-import { RouteNames } from "../../../utils/redirectRules";
+import { RouteNames } from "../../../components/AppRoutes";
 import ProfileDataForm from "./ProfileDataForm";
 import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
 import './UserProfile.scss';
 import { ProfileData } from "./ProfileData";
-import { UserOutlined } from '@ant-design/icons';
 import UserAvatar from "../../../components/common/UserAvatar/UserAvatar";
 type PropsType = {
   isOwner: boolean
@@ -80,7 +79,7 @@ const UserProfile: React.FC<PropsType> = (props) => {
   return (
     <Space className="profile__info user-info" direction="vertical" size="small">
       {profile.photos.large
-        ? <Image className="user-info__avatar" src={profile.photos.large} alt={profile.fullName + '\'s avatar'} width={280} />
+        ? <Image className="user-info__avatar" src={profile.photos.large} alt={profile.fullName + '\'s avatar'} width={280} height={280} />
         : <UserAvatar size={280} shape='square' />
       }
 

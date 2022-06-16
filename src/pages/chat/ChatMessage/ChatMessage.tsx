@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { MessageAPIType } from '../../../api/chatAPI'
 import styles from './Message.module.scss'
-import { RouteNames } from '../../../utils/redirectRules'
+import { RouteNames } from '../../../components/AppRoutes'
 import UserAvatar from '../../../components/common/UserAvatar/UserAvatar'
 
 type PropsType = {

@@ -12,7 +12,7 @@ type PaginationPropsType = {
   isFetching: boolean
 }
 
-const Pagination: React.FC<PaginationPropsType> = ({ totalItemsCount, pageSize, portionSize = 10, onPageChanged = () => { }, currentPage = 1, isFetching }) => {
+const Pagination: React.FC<PaginationPropsType> = React.memo(({ totalItemsCount, pageSize, portionSize = 10, onPageChanged = () => { }, currentPage = 1, isFetching }) => {
   const pagesCount = Math.ceil(totalItemsCount / pageSize);
 
   const pages: Array<number> = [];
@@ -58,6 +58,6 @@ const Pagination: React.FC<PaginationPropsType> = ({ totalItemsCount, pageSize, 
       </ul>
     </div>
   );
-};
+});
 
 export default Pagination;

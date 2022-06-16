@@ -15,9 +15,7 @@ type NewMessageFormValuesType = {
   onSubmit: (values: AddMessageFormPropsType, helpers: FormikHelpers<AddMessageFormPropsType>) => void
 }
 
-const AddMessageForm: React.FC<NewMessageFormValuesType> = (props) => {
-  const { onSubmit } = props;
-
+const AddMessageForm: React.FC<NewMessageFormValuesType> = ({ onSubmit }) => {
   return (
     <Formik
       enableReinitialize

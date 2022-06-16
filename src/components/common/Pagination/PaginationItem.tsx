@@ -3,7 +3,7 @@ import QueryString from 'qs';
 import React, { MouseEventHandler } from 'react';
 import { Link } from 'react-router-dom';
 import { QueryParamsType } from '../../../pages/Users/UsersContainer';
-import { RouteNames } from '../../../utils/redirectRules';
+import { RouteNames } from '../../AppRoutes';
 import styles from './Pagination.module.scss';
 
 type PaginationItemPropsType = {

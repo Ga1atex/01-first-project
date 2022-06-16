@@ -46,10 +46,10 @@ const Chat: React.FC = () => {
   const sortedMessages = useMemo(() => messages.map((message, i) => {
     if (message.userId !== previousMessengerId.current) {
       previousMessengerId.current = message.userId
-      return message.message && <ChatMessage key={message.id} message={message} />
+      return <ChatMessage key={message.id} message={message} />
     } else {
       previousMessengerId.current = message.userId
-      return <div key={message.id} className="">{message.message}</div>
+      return message.message && <div key={message.id} className="">{message.message}</div>
     }
   }), [messages])
   previousMessengerId.current = null // to reset it, so if an owner of the first and the last message is the same, messages will work correctly

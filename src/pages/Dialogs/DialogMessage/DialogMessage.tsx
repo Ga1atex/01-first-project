@@ -5,7 +5,7 @@ import styles from './Message.module.scss'
 import { DialogsMessageType } from '../../../redux/reducers/dialogsReducer/dialogsReducer';
 import { addMessageToSpam, deleteMessage } from "../../../redux/reducers/dialogsReducer/dialogsThunks";
 import { useDispatch } from 'react-redux';
-import { RouteNames } from '../../../utils/redirectRules';
+import { RouteNames } from '../../../components/AppRoutes';
 import UserAvatar from '../../../components/common/UserAvatar/UserAvatar';
 import doubleTick from '../../../assets/images/double-tick.png'
 import singleTick from '../../../assets/images/single-tick.png'
@@ -58,7 +58,6 @@ const DialogMessage: React.FC<PropsType> = React.memo(({ message, photo }) => {
             title='Delete message'>
             &times;
           </Button>
-          {/* <Button danger onClick={() => { dispatch(addMessageToSpam(id)) }} htmlType={'button'}>Spam</Button> */}
         </Space>
       </Col>
     </Row>

@@ -1,21 +1,22 @@
+// body {
+//   padding-right: calc(17px - (100vw - 100%));
+// }
+
+//scroll-bar fix, doesn't work with html width: 100%
+html {
+  width: unset;
+  overflow-x: hidden;
+  margin-right: calc(-1 * (100vw - 100%));
+}
 .wrapper {
-  /* display: grid;
-  grid-template-areas: "header header"
-                      "sidebar main"
-                      "footer footer";
-  grid-template-rows: max-content 1fr 1fr;
-  grid-template-columns: 1fr 5fr;
-  gap: 10px; */
   min-height: 100%;
   display: grid;
   overflow: hidden;
-  /* grid-template-rows: auto 1fr auto; */
 }
 
 .page {
   background-color: wheat;
   min-width: 0;
-  /* grid-area: main; */
 
   &__content-wrapper {
     padding: 15px;
@@ -61,13 +62,8 @@ a:focus,
   }
 
   flex: auto;
-  // min-height: 280;
 }
 
 .ant-menu-item .anticon {
   font-size: unset;
 }
-
-// .site-layout-background {
-//   column-gap: 12px;
-// }

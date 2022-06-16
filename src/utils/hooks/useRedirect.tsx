@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { matchPath, useLocation } from "react-router-dom";
 import { selectIsAuth } from "../../redux/reducers/authReducer/authSelectors";
-import { appRoutesRules, RedirectRulesType, Roles, RouteNames } from "../redirectRules";
+import { appRoutesRules, RedirectRulesType, Roles, RouteNames } from "../../components/AppRoutes";
 
 export const useRedirect = () => {
   const isAuth = useSelector(selectIsAuth)

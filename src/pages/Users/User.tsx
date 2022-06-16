@@ -1,9 +1,9 @@
-import { Button, List, Space } from 'antd';
+import { Button, Space } from 'antd';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import UserAvatar from '../../components/common/UserAvatar/UserAvatar';
 import { UserType } from '../../types/types';
-import { RouteNames } from '../../utils/redirectRules';
+import { RouteNames } from '../../components/AppRoutes';
 
 type PropsType = {
   user: UserType

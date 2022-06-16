@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import UserAvatar from '../../../components/common/UserAvatar/UserAvatar';
 import { DialogType } from '../../../redux/reducers/dialogsReducer/dialogsReducer';
-import { RouteNames } from '../../../utils/redirectRules';
+import { RouteNames } from '../../../components/AppRoutes';
 import styles from './Dialog.module.scss';
 
 const DialogItem: React.FC<DialogType> = (props) => {

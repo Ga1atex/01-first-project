@@ -1,7 +1,7 @@
 import axios from "axios";
 import { history } from "../App";
 import { UserType } from "../types/types";
-import { RouteNames } from "../utils/redirectRules";
+import { RouteNames } from "../components/AppRoutes";
 // const API_KEY = process.env.REACT_APP_API_KEY
 const API_KEY = 'c80f3803-fc2f-4a2e-bfe2-8b3c68d180cf'
 

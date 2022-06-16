@@ -13,7 +13,7 @@ import SidebarContainer from './components/Sidebar/SidebarContainer';
 import { selectInitialized } from './redux/reducers/appReducer/appSelectors';
 import { initializeApp } from "./redux/reducers/appReducer/appThunks";
 import store from './redux/store';
-import AppRoutes, { appRoutesRules } from './utils/redirectRules';
+import AppRoutes, { appRoutesRules } from './components/AppRoutes';
 
 export const history = createBrowserHistory();
 const { Content } = Layout;

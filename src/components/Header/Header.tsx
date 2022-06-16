@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.svg';
 import { logout } from "../../redux/reducers/authReducer/authThunks";
 import { selectFullName, selectIsAuth, selectPhotoSmall } from '../../redux/reducers/authReducer/authSelectors';
-import { RouteNames } from '../../utils/redirectRules';
+import { RouteNames } from '../AppRoutes';
 import UserAvatar from '../common/UserAvatar/UserAvatar';
 import styles from './Header.module.scss';
 

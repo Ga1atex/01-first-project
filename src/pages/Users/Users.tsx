@@ -16,7 +16,7 @@ type PropsType = {
   isAuth: boolean;
 }
 
-export const Users: React.FC<PropsType> = ({ isFetching, usersData, followingInProgress, isAuth }) => {
+export const Users: React.FC<PropsType> = React.memo(({ isFetching, usersData, followingInProgress, isAuth }) => {
   const dispatch = useDispatch()
 
   const avatarSize = 60;
@@ -43,4 +43,4 @@ export const Users: React.FC<PropsType> = ({ isFetching, usersData, followingInP
       </List>
     </Skeleton>
   );
-};
+});

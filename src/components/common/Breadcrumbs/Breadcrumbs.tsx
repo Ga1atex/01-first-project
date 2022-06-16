@@ -1,6 +1,6 @@
 import { Breadcrumb } from "antd"
 import { NavLink, useLocation } from "react-router-dom"
-import { RouteNames } from "../../../utils/redirectRules";
+import { RouteNames } from "../../AppRoutes";
 import styles from "./Breadcrumbs.module.scss"
 
 export const Breadcrumbs = () => {

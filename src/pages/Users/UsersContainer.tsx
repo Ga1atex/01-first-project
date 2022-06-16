@@ -8,7 +8,7 @@ import { selectCurrentPage, selectFollowingInProgress, selectIsFetching, selectP
 import { Users } from './Users';
 import { UsersSearchForm } from './UsersSearchForm';
 import QueryString from 'qs';
-import { RouteNames } from '../../utils/redirectRules';
+import { RouteNames } from '../../components/AppRoutes';
 import { selectIsAuth } from '../../redux/reducers/authReducer/authSelectors';
 
 type PropsType = {

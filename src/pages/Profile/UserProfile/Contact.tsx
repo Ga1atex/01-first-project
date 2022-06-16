@@ -4,6 +4,7 @@ type ContactPropsType = {
   contactTitle: string;
   contactValue: string;
 };
+
 const Contact: React.FC<ContactPropsType> = ({ contactTitle, contactValue }) => {
   if (contactValue === null || contactValue === '') {
     return <Space className="contact__title" size={2}>

@@ -19,7 +19,7 @@ type FormType = {
   friend: FriendType,
 }
 
-export const UsersSearchForm: React.FC<PropsType> = ({ onFilterChanged, isAuth }) => {
+export const UsersSearchForm: React.FC<PropsType> = React.memo(({ onFilterChanged, isAuth }) => {
   const onSubmit = (values: FormType, formikHelpers: FormikHelpers<FormType>) => {
     const { setSubmitting } = formikHelpers;
 
@@ -62,4 +62,4 @@ export const UsersSearchForm: React.FC<PropsType> = ({ onFilterChanged, isAuth }
       )}
     </Formik>
   </div>;
-};
+});
