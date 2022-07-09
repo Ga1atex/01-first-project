@@ -1,4 +1,5 @@
 import { Space } from "antd";
+import { parseLink } from "../../../utils/helpers/parseLink";
 
 type ContactPropsType = {
   contactTitle: string;
@@ -12,11 +13,10 @@ const Contact: React.FC<ContactPropsType> = ({ contactTitle, contactValue }) => 
     </Space>;
   }
 
-  let externalLink = contactValue.match(/(https?:\/\/)?(www.)?(.*)/i);
-  let link = externalLink![3];
+  const link = parseLink(contactValue);
 
   return <Space size={2} className="contact__title">
-    <span>{contactTitle + ':'}</span><a target="_blank" href={`https://www.${link}`} rel="noreferrer" className={"contact__value"}>{contactValue}</a>
+    <span>{contactTitle + ':'}</span><a target="_blank" href={link} rel="noreferrer" className={"contact__value"}>{contactValue}</a>
   </Space>;
 };
 

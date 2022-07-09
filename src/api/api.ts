@@ -13,6 +13,7 @@ export const instance = axios.create({
   }
 });
 
+// i don't like it much, because now API layer is linked to UI
 instance.interceptors.response.use(response => {
   return response;
 }, error => {
@@ -32,7 +33,6 @@ instance.interceptors.response.use(response => {
     // client never received a response, or request never left
   } else {
     // anything else
-    throw error;
   }
   return Promise.reject(error);
 });

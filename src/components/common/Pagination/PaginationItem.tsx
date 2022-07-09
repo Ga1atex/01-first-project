@@ -22,7 +22,8 @@ export const PaginationItem: React.FC<PaginationItemPropsType> = ({ pageNumber, 
     onPageChanged(pageNumber);
   };
 
-  const link = `${RouteNames.USERS}?${urlParams.term ? `term=${urlParams.term}&` : ''}page=${pageNumber}${urlParams.friend ? `&friend=${urlParams.friend}` : ''}`;
+  const { page: _, ...restParams } = urlParams;
+  const link = `${RouteNames.USERS}?page=${pageNumber}${QueryString.stringify(restParams)}`
 
   return (
     <li className={styles.pagging__item}>

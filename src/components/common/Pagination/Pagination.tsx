@@ -39,9 +39,9 @@ const Pagination: React.FC<PaginationPropsType> = React.memo(({ totalItemsCount,
   // }
   return (
     <div className={styles.pagging}>
-      <ul className={styles.pagging__list}>
-        <li className={styles.pagging__item}>
-          <button disabled={!(portionNumber > 1)} className={styles.pagging__link + ' ' + styles.pagging__arrow} type="button" onClick={decreasePortionNumber}>←</button>
+      <ul className={styles['pagging__list']}>
+        <li className={styles['pagging__item']}>
+          <button disabled={!(portionNumber > 1)} className={styles['pagging__link'] + ' ' + styles['pagging__arrow']} type="button" onClick={decreasePortionNumber}>←</button>
         </li>
         {pagesCount > 1 && pages
           .filter(pageNumber => (leftPortionPageNumber <= pageNumber && pageNumber <= rightPortionPageNumber))
@@ -52,8 +52,8 @@ const Pagination: React.FC<PaginationPropsType> = React.memo(({ totalItemsCount,
               onPageChanged={onPageChanged}
             />)
           })}
-        <li className={styles.pagging__item}>
-          <button disabled={!(portionCount > portionNumber)} type="button" className={styles.pagging__link + ' ' + styles.pagging__arrow} onClick={increasePortionNumber}>→</button>
+        <li className={styles['pagging__item']}>
+          <button disabled={!(portionCount > portionNumber)} type="button" className={styles['pagging__link'] + ' ' + styles['pagging__arrow']} onClick={increasePortionNumber}>→</button>
         </li>
       </ul>
     </div>

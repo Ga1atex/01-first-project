@@ -32,7 +32,7 @@ const App: React.FC = () => {
     return () => {
       window.removeEventListener("unhandledrejection", catchAllUnhandledErrors);
     }
-  })
+  }, [dispatch])
   if (!initialized) {
     return <Preloader />;
   }
