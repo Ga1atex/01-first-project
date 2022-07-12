@@ -36,7 +36,7 @@ const Profile: React.FC = () => {
   return (
     <div className={styles.profile}>
       <UserProfile isOwner={!params.userId} profile={profile} status={status} profileUpdateStatus={profileUpdateStatus} userId={userId} />
-      <PostsContainer isOwner={!params.userId} />
+      <PostsContainer userId={params.userId} />
     </div>
   );
 }

@@ -4,14 +4,14 @@ import { selectPostsData } from '../../redux/reducers/profileReducer/profileSele
 import Posts from './Posts';
 
 type PropsType = {
-  isOwner: boolean
+  userId: string | undefined
 }
 
-const PostsContainer: React.FC<PropsType> = ({ isOwner }) => {
+const PostsContainer: React.FC<PropsType> = ({ userId }) => {
   const postsData = useSelector(selectPostsData)
 
   return (
-    <Posts postsData={postsData} addPost={profileActionCreators.addPost} isOwner={isOwner} />
+    <Posts postsData={postsData} addPost={profileActionCreators.addPost} userId={userId} />
   )
 }
 

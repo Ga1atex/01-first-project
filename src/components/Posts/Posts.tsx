@@ -8,7 +8,7 @@ import Post from './Post/Post';
 
 export type MapStateToPropsType = {
   postsData: Array<PostType>,
-  isOwner: boolean
+  userId: string | undefined
 }
 
 export type DispatchPropsType = {
@@ -16,21 +16,25 @@ export type DispatchPropsType = {
 }
 
 const Posts: React.FC<MapStateToPropsType & DispatchPropsType> = (props) => {
-  const { postsData, addPost, isOwner } = props;
+  const { postsData, addPost, userId } = props;
+  const isOwner = !userId;
   const dispatch = useDispatch()
   const avatar = useSelector(selectPhotoSmall)
   const userName = useSelector(selectFullName)
-  const userId = useSelector(selectAuthorizedUserId)
+  const authUserId = useSelector(selectAuthorizedUserId)
+  const currentUserId = userId || authUserId;
 
   const addPostHandler = (values: AddMessageFormPropsType, helpers: FormikHelpers<AddMessageFormPropsType>) => {
     const { setSubmitting, resetForm } = helpers;
-    dispatch(addPost(values.message, avatar, userName!, userId!));
+    dispatch(addPost(values.message, avatar, userName!, authUserId!));
     setSubmitting(false)
     resetForm()
   };
 
-  const postsElements = postsData.length
-    ? postsData.map(post => {
+  const filteredElements = postsData.filter(post => post.userId === currentUserId)
+
+  const postsElements = filteredElements.length
+    ? filteredElements.map(post => {
       return <Post key={post.id} {...post} />;
     })
     : <div>There are no posts</div>
