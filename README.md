@@ -1,5 +1,11 @@
 # Pet-project mini Social Network
-Used: React, Redux, react-router, redux-thunk, redux-form -> formik, axios, AntDesign
+https://react-social-network-f648e.web.app/
+test login: free@samuraijs.com
+Password: free
+
+api: https://social-network.samuraijs.com/docs
+
+Used: React, Redux, redux-toolkit, react-router, redux-thunk, redux-form -> formik, axios, AntDesign
 
 # Getting Started with Create React App
 

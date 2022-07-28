@@ -8,7 +8,7 @@ import { RouteNames } from '../../components/AppRoutes';
 type PropsType = {
   user: UserType
   followingInProgress: Array<number>
-  toggleFollow: (followed: boolean, id: number) => void,
+  toggleFollow: (followed: boolean, userId: number) => void,
   isAuth: boolean,
   avatarSize: number
 }

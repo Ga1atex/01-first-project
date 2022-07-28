@@ -36,11 +36,11 @@ const UsersContainer: React.FC<PropsType> = ({ pageTitle }) => {
   const navigate = useNavigate();
 
   const onFilterChanged = useCallback((filter: FilterType) => {
-    dispatch(requestUsers(1, pageSize, filter));
+    dispatch(requestUsers({ pageNumber: 1, pageSize, filter }));
   }, [pageSize, dispatch])
 
   const onPageChanged = useCallback((pageNumber: number) => {
-    dispatch(requestUsers(pageNumber, pageSize, filter));
+    dispatch(requestUsers({ pageNumber, pageSize, filter }));
   }, [pageSize, filter, dispatch])
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const UsersContainer: React.FC<PropsType> = ({ pageTitle }) => {
     if (!!urlParams.friend)
       actualFilter = { ...actualFilter, friend: urlParams.friend === "null" ? null : urlParams.friend === "true" }
 
-    dispatch(requestUsers(actualPage, pageSize, actualFilter))
+    dispatch(requestUsers({ pageNumber: actualPage, pageSize, filter: actualFilter }))
   }, [])
 
   useEffect(() => {

@@ -1,15 +1,13 @@
 import { getAuthUserData } from "../authReducer/authThunks";
-import { BaseThunkType } from '../../store';
-import { appActionCreators } from './appActions';
-import { ActionsTypes } from './appReducer';
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-type ThunkType = BaseThunkType<ActionsTypes>;
-
-export const initializeApp = (): ThunkType => async (dispatch) => {
-  try {
-    await dispatch(getAuthUserData());
-    dispatch(appActionCreators.initializedSuccess());
-  } catch (e) {
-    dispatch(appActionCreators.initializedFail((e as Error).message));
+export const initializeApp = createAsyncThunk(
+  "app/initializeApp",
+  async (_, thunkAPI) => {
+    try {
+      await thunkAPI.dispatch(getAuthUserData());
+    } catch (e) {
+      return thunkAPI.rejectWithValue((e as Error).message);
+    }
   }
-};
+);

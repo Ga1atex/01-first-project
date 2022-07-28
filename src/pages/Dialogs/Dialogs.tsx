@@ -31,7 +31,7 @@ const Dialogs: React.FC = React.memo(() => {
 
   const addNewMessage = (values: AddMessageFormPropsType, helpers: FormikHelpers<AddMessageFormPropsType>) => {
     const { setSubmitting, resetForm } = helpers;
-    dispatch(sendMessage(currentDialogId, values.message))
+    dispatch(sendMessage({ userId: currentDialogId, message: values.message }))
 
     setSubmitting(false)
     resetForm()
@@ -44,7 +44,7 @@ const Dialogs: React.FC = React.memo(() => {
   useEffect(() => {
     if (userId) {
       const isNewDialog = !dialogsData.some(dialog => dialog.id === userId)
-      dispatch(getMessages(userId, isNewDialog))
+      dispatch(getMessages({ userId, isNewDialog }))
       setCurrentDialogId(userId)
 
       if (isNewDialog) {
@@ -63,7 +63,7 @@ const Dialogs: React.FC = React.memo(() => {
 
   const dateOnChange = (date: moment.Moment | null, dateString: string) => {
     if (dateString) {
-      dispatch(getMessagesNewerThen(currentDialogId, dateString))
+      dispatch(getMessagesNewerThen({ userId: currentDialogId, date: dateString }))
     }
   }
 

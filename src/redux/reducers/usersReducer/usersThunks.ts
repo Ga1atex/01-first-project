@@ -1,28 +1,64 @@
-import { ResultCodesEnum } from '../../../api/api';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { ResultCodesEnum } from "../../../api/api";
 import { usersAPI } from "../../../api/usersAPI";
-import { BaseThunkType } from '../../store';
-import { usersActionCreators } from './usersActions';
-import { ActionsTypes, FilterType } from './usersReducer';
+import { FilterType, usersActionCreators } from "./usersReducer";
 
-type ThunkType = BaseThunkType<ActionsTypes>;
-// 2 ways to set a type, 2nd is "async (dispatch: DispatchType, getState: GetStateType)""
-export const requestUsers = (pageNumber: number, pageSize: number, filter: FilterType): ThunkType => async (dispatch, getState) => {
-  dispatch(usersActionCreators.toggleIsFetching(true));
-  dispatch(usersActionCreators.setCurrentPage(pageNumber));
-  dispatch(usersActionCreators.setFilter(filter));
+// type ThunkType = BaseThunkType<ActionsTypes>;
 
-  const data = await usersAPI.getUsers(pageNumber, pageSize, filter.term, filter.friend);
-  dispatch(usersActionCreators.toggleIsFetching(false));
-  dispatch(usersActionCreators.setUsers(data.items));
-  dispatch(usersActionCreators.setTotalUsersCount(data.totalCount)); // should be replaced somewhere
-};
-export const toggleFollow = (followed: boolean, id: number): ThunkType => async (dispatch, getState) => {
-  dispatch(usersActionCreators.toggleFollowingProgress(true, id));
-  const data = await (followed
-    ? usersAPI.unfollow(id)
-    : usersAPI.follow(id));
-  if (data.resultCode === ResultCodesEnum.Success) {
-    dispatch(usersActionCreators.toggleFollowSuccess(id));
+export const requestUsers = createAsyncThunk(
+  "users/requestUsers",
+  async (
+    {
+      pageNumber,
+      pageSize,
+      filter,
+    }: { pageNumber: number; pageSize: number; filter: FilterType },
+    thunkAPI
+  ) => {
+    thunkAPI.dispatch(usersActionCreators.setCurrentPage(pageNumber));
+    thunkAPI.dispatch(usersActionCreators.setFilter(filter));
+
+    const response = await usersAPI.getUsers(
+      pageNumber,
+      pageSize,
+      filter.term,
+      filter.friend
+    );
+    return {
+      users: response.items,
+      totalCount: response.totalCount,
+    };
   }
-  dispatch(usersActionCreators.toggleFollowingProgress(false, id));
-};
+);
+
+export const toggleFollow = createAsyncThunk(
+  "users/toggleFollow",
+  async (
+    { followed, userId }: { followed: boolean; userId: number },
+    thunkAPI
+  ) => {
+    thunkAPI.dispatch(
+      usersActionCreators.toggleFollowingProgress({
+        isFetching: true,
+        userId,
+      })
+    );
+    try {
+      const response = await (followed
+        ? usersAPI.unfollow(userId)
+        : usersAPI.follow(userId));
+      if (response.resultCode === ResultCodesEnum.Success) {
+        return userId;
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue((error as Error).message);
+    } finally {
+      thunkAPI.dispatch(
+        usersActionCreators.toggleFollowingProgress({
+          isFetching: false,
+          userId,
+        })
+      );
+    }
+  }
+);

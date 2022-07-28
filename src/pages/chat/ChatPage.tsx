@@ -6,10 +6,9 @@ import AddMessageForm, { AddMessageFormPropsType } from "../../components/AddMes
 import ChatMessage from './ChatMessage/ChatMessage';
 import Messages from "../../components/Messages/Messages";
 import { sendChatMessage, startMessagesListening, stopMessagesListening } from "../../redux/reducers/chatReducer/chatThunks";
-import { chatActionCreators } from "../../redux/reducers/chatReducer/chatActions";
 import { selectChatMessages, selectChatStatus } from '../../redux/reducers/chatReducer/chatSelectors';
-import { Card } from 'antd';
 import ContentWrapper from '../../components/common/ContentWrapper/ContentWrapper';
+import { chatActionCreators } from '../../redux/reducers/chatReducer/chatReducer';
 
 
 const ChatPage: React.FC = () => {
