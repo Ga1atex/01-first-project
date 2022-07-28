@@ -1,31 +1,29 @@
-import { InferActionTypes } from '../../store';
-import { appActionCreators, appActions } from './appActions';
+import { createSlice } from "@reduxjs/toolkit";
+import { InferActionTypes } from "../../store";
+// import { appActionCreators, appActions } from './appActions';
+import { initializeApp } from "./appThunks";
 
 export const appInitialState = {
   initialized: false,
-  error: ''
+  error: "",
 };
-export type AppInitialStateType = typeof appInitialState
+export type AppInitialStateType = typeof appInitialState;
 
-export type ActionsTypes = InferActionTypes<typeof appActionCreators>
+// export type ActionsTypes = InferActionTypes<typeof appActionCreators>
 
-const appReducer = (state = appInitialState, action: ActionsTypes): AppInitialStateType => {
-  switch (action.type) {
-    case appActions.INITIALIZED_SUCCESS:
-      return {
-        ...state,
-        initialized: true
-      };
-    case appActions.INITIALIZED_FAILED:
-      return {
-        ...state,
-        initialized: true,
-        error: action.payload
-      };
-    default:
-      return state;
-  }
-};
+export const appSlice = createSlice({
+  name: "app",
+  initialState: appInitialState,
+  reducers: {},
+  extraReducers: {
+    [initializeApp.fulfilled.type]: (state, action) => {
+      state.initialized = true;
+    },
+    [initializeApp.rejected.type]: (state, action) => {
+      state.initialized = true;
+      state.error = action.payload;
+    },
+  },
+});
 
-
-export default appReducer;
+export default appSlice.reducer;

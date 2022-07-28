@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import FileInput from "../../../components/common/FormsControls/FileInput";
 import Preloader from "../../../components/common/Preloader/Preloader";
 import { savePhoto, saveProfile } from "../../../redux/reducers/profileReducer/profileThunks";
-import { profileActionCreators } from "../../../redux/reducers/profileReducer/profileActions";
+// import { profileActionCreators } from "../../../redux/reducers/profileReducer/profileActions";
 import { ProfileType } from "../../../types/types";
 import { RouteNames } from "../../../components/AppRoutes";
 import ProfileDataForm from "./ProfileDataForm";
@@ -16,6 +16,7 @@ import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
 import './UserProfile.scss';
 import { ProfileData } from "./ProfileData";
 import UserAvatar from "../../../components/common/UserAvatar/UserAvatar";
+import { profileActionCreators } from "../../../redux/reducers/profileReducer/profileReducer";
 type PropsType = {
   isOwner: boolean
   profile: ProfileType | null,
@@ -46,13 +47,13 @@ const UserProfile: React.FC<PropsType> = (props) => {
 
   const onSubmit = (formData: ProfileType, submitProps: FormikHelpers<ProfileType>) => {
     // dispatch(saveProfile(formData, submitProps.setStatus));
-    dispatch(saveProfile(formData, submitProps.setErrors));
+    dispatch(saveProfile({ profile: formData, setErrors: submitProps.setErrors }));
   };
 
   useEffect(() => {
     if (profileUpdateStatus === 'success') {
       setEditMode(false);
-      dispatch(profileActionCreators.saveProfileSuccess('none'))
+      dispatch(profileActionCreators.setProfileUpdateStatus('none'))
     }
   }, [profileUpdateStatus, dispatch])
 

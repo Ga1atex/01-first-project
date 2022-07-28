@@ -5,7 +5,7 @@ import moment from 'moment';
 import React, { createElement } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { profileActionCreators } from "../../../redux/reducers/profileReducer/profileActions";
+import { profileActionCreators } from '../../../redux/reducers/profileReducer/profileReducer';
 import { PostType } from '../../../types/types';
 import UserAvatar from '../../common/UserAvatar/UserAvatar';
 

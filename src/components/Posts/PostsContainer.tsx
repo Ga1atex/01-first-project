@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { profileActionCreators } from "../../redux/reducers/profileReducer/profileActions";
+import { profileActionCreators } from '../../redux/reducers/profileReducer/profileReducer';
 import { selectPostsData } from '../../redux/reducers/profileReducer/profileSelectors';
 import Posts from './Posts';
 

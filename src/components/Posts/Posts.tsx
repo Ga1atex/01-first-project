@@ -10,9 +10,9 @@ export type MapStateToPropsType = {
   postsData: Array<PostType>,
   userId: string | undefined
 }
-
+// todo
 export type DispatchPropsType = {
-  addPost: (newPostValue: string, newPostAvatar: string | null, newPostUserName: string, userId: number) => void
+  addPost: any
 }
 
 const Posts: React.FC<MapStateToPropsType & DispatchPropsType> = (props) => {
@@ -26,7 +26,9 @@ const Posts: React.FC<MapStateToPropsType & DispatchPropsType> = (props) => {
 
   const addPostHandler = (values: AddMessageFormPropsType, helpers: FormikHelpers<AddMessageFormPropsType>) => {
     const { setSubmitting, resetForm } = helpers;
-    dispatch(addPost(values.message, avatar, userName!, authUserId!));
+    dispatch(addPost({
+      message: values.message, avatarImage: avatar, userName, userId: authUserId
+    }));
     setSubmitting(false)
     resetForm()
   };

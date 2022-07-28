@@ -1,16 +1,12 @@
 import { MessageOutlined, UserOutlined, TeamOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { NavLink, useLocation } from "react-router-dom";
-import { SidebarInitialStateType } from "../../redux/reducers/sidebarReducer/sidebarReducer";
 import { RouteNames } from '../AppRoutes';
 import styles from './Sidebar.module.scss';
 const { Sider } = Layout;
 
-type MapStateToPropsType = {
-  sidebar: SidebarInitialStateType
-}
 
-const Sidebar: React.FC<MapStateToPropsType> = (props) => {
+const Sidebar: React.FC = () => {
   const { pathname } = useLocation();
   const currentPath = '/' + pathname.split('/')[1] || 'profile';
 

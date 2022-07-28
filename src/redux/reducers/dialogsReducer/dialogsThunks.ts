@@ -1,57 +1,80 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { dialogsAPI } from "../../../api/dialogsAPI";
 import { BaseThunkType } from "../../store";
-import { dialogsActionCreators, dialogsActions } from "./dialogsActions";
-import { ActionsTypes } from "./dialogsReducer";
+// import { dialogsActionCreators, dialogsActions } from "./dialogsActions";
 
-type ThunkType = BaseThunkType<ActionsTypes>;
+// type ThunkType = BaseThunkType<ActionsTypes>;
 
-export const requestDialogs = (): ThunkType => {
-  return async (dispatch) => {
-    dispatch(dialogsActionCreators.toggleIsFetching(dialogsActions.TOGGLE_DIALOGS_FETCHING, true));
-    const data = await dialogsAPI.getDialogs();
-    dispatch(dialogsActionCreators.setDialogs(data));
-    dispatch(dialogsActionCreators.toggleIsFetching(dialogsActions.TOGGLE_DIALOGS_FETCHING, false));
-  };
-};
+export const requestDialogs = createAsyncThunk(
+  "dialogs/requestDialogs",
+  async (_, thunkAPI) => {
+    const response = await dialogsAPI.getDialogs();
 
-export const getMessages = (userId: number, isNewDialog: boolean = false): ThunkType => async (dispatch) => {
-  dispatch(dialogsActionCreators.toggleIsFetching(dialogsActions.TOGGLE_MESSAGES_FETCHING, true));
-
-  if (isNewDialog) {
-    const data = await dialogsAPI.startDialog(userId);
-    // dispatch(requestDialogs())
+    return response;
   }
+);
 
-  const resData = await dialogsAPI.getMessages(userId);
-  dispatch(dialogsActionCreators.setMessages(resData.items));
-  dispatch(dialogsActionCreators.toggleIsFetching(dialogsActions.TOGGLE_MESSAGES_FETCHING, false));
+export const getMessages = createAsyncThunk(
+  "dialogs/getMessages",
+  async (
+    { userId, isNewDialog = false }: { userId: number; isNewDialog: boolean },
+    thunkAPI
+  ) => {
+    if (isNewDialog) {
+      const data = await dialogsAPI.startDialog(userId);
+      // dispatch(requestDialogs())
+    }
 
-};
+    const resData = await dialogsAPI.getMessages(userId);
+    return resData.items;
+  }
+);
 
-export const sendMessage = (userId: number, message: string): ThunkType => async (dispatch) => {
-  const data = await dialogsAPI.sendMessage(userId, message);
-  dispatch(dialogsActionCreators.sendMessage(data.data.message));
-  // dispatch(requestDialogs());
-};
+export const sendMessage = createAsyncThunk(
+  "dialogs/sendMessage",
+  async (
+    { userId, message }: { userId: number; message: string },
+    thunkAPI
+  ) => {
+    const response = await dialogsAPI.sendMessage(userId, message);
 
-export const deleteMessage = (messageId: string): ThunkType => async (dispatch) => {
-  const data = await dialogsAPI.deleteMessageForOwner(messageId);
-  dispatch(dialogsActionCreators.deleteMessage(messageId));
-};
+    return response.data.message;
+    // dispatch(requestDialogs());
+  }
+);
 
-export const restoreMessage = (messageId: string): ThunkType => async (dispatch) => {
-  const data = await dialogsAPI.restoreMessage(messageId);
-  dispatch(dialogsActionCreators.sendMessage(data.data.message));
-};
+export const deleteMessage = createAsyncThunk(
+  "dialogs/deleteMessage",
+  async (messageId: string) => {
+    const response = await dialogsAPI.deleteMessageForOwner(messageId);
 
-export const addMessageToSpam = (messageId: string): ThunkType => async (dispatch) => {
-  const data = await dialogsAPI.addMessageToSpam(messageId);
+    return messageId;
+  }
+);
 
-  dispatch(dialogsActionCreators.addMessageToSpam(messageId));
-};
+export const restoreMessage = createAsyncThunk(
+  "dialogs/restoreMessage",
+  async (messageId: string, thunkAPI) => {
+    const response = await dialogsAPI.restoreMessage(messageId);
 
-export const getMessagesNewerThen = (userId: number, date: string): ThunkType => async (dispatch) => {
-  const data = await dialogsAPI.getMessagesNewerThen(userId, date);
+    return response.data.message;
+  }
+);
 
-  dispatch(dialogsActionCreators.setMessages(data));
-};
+export const addMessageToSpam = createAsyncThunk(
+  "dialogs/addMessageToSpam",
+  async (messageId: string, thunkAPI) => {
+    const response = await dialogsAPI.addMessageToSpam(messageId);
+
+    return messageId;
+  }
+);
+
+export const getMessagesNewerThen = createAsyncThunk(
+  "dialogs/getMessagesNewerThen",
+  async ({ userId, date }: { userId: number; date: string }, thunkAPI) => {
+    const response = await dialogsAPI.getMessagesNewerThen(userId, date);
+
+    return response;
+  }
+);

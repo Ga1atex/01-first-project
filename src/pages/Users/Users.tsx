@@ -21,8 +21,8 @@ export const Users: React.FC<PropsType> = React.memo(({ isFetching, usersData, f
 
   const avatarSize = 60;
 
-  const toggleFollowCB = useCallback((followed: boolean, id: number) => {
-    dispatch(toggleFollow(followed, id))
+  const toggleFollowCB = useCallback((followed: boolean, userId: number) => {
+    dispatch(toggleFollow({ followed, userId }))
   }, [dispatch])
 
   // if (isFetching) {
