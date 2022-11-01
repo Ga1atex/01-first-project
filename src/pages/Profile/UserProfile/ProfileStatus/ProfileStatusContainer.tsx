@@ -1,12 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { updateProfileStatus } from '../../../../redux/reducers/profileReducer/profileThunks';
+import { useAppDispatch } from '../../../../utils/hooks/reduxHooks';
 import ProfileStatus from './ProfileStatus';
 
 const ProfileStatusContainer = (props: OwnPropsType) => {
   const { status, isOwner } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [editMode, setEditMode] = useState(false);
   const [profileStatus, setProfileStatus] = useState(status);
 

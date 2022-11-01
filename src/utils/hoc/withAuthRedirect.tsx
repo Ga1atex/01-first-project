@@ -12,7 +12,7 @@ const mapStateToPropsForRedirect = (state: AppStateType) => {
 type MapStateToPropsType = ReturnType<typeof mapStateToPropsForRedirect>;
 
 //Use "extends unknown" or ", " on the generic parameter to hint the compiler that it's a generic
-export const withAuthRedirect = <WCP,>(
+export const withAuthRedirect = <WCP extends JSX.IntrinsicAttributes>(
   WrappedComponent: React.ComponentType<WCP>
 ) => {
   const RedirectComponent: React.FC<MapStateToPropsType> = (props) => {

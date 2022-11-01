@@ -1,15 +1,14 @@
 import { Button, Col, Divider, Image, Row, Space } from 'antd';
+import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Message.module.scss';
-import { deleteMessage } from '../../../redux/reducers/dialogsReducer/dialogsThunks';
-import { useDispatch } from 'react-redux';
-import { RouteNames } from '../../../components/AppRoutes';
-import UserAvatar from '../../../components/common/UserAvatar/UserAvatar';
 import doubleTick from '../../../assets/images/double-tick.png';
 import singleTick from '../../../assets/images/single-tick.png';
-import moment from 'moment';
+import { RouteNames } from '../../../components/AppRoutes';
+import UserAvatar from '../../../components/common/UserAvatar/UserAvatar';
+import { deleteMessage } from '../../../redux/reducers/dialogsReducer/dialogsThunks';
 import { DialogsMessageType } from '../../../types/types';
+import { useAppDispatch } from '../../../utils/hooks/reduxHooks';
 
 type PropsType = {
   photo: string | null | undefined;
@@ -17,7 +16,7 @@ type PropsType = {
 };
 
 const DialogMessage: React.FC<PropsType> = React.memo(({ message, photo }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { senderId, senderName, viewed, body, addedAt, id } = message;
 
   const deleteMessageHandler = () => {

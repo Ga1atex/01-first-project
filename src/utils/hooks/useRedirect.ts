@@ -13,7 +13,7 @@ export const useRedirect = () => {
   const userRole = isAuth ? Roles.USER : Roles.GUEST;
   const { pathname } = useLocation();
 
-  function createRule(rules: RouteRolesType[]) {
+  function createRule(rules: RouteRolesType[]): RouteRolesType | undefined {
     for (let i = 0; i < rules.length; i++) {
       let rule = rules[i];
       if (rule.children) {

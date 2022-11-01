@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '../../components/common/Pagination/Pagination';
 import { requestUsers } from '../../redux/reducers/usersReducer/usersThunks';
@@ -18,6 +18,7 @@ import QueryString from 'qs';
 import { RouteNames } from '../../components/AppRoutes';
 import { selectIsAuth } from '../../redux/reducers/authReducer/authSelectors';
 import { FilterType } from '../../types/types';
+import { useAppDispatch } from '../../utils/hooks/reduxHooks';
 
 export type QueryParamsType = {
   term?: string;
@@ -26,7 +27,7 @@ export type QueryParamsType = {
 };
 
 const UsersContainer: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const pageSize = useSelector(selectPageSize);
   const filter = useSelector(selectUsersFilter);
   const currentPage = useSelector(selectCurrentPage);

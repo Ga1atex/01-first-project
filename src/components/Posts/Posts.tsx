@@ -1,12 +1,13 @@
 import { FormikHelpers } from 'formik';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   selectAuthorizedUserId,
   selectFullName,
   selectPhotoSmall,
 } from '../../redux/reducers/authReducer/authSelectors';
 import { PostType } from '../../types/types';
+import { useAppDispatch } from '../../utils/hooks/reduxHooks';
 import AddMessageForm, {
   AddMessageFormPropsType,
 } from '../AddMessageForm/AddMessageForm';
@@ -20,7 +21,7 @@ type PropsType = {
 
 const Posts: React.FC<PropsType> = (props) => {
   const { postsData, addPost, userId } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const avatar = useSelector(selectPhotoSmall);
   const userName = useSelector(selectFullName);
   const authUserId = useSelector(selectAuthorizedUserId);

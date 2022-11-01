@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { useIntersection } from '../../utils/hooks/useIntersection';
 import styles from './Messages.module.scss';
 
-const Messages: React.FC = React.memo(({ children }) => {
+const Messages: React.FC<PropsWithChildren> = React.memo(({ children }) => {
   const messagesAnchorRef = useRef<HTMLDivElement>(null);
   const messagesParentRef = useRef<HTMLDivElement>(null);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
@@ -13,7 +13,7 @@ const Messages: React.FC = React.memo(({ children }) => {
     threshold: 0,
   };
 
-  const autoObserver = useIntersection(
+  useIntersection(
     messagesAnchorRef,
     ([entry]) => {
       if (entry.isIntersecting) {

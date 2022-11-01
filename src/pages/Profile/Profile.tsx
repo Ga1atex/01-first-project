@@ -1,21 +1,22 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import {
-  getProfileStatus,
-  getUserProfile,
-} from '../../redux/reducers/profileReducer/profileThunks';
+import Preloader from '../../components/common/Preloader/Preloader';
+import PostsContainer from '../../components/Posts/PostsContainer';
+import { selectAuthorizedUserId } from '../../redux/reducers/authReducer/authSelectors';
 import {
   selectProfile,
   selectProfileIsFetching,
   selectProfileUpdateStatus,
   selectStatus,
 } from '../../redux/reducers/profileReducer/profileSelectors';
-import PostsContainer from '../../components/Posts/PostsContainer';
-import UserProfile from './UserProfile/UserProfile';
-import Preloader from '../../components/common/Preloader/Preloader';
+import {
+  getProfileStatus,
+  getUserProfile,
+} from '../../redux/reducers/profileReducer/profileThunks';
+import { useAppDispatch } from '../../utils/hooks/reduxHooks';
 import styles from './Profile.module.scss';
-import { selectAuthorizedUserId } from '../../redux/reducers/authReducer/authSelectors';
+import UserProfile from './UserProfile/UserProfile';
 
 const Profile: React.FC = () => {
   const profile = useSelector(selectProfile);
@@ -23,7 +24,7 @@ const Profile: React.FC = () => {
   const isFetching = useSelector(selectProfileIsFetching);
   const status = useSelector(selectStatus);
   const profileUpdateStatus = useSelector(selectProfileUpdateStatus);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const params = useParams();
 
   const userId = Number(params.userId) || authorizedUserId;

@@ -3,7 +3,6 @@ import { UploadFile } from 'antd/lib/upload/interface';
 import { FormikHelpers } from 'formik';
 import { UploadRequestOption } from 'rc-upload/lib/interface';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import FileInput from '../../../components/common/FormsControls/FileInput';
 import Preloader from '../../../components/common/Preloader/Preloader';
@@ -19,6 +18,7 @@ import './UserProfile.scss';
 import { ProfileData } from './ProfileData';
 import UserAvatar from '../../../components/common/UserAvatar/UserAvatar';
 import { profileActionCreators } from '../../../redux/reducers/profileReducer/profileReducer';
+import { useAppDispatch } from '../../../utils/hooks/reduxHooks';
 
 type PropsType = {
   isOwner: boolean;
@@ -32,7 +32,7 @@ const UserProfile: React.FC<PropsType> = (props) => {
   const { profileUpdateStatus, profile, isOwner, status, userId } = props;
 
   const [editMode, setEditMode] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // for the native input:file
   // const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
   //   if (e.target.files?.length) {

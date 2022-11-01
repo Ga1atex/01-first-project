@@ -1,14 +1,14 @@
 import { FormikHelpers } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../redux/reducers/authReducer/authThunks';
+import { useSelector } from 'react-redux';
 import { selectCaptchaUrl } from '../../redux/reducers/authReducer/authSelectors';
-import styles from './Login.module.scss';
-import { LoginFormValuesType, LoginForm } from './LoginForm';
+import { login } from '../../redux/reducers/authReducer/authThunks';
+import { useAppDispatch } from '../../utils/hooks/reduxHooks';
+import { LoginForm, LoginFormValuesType } from './LoginForm';
 
 const Login: React.FC = () => {
   const captchaUrl = useSelector(selectCaptchaUrl);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onSubmit = (
     formData: LoginFormValuesType,

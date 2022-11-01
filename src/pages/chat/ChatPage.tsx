@@ -1,6 +1,6 @@
 import { FormikHelpers } from 'formik';
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import AddMessageForm, {
   AddMessageFormPropsType,
 } from '../../components/AddMessageForm/AddMessageForm';
@@ -17,13 +17,14 @@ import {
 } from '../../redux/reducers/chatReducer/chatSelectors';
 import ContentWrapper from '../../components/common/ContentWrapper/ContentWrapper';
 import { chatActionCreators } from '../../redux/reducers/chatReducer/chatReducer';
+import { useAppDispatch } from '../../utils/hooks/reduxHooks';
 
 const ChatPage: React.FC = () => {
   return <Chat />;
 };
 
 const Chat: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const status = useSelector(selectChatStatus);
   const messages = useSelector(selectChatMessages);

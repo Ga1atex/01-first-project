@@ -1,11 +1,9 @@
 import { List, Skeleton } from 'antd';
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import Preloader from '../../components/common/Preloader/Preloader';
 import { toggleFollow } from '../../redux/reducers/usersReducer/usersThunks';
 import { UserType } from '../../types/types';
+import { useAppDispatch } from '../../utils/hooks/reduxHooks';
 import User from './User';
-import styles from './Users.module.scss';
 
 type PropsType = {
   usersData: UserType[];
@@ -16,7 +14,7 @@ type PropsType = {
 
 export const Users: React.FC<PropsType> = React.memo(
   ({ isFetching, usersData, followingInProgress, isAuth }) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const avatarSize = 60;
 
@@ -26,10 +24,6 @@ export const Users: React.FC<PropsType> = React.memo(
       },
       [dispatch]
     );
-
-    // if (isFetching) {
-    //   return <Preloader />
-    // }
 
     return (
       <Skeleton

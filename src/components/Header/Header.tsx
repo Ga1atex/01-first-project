@@ -1,5 +1,5 @@
 import { Button, Col, Layout, Menu, Row } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.svg';
 import { logout } from '../../redux/reducers/authReducer/authThunks';
@@ -11,6 +11,7 @@ import {
 import { RouteNames } from '../AppRoutes';
 import UserAvatar from '../common/UserAvatar/UserAvatar';
 import styles from './Header.module.scss';
+import { useAppDispatch } from '../../utils/hooks/reduxHooks';
 
 const { Header } = Layout;
 
@@ -19,7 +20,7 @@ export default function AppHeader() {
   const fullName = useSelector(selectFullName);
   const photoSmall = useSelector(selectPhotoSmall);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const logoutCallback = () => {
     dispatch(logout());

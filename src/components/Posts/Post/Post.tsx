@@ -1,12 +1,11 @@
-// import styles from './Post.module.css'
 import { LikeFilled, LikeOutlined } from '@ant-design/icons';
 import { Comment, Tooltip } from 'antd';
 import moment from 'moment';
 import React, { createElement } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { profileActionCreators } from '../../../redux/reducers/profileReducer/profileReducer';
 import { PostType } from '../../../types/types';
+import { useAppDispatch } from '../../../utils/hooks/reduxHooks';
 import UserAvatar from '../../common/UserAvatar/UserAvatar';
 
 const Post: React.FC<PostType> = ({
@@ -18,7 +17,7 @@ const Post: React.FC<PostType> = ({
   userName,
   userId,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const like = () => {
     if (isLiked) {

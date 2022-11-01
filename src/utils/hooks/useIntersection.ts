@@ -24,7 +24,7 @@ export const useIntersection = (
         autoObserver.disconnect();
       };
     }
-  }, [anchorRef.current, options.threshold, options.root, options.rootMargin]);
+  }, [anchorRef, options, callback]);
 
   return intersectionObserverEntry;
 };

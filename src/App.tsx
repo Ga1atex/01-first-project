@@ -2,9 +2,9 @@ import { Layout, message } from 'antd';
 import 'antd/dist/antd.min.css';
 import { createBrowserHistory } from 'history';
 import React, { Suspense, useEffect } from 'react';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import './App.scss';
-import AppRoutes, { appRoutesRules, routes } from './components/AppRoutes';
+import AppRoutes, { routes } from './components/AppRoutes';
 import { Breadcrumbs } from './components/common/Breadcrumbs/Breadcrumbs';
 import Preloader from './components/common/Preloader/Preloader';
 import AppHeader from './components/Header/Header';
@@ -14,13 +14,14 @@ import Sidebar from './components/Sidebar/Sidebar';
 import { selectInitialized } from './redux/reducers/appReducer/appSelectors';
 import { initializeApp } from './redux/reducers/appReducer/appThunks';
 import store from './redux/store';
+import { useAppDispatch } from './utils/hooks/reduxHooks';
 
 export const history = createBrowserHistory();
 const { Content } = Layout;
 
 export const App: React.FC = () => {
   const initialized = useSelector(selectInitialized);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const catchAllUnhandledErrors = (
     promiseRejectionEvent: PromiseRejectionEvent

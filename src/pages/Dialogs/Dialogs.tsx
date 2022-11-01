@@ -1,7 +1,7 @@
 import { DatePicker, List } from 'antd';
 import { FormikHelpers } from 'formik';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import AddMessageForm, {
   AddMessageFormPropsType,
@@ -25,6 +25,7 @@ import {
   requestDialogs,
   sendMessage,
 } from '../../redux/reducers/dialogsReducer/dialogsThunks';
+import { useAppDispatch } from '../../utils/hooks/reduxHooks';
 import DialogItem from './Dialog/Dialog';
 import DialogMessage from './DialogMessage/DialogMessage';
 import styles from './Dialogs.module.scss';
@@ -36,7 +37,7 @@ const Dialogs: React.FC = React.memo(() => {
   const authId = useSelector(selectAuthorizedUserId);
   const dialogsAreFetching = useSelector(selectDialogsFetching);
   const messagesAreFetching = useSelector(selectMessagesFetching);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const params = useParams();
 
   const userId = Number(params.userId);
