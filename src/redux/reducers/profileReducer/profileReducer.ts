@@ -1,22 +1,114 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PhotosType, PostType, ProfileType } from "../../../types/types";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  BasePostType,
+  PhotosType,
+  PostType,
+  ProfileType,
+} from '../../../types/types';
 import {
   getProfileStatus,
   getUserProfile,
   savePhoto,
   saveProfile,
   updateProfileStatus,
-} from "./profileThunks";
+} from './profileThunks';
 
 const profileInitialState = {
   postsData: [] as Array<PostType>,
   profile: null as ProfileType | null,
-  profileUpdateStatus: "none",
-  status: "",
+  profileUpdateStatus: 'none',
+  status: '',
   isFetching: false,
 };
 
-export type ProfileInitialStateType = typeof profileInitialState;
+// export type ProfileInitialStateType = typeof profileInitialState;
+
+export const profileSlice = createSlice({
+  name: 'profile',
+  initialState: profileInitialState,
+  reducers: {
+    addPost(state, action: PayloadAction<BasePostType>) {
+      const { message, avatarImage, userName, userId } = action.payload;
+      const newPost = {
+        id: state.postsData.length + 1,
+        message: message,
+        likesCount: 0,
+        isLiked: false,
+        avatarImage: avatarImage,
+        userName: userName,
+        userId: userId,
+      };
+
+      state.postsData.push(newPost);
+    },
+    deletePost(state, action: PayloadAction<number>) {
+      state.postsData = state.postsData.filter(
+        (user) => user.id !== action.payload
+      );
+    },
+    addLike(state, action: PayloadAction<number>) {
+      state.postsData = state.postsData.map((item) => {
+        if (item.id === action.payload) {
+          item.likesCount += 1;
+          item.isLiked = true;
+        }
+        return item;
+      });
+    },
+    removeLike(state, action: PayloadAction<number>) {
+      state.postsData = state.postsData.map((item) => {
+        if (item.id === action.payload) {
+          item.likesCount -= 1;
+          item.isLiked = false;
+        }
+        return item;
+      });
+    },
+    setProfileUpdateStatus(state, action: PayloadAction<string>) {
+      state.profileUpdateStatus = action.payload;
+    },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(getUserProfile.pending, (state) => {
+        state.isFetching = true;
+      })
+      .addCase(
+        getUserProfile.fulfilled,
+        (state, action: PayloadAction<ProfileType>) => {
+          state.isFetching = false;
+          state.profile = action.payload;
+        }
+      )
+      .addCase(
+        getProfileStatus.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.status = action.payload;
+        }
+      )
+      .addCase(
+        updateProfileStatus.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.status = action.payload;
+        }
+      )
+      .addCase(
+        savePhoto.fulfilled,
+        (state, action: PayloadAction<PhotosType>) => {
+          state.profile!.photos = action.payload;
+        }
+      )
+      .addCase(
+        saveProfile.fulfilled,
+        (state, action: PayloadAction<ProfileType>) => {
+          state.profile = action.payload;
+        }
+      );
+  },
+});
+
+export const profileActionCreators = profileSlice.actions;
+export default profileSlice.reducer;
 
 // export type ProfileActionsType = InferActionTypes<typeof profileActionCreators>;
 
@@ -106,87 +198,3 @@ export type ProfileInitialStateType = typeof profileInitialState;
 //       return state;
 //   }
 // };
-
-export const profileSlice = createSlice({
-  name: "profile",
-  initialState: profileInitialState,
-  reducers: {
-    addPost(state, action) {
-      const [message, avatarImage, userName, userId] = action.payload;
-      const newPost = {
-        id: state.postsData.length + 1,
-        message: message,
-        likesCount: 0,
-        isLiked: false,
-        avatarImage: avatarImage,
-        userName: userName,
-        userId: userId,
-      };
-
-      state.postsData.push(newPost);
-    },
-    deletePost(state, action: PayloadAction<number>) {
-      state.postsData = state.postsData.filter(
-        (user) => user.id !== action.payload
-      );
-    },
-    addLike(state, action: PayloadAction<number>) {
-      state.postsData = state.postsData.map((item) => {
-        if (item.id === action.payload) {
-          item.likesCount += 1;
-          item.isLiked = true;
-        }
-        return item;
-      });
-    },
-    removeLike(state, action: PayloadAction<number>) {
-      state.postsData = state.postsData.map((item) => {
-        if (item.id === action.payload) {
-          item.likesCount -= 1;
-          item.isLiked = false;
-        }
-        return item;
-      });
-    },
-    setProfileUpdateStatus(state, action: PayloadAction<string>) {
-      state.profileUpdateStatus = action.payload;
-    },
-  },
-  extraReducers(builder) {
-    builder
-      .addCase(getUserProfile.pending, (state) => {
-        state.isFetching = true;
-      })
-      .addCase(
-        getUserProfile.fulfilled,
-        (state, action: PayloadAction<ProfileType>) => {
-          state.isFetching = false;
-          state.profile = action.payload;
-        }
-      )
-      .addCase(
-        getProfileStatus.fulfilled,
-        (state, action: PayloadAction<string>) => {
-          state.status = action.payload;
-        }
-      )
-      .addCase(
-        updateProfileStatus.fulfilled,
-        (state, action: PayloadAction<string>) => {
-          state.status = action.payload;
-        }
-      )
-      .addCase(
-        savePhoto.fulfilled,
-        (state, action: PayloadAction<PhotosType>) => {
-          state.profile!.photos = action.payload;
-        }
-      )
-      .addCase(saveProfile.fulfilled, (state, action) => {
-        state.profile = action.payload;
-      });
-  },
-});
-
-export const profileActionCreators = profileSlice.actions;
-export default profileSlice.reducer;

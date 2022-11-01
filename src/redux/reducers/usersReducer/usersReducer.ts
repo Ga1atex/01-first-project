@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { UserType } from "../../../types/types";
-import { requestUsers, toggleFollow } from "./usersThunks";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { FilterType, UserType } from '../../../types/types';
+import { requestUsers, toggleFollow } from './usersThunks';
 
 const usersInitialState = {
   usersData: [] as Array<UserType>,
@@ -10,14 +10,13 @@ const usersInitialState = {
   isFetching: false,
   followingInProgress: [] as Array<number>, // array of users ids
   filter: {
-    term: "",
-    friend: null as null | boolean,
-  },
+    term: '',
+    friend: null,
+  } as FilterType,
 };
 
-export type FilterType = typeof usersInitialState.filter;
+// export type FilterType = typeof usersInitialState.filter;
 export type initialUserStateType = typeof usersInitialState;
-// export type ActionsTypes = InferActionTypes<typeof usersActionCreators>;
 
 // const usersReducer = (
 //   state = usersInitialState,
@@ -79,16 +78,19 @@ export type initialUserStateType = typeof usersInitialState;
 // };
 
 export const usersSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState: usersInitialState,
   reducers: {
-    setCurrentPage(state, action) {
+    setCurrentPage(state, action: PayloadAction<number>) {
       state.currentPage = action.payload;
     },
-    setFilter(state, action) {
+    setFilter(state, action: PayloadAction<FilterType>) {
       state.filter = action.payload;
     },
-    toggleFollowingProgress(state, action) {
+    toggleFollowingProgress(
+      state,
+      action: PayloadAction<{ isFetching: boolean; userId: number }>
+    ) {
       action.payload.isFetching
         ? state.followingInProgress.push(action.payload.userId)
         : (state.followingInProgress = state.followingInProgress.filter(
@@ -125,4 +127,5 @@ export const usersSlice = createSlice({
 });
 
 export const usersActionCreators = usersSlice.actions;
+// export type ActionsTypes = InferActionTypes<typeof usersActionCreators>;
 export default usersSlice.reducer;

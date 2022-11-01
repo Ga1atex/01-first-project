@@ -9,15 +9,22 @@ import { profileActionCreators } from '../../../redux/reducers/profileReducer/pr
 import { PostType } from '../../../types/types';
 import UserAvatar from '../../common/UserAvatar/UserAvatar';
 
-
-const Post: React.FC<PostType> = ({ message, likesCount, id, isLiked, avatarImage, userName, userId }) => {
-  const dispatch = useDispatch()
+const Post: React.FC<PostType> = ({
+  message,
+  likesCount,
+  id,
+  isLiked,
+  avatarImage,
+  userName,
+  userId,
+}) => {
+  const dispatch = useDispatch();
 
   const like = () => {
     if (isLiked) {
-      dispatch(profileActionCreators.removeLike(id))
+      dispatch(profileActionCreators.removeLike(id));
     } else {
-      dispatch(profileActionCreators.addLike(id))
+      dispatch(profileActionCreators.addLike(id));
     }
   };
 
@@ -27,7 +34,7 @@ const Post: React.FC<PostType> = ({ message, likesCount, id, isLiked, avatarImag
         {createElement(isLiked ? LikeFilled : LikeOutlined)}
         <span className="comment-action">{likesCount}</span>
       </span>
-    </Tooltip>
+    </Tooltip>,
   ];
 
   return (
@@ -35,11 +42,7 @@ const Post: React.FC<PostType> = ({ message, likesCount, id, isLiked, avatarImag
       actions={actions}
       author={<Link to={'/' + userId}>{userName}</Link>}
       avatar={<UserAvatar src={avatarImage} alt="Users avatar" />}
-      content={
-        <p>
-          {message}
-        </p>
-      }
+      content={<p>{message}</p>}
       datetime={
         <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
           <span>{moment().fromNow()}</span>
@@ -47,6 +50,6 @@ const Post: React.FC<PostType> = ({ message, likesCount, id, isLiked, avatarImag
       }
     />
   );
-}
+};
 
 export default Post;

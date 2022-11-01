@@ -4,15 +4,19 @@ import { selectPostsData } from '../../redux/reducers/profileReducer/profileSele
 import Posts from './Posts';
 
 type PropsType = {
-  userId: string | undefined
-}
+  userId: number | null;
+};
 
 const PostsContainer: React.FC<PropsType> = ({ userId }) => {
-  const postsData = useSelector(selectPostsData)
+  const postsData = useSelector(selectPostsData);
 
   return (
-    <Posts postsData={postsData} addPost={profileActionCreators.addPost} userId={userId} />
-  )
-}
+    <Posts
+      postsData={postsData}
+      addPost={profileActionCreators.addPost}
+      userId={userId}
+    />
+  );
+};
 
 export default PostsContainer;

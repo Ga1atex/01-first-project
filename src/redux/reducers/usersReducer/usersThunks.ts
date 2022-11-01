@@ -1,12 +1,11 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ResultCodesEnum } from "../../../api/api";
-import { usersAPI } from "../../../api/usersAPI";
-import { FilterType, usersActionCreators } from "./usersReducer";
-
-// type ThunkType = BaseThunkType<ActionsTypes>;
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { ResultCodesEnum } from '../../../api/api';
+import { usersAPI } from '../../../api/usersAPI';
+import { FilterType } from '../../../types/types';
+import { usersActionCreators } from './usersReducer';
 
 export const requestUsers = createAsyncThunk(
-  "users/requestUsers",
+  'users/requestUsers',
   async (
     {
       pageNumber,
@@ -32,7 +31,7 @@ export const requestUsers = createAsyncThunk(
 );
 
 export const toggleFollow = createAsyncThunk(
-  "users/toggleFollow",
+  'users/toggleFollow',
   async (
     { followed, userId }: { followed: boolean; userId: number },
     thunkAPI

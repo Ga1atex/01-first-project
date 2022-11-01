@@ -1,8 +1,8 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ResultCodeForCaptcha, ResultCodesEnum } from "../../../api/api";
-import { authAPI } from "../../../api/authAPI";
-import { profileAPI } from "../../../api/profileAPI";
-import { securityAPI } from "../../../api/securityAPI";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { ResultCodeForCaptcha, ResultCodesEnum } from '../../../api/api';
+import { authAPI } from '../../../api/authAPI';
+import { profileAPI } from '../../../api/profileAPI';
+import { securityAPI } from '../../../api/securityAPI';
 // import { BaseThunkType } from '../../store';
 // import { authActionCreators } from './authActions';
 // import { ActionsTypes } from './authReducer';
@@ -10,7 +10,7 @@ import { securityAPI } from "../../../api/securityAPI";
 // type ThunkType = BaseThunkType<ActionsTypes>;
 
 export const getAuthUserData = createAsyncThunk(
-  "auth/getAuthUserData",
+  'auth/getAuthUserData',
   async (_, thunkAPI) => {
     const response = await authAPI.getAuthData();
     if (response.resultCode === ResultCodesEnum.Success) {
@@ -26,6 +26,7 @@ export const getAuthUserData = createAsyncThunk(
             isAuth: true,
             fullName: profileData.fullName,
             photoSmall: profileData.photos.small,
+            captchaUrl: null,
           };
         } catch (error) {
           return thunkAPI.rejectWithValue({
@@ -35,6 +36,7 @@ export const getAuthUserData = createAsyncThunk(
             isAuth: true,
             fullName: null,
             photoSmall: null,
+            captchaUrl: null,
           });
         }
       }
@@ -44,7 +46,7 @@ export const getAuthUserData = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  "auth/login",
+  'auth/login',
   async (
     {
       email,
@@ -74,7 +76,7 @@ export const login = createAsyncThunk(
       const errorMessage =
         response.messages.length > 0
           ? response.messages[0]
-          : "E-mail or password is wrong";
+          : 'E-mail or password is wrong';
 
       setErrors({ email: errorMessage, password: errorMessage });
     }
@@ -82,7 +84,7 @@ export const login = createAsyncThunk(
 );
 
 export const getCaptchaUrl = createAsyncThunk(
-  "auth/getCaptchaUrl",
+  'auth/getCaptchaUrl',
   async (_, thunkAPI) => {
     const response = await securityAPI.getCaptcha();
     const captchaUrl = response.url;
@@ -91,7 +93,7 @@ export const getCaptchaUrl = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
+export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   const response = await authAPI.logout();
   if (response.resultCode === ResultCodesEnum.Success) {
     return;

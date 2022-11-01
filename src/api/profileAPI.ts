@@ -1,11 +1,10 @@
-import { RcFile } from "antd/lib/upload/interface";
-import { PhotosType, ProfileType } from "../types/types";
-import { APIResponseType, instance } from "./api";
+import { RcFile } from 'antd/lib/upload/interface';
+import { PhotosType, ProfileType } from '../types/types';
+import { APIResponseType, instance } from './api';
 
 type SavePhotoResponseDataType = {
-  photos: PhotosType
-}
-
+  photos: PhotosType;
+};
 
 export const profileAPI = {
   async getProfile(userId: number | null) {
@@ -18,7 +17,7 @@ export const profileAPI = {
   },
   async updateProfileStatus(statusText: string) {
     const response = await instance.put<APIResponseType>(`profile/status/`, {
-      status: statusText
+      status: statusText,
     });
     return response.data;
   },
@@ -29,15 +28,20 @@ export const profileAPI = {
     formData.append('image', photoFile);
     // formData.append('image', photoFile.originFileObj as Blob);
     //   formData.append('image', photoFile);
-    const response = await instance.put<APIResponseType<SavePhotoResponseDataType>>(`profile/photo/`, formData, {
+    const response = await instance.put<
+      APIResponseType<SavePhotoResponseDataType>
+    >(`profile/photo/`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
       },
     });
     return response.data;
   },
   async saveProfile(profile: ProfileType) {
-    const response = await instance.put<APIResponseType<ProfileType>>(`profile/`, profile);
+    const response = await instance.put<APIResponseType<ProfileType>>(
+      `profile/`,
+      profile
+    );
     return response.data;
-  }
+  },
 };

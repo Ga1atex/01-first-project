@@ -1,73 +1,124 @@
-import React from "react";
-import { Navigate, RouteObject, useRoutes } from "react-router-dom";
-import LoginPage from '../pages/Login/Login';
-import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import React from 'react';
+import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
+import ErrorPage from '../pages/ErrorPage/ErrorPage';
 
-export const UsersContainer = React.lazy(() => import('../pages/Users/UsersContainer'));
+export const UsersContainer = React.lazy(
+  () => import('../pages/Users/UsersContainer')
+);
+export const LoginPage = React.lazy(() => import('../pages/Login/Login'));
 export const Profile = React.lazy(() => import('../pages/Profile/Profile'));
 export const Dialogs = React.lazy(() => import('../pages/Dialogs/Dialogs'));
 export const ChatPage = React.lazy(() => import('../pages/Chat/ChatPage'));
 
 export enum Roles {
   USER = 'user',
-  GUEST = 'guest'
+  GUEST = 'guest',
 }
 
 export enum RouteNames {
   PROFILE = '/profile',
-  PAGE_USERID = ':userId',
+  PAGE_USER_ID = ':userId',
   DIALOGS = '/dialogs',
   USERS = '/users',
   LOGIN = '/login',
   CHAT = '/chat',
   NO_ACCESS = '/403',
-  SERVER_ERROR = '/500'
+  SERVER_ERROR = '/500',
 }
 
-export type RedirectRulesType = {
-  route: RouteObject,
-  role?: Roles[],
-  children?: RedirectRulesType[]
-}
+export type RouteRolesType = RouteObject & {
+  roles?: Roles[];
+  children?: RouteRolesType[];
+};
 
-export const appRoutesRules: RedirectRulesType[] = [
-  { route: { path: "/", element: <Navigate to={RouteNames.PROFILE} /> }, role: [Roles.USER] },
+type AppRouteProps = {
+  routes: RouteObject[];
+};
+
+export const appRoutesRules: RouteRolesType[] = [
   {
-    route: { path: RouteNames.PROFILE, element: <Profile /> }, role: [Roles.USER], children: [{
-      route: { path: `${RouteNames.PROFILE}/${RouteNames.PAGE_USERID}`, element: <Profile /> }, role: [Roles.USER, Roles.GUEST]
-    },]
+    path: '/',
+    element: <Navigate to={RouteNames.PROFILE} />,
+    roles: [Roles.USER],
   },
   {
-    route: { path: RouteNames.DIALOGS, element: <Dialogs /> }, role: [Roles.USER], children: [{
-      route: { path: `${RouteNames.DIALOGS}/${RouteNames.PAGE_USERID}`, element: <Dialogs /> }, role: [Roles.USER]
-    }]
+    path: RouteNames.PROFILE,
+    element: <Profile />,
+    roles: [Roles.USER],
+    children: [
+      {
+        path: `${RouteNames.PROFILE}/${RouteNames.PAGE_USER_ID}`,
+        element: <Profile />,
+        roles: [Roles.USER, Roles.GUEST],
+      },
+    ],
   },
-  { route: { path: RouteNames.USERS, element: <UsersContainer pageTitle={'All users'} /> }, role: [Roles.USER, Roles.GUEST] },
-  { route: { path: RouteNames.LOGIN, element: <LoginPage /> }, role: [Roles.GUEST] },
-  { route: { path: RouteNames.CHAT, element: <ChatPage /> }, role: [Roles.USER] },
-  { route: { path: RouteNames.NO_ACCESS, element: <ErrorPage status='403' title='403 error' subTitle='Access is restricted' /> }, role: [Roles.USER] },
-  { route: { path: RouteNames.SERVER_ERROR, element: <ErrorPage status='500' title='Server error' /> } },
-  { route: { path: '*', element: <ErrorPage status='404' title='404 error' subTitle='Sorry, the page you visited does not exist.' /> } },
-]
+  {
+    path: RouteNames.DIALOGS,
+    element: <Dialogs />,
+    roles: [Roles.USER],
+    children: [
+      {
+        path: `${RouteNames.DIALOGS}/${RouteNames.PAGE_USER_ID}`,
+        element: <Dialogs />,
+        roles: [Roles.USER],
+      },
+    ],
+  },
+  {
+    path: RouteNames.USERS,
+    element: <UsersContainer />,
 
-export const AppRoutesObj = (appRoutesRules: RedirectRulesType[]) => {
-  return appRoutesRules.reduce((acc: RouteObject[], item: RedirectRulesType) => {
-    let route = item.route;
+    roles: [Roles.USER, Roles.GUEST],
+  },
+  { path: RouteNames.LOGIN, element: <LoginPage />, roles: [Roles.GUEST] },
+  { path: RouteNames.CHAT, element: <ChatPage />, roles: [Roles.USER] },
+  {
+    path: RouteNames.NO_ACCESS,
+    element: (
+      <ErrorPage
+        status="403"
+        title="403 error"
+        subTitle="Access is restricted"
+      />
+    ),
+    roles: [Roles.USER],
+  },
+  {
+    path: RouteNames.SERVER_ERROR,
+    element: <ErrorPage status="500" title="Server error" />,
+  },
+  {
+    path: '*',
+    element: (
+      <ErrorPage
+        status="404"
+        title="404 error"
+        subTitle="Sorry, the page you visited does not exist."
+      />
+    ),
+  },
+];
 
-    if (item.children) {
-      let childrenArr = AppRoutesObj(item.children)
-      route = { ...route, children: childrenArr }
+// getting rid of roles property to pass it to useRoutes
+export const AppRoutesObj = (routeRoles: RouteRolesType[]): RouteObject[] => {
+  return routeRoles.map(({ roles, ...routeProps }: RouteRolesType) => {
+    if (routeProps.children) {
+      routeProps.children = AppRoutesObj(routeProps.children);
     }
-    return [...acc, route]
-  }, [])
+
+    return routeProps;
+  });
+};
+export const routes = AppRoutesObj(appRoutesRules);
+
+export default function AppRoutes({ routes }: AppRouteProps) {
+  return useRoutes(routes);
 }
-export default function AppRoutes({ appRoutesRules }: { appRoutesRules: RedirectRulesType[] }) {
-  return useRoutes(AppRoutesObj(appRoutesRules));
-}
-// export const AppRoutes: React.FC<{ appRoutesRules: RedirectRulesType[] }> = ({ appRoutesRules }) => {
+// export const AppRoutes: React.FC<AppRouteProps> = ({ routes }) => {
 //   return (<Routes>
-//     {appRoutesRules.map((route) => {
-//       return <Route key={route.route.path} {...route.route} ></Route>
+//     {routes.map((route) => {
+//       return <Route key={route.path} {...route} ></Route>
 //     })}
 //   </Routes>
 //   )

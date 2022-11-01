@@ -1,12 +1,14 @@
-import { instance } from "./api";
+import { instance } from './api';
 
 export type GetCaptchaType = {
-  url: string
-}
+  url: string;
+};
 
 export const securityAPI = {
   async getCaptcha() {
-    const response = await instance.get<GetCaptchaType>(`security/get-captcha-url`);
+    const response = await instance.get<GetCaptchaType>(
+      `security/get-captcha-url`
+    );
     return response.data;
   },
 };

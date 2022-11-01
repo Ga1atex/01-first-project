@@ -1,5 +1,5 @@
-import { PhotosType, ProfileType } from "../../../types/types";
-import { profileSlice } from "./profileReducer";
+import { PhotosType, ProfileType } from '../../../types/types';
+import { profileSlice } from './profileReducer';
 
 // export enum profileActions {
 //   ADD_POST = "profilePage/ADD_POST",

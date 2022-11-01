@@ -1,8 +1,6 @@
 .formControl.error input,
 .formControl.error textarea,
 .formSummaryError {
-  // border: 2px red solid;
-  // border-radius: 4px;
   outline: rgb(255, 0, 0) auto 1px;
 }
 
@@ -11,9 +9,9 @@
   flex-direction: column;
   max-width: 280px;
 
-  input[type=number],
-  input[type=password],
-  input[type=text],
+  input[type='number'],
+  input[type='password'],
+  input[type='text'],
   textarea {
     min-width: 200px;
     appearance: auto;
@@ -24,9 +22,6 @@
   flex: 1 1 auto;
 }
 
-/* .formControl.error span {
-  color: red
-} */
 .error {
   color: red;
 }

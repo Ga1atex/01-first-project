@@ -1,12 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { Action, combineReducers } from "redux";
-import { ThunkAction } from "redux-thunk";
-import appReducer from "./reducers/appReducer/appReducer";
-import authReducer from "./reducers/authReducer/authReducer";
-import chatReducer from "./reducers/chatReducer/chatReducer";
-import dialogsReducer from "./reducers/dialogsReducer/dialogsReducer";
-import profileReducer from "./reducers/profileReducer/profileReducer";
-import usersReducer from "./reducers/usersReducer/usersReducer";
+import { configureStore } from '@reduxjs/toolkit';
+import { Action, combineReducers } from 'redux';
+import { ThunkAction } from 'redux-thunk';
+import appReducer from './reducers/appReducer/appReducer';
+import authReducer from './reducers/authReducer/authReducer';
+import chatReducer from './reducers/chatReducer/chatReducer';
+import dialogsReducer from './reducers/dialogsReducer/dialogsReducer';
+import profileReducer from './reducers/profileReducer/profileReducer';
+import usersReducer from './reducers/usersReducer/usersReducer';
 
 const rootReducer = combineReducers({
   profilePage: profileReducer,
@@ -28,12 +28,22 @@ const store = configureStore({
 
 export default store;
 
+export type AppDispatch = typeof store.dispatch;
 export type AppStateType = ReturnType<typeof rootReducer>;
+// export type AppStateType = ReturnType<typeof store.getState>;
+
 export type InferActionTypes<T> = T extends {
   [keys: string]: (...args: Array<any>) => infer U;
 }
   ? U
   : never;
+
+// export type AppThunk<ReturnType = void> = ThunkAction<
+//   ReturnType,
+//   AppStateType,
+//   unknown,
+//   Action<string>
+// >;
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<
   R,
   AppStateType,

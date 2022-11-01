@@ -1,5 +1,4 @@
-import { UserType } from "../../../types/types";
-import { FilterType } from "./usersReducer";
+import { UserType } from '../../../types/types';
 
 // export enum usersActions {
 //   TOGGLE_FOLLOW = 'usersPage/TOGGLE_FOLLOW',

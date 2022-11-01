@@ -1,4 +1,4 @@
-import { MessageAPIType, StatusType } from "../../../api/chatAPI";
+import { MessageAPIType, StatusType } from '../../../api/chatAPI';
 
 // export enum chatActions {
 //   MESSAGES_RECEIVED = 'chat/MESSAGES_RECEIVED',
