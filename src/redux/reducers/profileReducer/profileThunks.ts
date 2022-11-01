@@ -1,15 +1,15 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { RcFile } from "antd/lib/upload/interface";
-import { ResultCodesEnum } from "../../../api/api";
-import { profileAPI } from "../../../api/profileAPI";
-import { ProfileType } from "../../../types/types";
-import { parseContactsLinkErrors } from "../../../utils/helpers/parseContactsLinkErrors";
-import { profileActionCreators } from "./profileReducer";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { RcFile } from 'antd/lib/upload/interface';
+import { ResultCodesEnum } from '../../../api/api';
+import { profileAPI } from '../../../api/profileAPI';
+import { ProfileType } from '../../../types/types';
+import { parseContactsLinkErrors } from '../../../utils/helpers/parseContactsLinkErrors';
+import { profileActionCreators } from './profileReducer';
 
 // type ThunkType = BaseThunkType<ProfileActionsType>;
 
 export const getUserProfile = createAsyncThunk(
-  "auth/getUserProfile",
+  'auth/getUserProfile',
   async (userId: null | number, thunkAPI) => {
     const response = await profileAPI.getProfile(userId);
 
@@ -18,7 +18,7 @@ export const getUserProfile = createAsyncThunk(
 );
 
 export const getProfileStatus = createAsyncThunk(
-  "auth/getProfileStatus",
+  'auth/getProfileStatus',
   async (userId: number, thunkAPI) => {
     const response = await profileAPI.getProfileStatus(userId);
 
@@ -27,19 +27,19 @@ export const getProfileStatus = createAsyncThunk(
 );
 
 export const updateProfileStatus = createAsyncThunk(
-  "auth/updateProfileStatus",
+  'auth/updateProfileStatus',
   async (status: string, thunkAPI) => {
     const data = await profileAPI.updateProfileStatus(status);
 
     if (data.resultCode === ResultCodesEnum.Success) {
       return status;
     }
-    return thunkAPI.rejectWithValue("Failed to update status");
+    return thunkAPI.rejectWithValue('Failed to update status');
   }
 );
 
 export const savePhoto = createAsyncThunk(
-  "auth/savePhoto",
+  'auth/savePhoto',
   async (file: string | Blob | RcFile, thunkAPI) => {
     const response = await profileAPI.savePhoto(file);
 
@@ -48,16 +48,16 @@ export const savePhoto = createAsyncThunk(
     } else if (response.resultCode === ResultCodesEnum.Error) {
       const errorMessage = response.messages.length
         ? response.messages[0]
-        : "Image download fail";
+        : 'Image download fail';
       return thunkAPI.rejectWithValue(errorMessage);
     }
 
-    return thunkAPI.rejectWithValue("Failed to save photo");
+    return thunkAPI.rejectWithValue('Failed to save photo');
   }
 );
 
 export const saveProfile = createAsyncThunk(
-  "auth/saveProfile",
+  'auth/saveProfile',
   async (
     { profile, setErrors }: { profile: ProfileType; setErrors: Function },
     thunkAPI
@@ -66,18 +66,18 @@ export const saveProfile = createAsyncThunk(
 
     if (response.resultCode === ResultCodesEnum.Success) {
       thunkAPI.dispatch(
-        profileActionCreators.setProfileUpdateStatus("success")
+        profileActionCreators.setProfileUpdateStatus('success')
       );
 
       return profile;
     } else if (response.resultCode === ResultCodesEnum.Error) {
       const errorMessages = parseContactsLinkErrors(response.messages);
 
-      thunkAPI.dispatch(profileActionCreators.setProfileUpdateStatus("error"));
+      thunkAPI.dispatch(profileActionCreators.setProfileUpdateStatus('error'));
 
       setErrors(errorMessages);
       return thunkAPI.rejectWithValue(errorMessages);
     }
-    return thunkAPI.rejectWithValue("Failed to save profile");
+    return thunkAPI.rejectWithValue('Failed to save profile');
   }
 );

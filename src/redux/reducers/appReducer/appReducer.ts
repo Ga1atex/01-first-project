@@ -1,18 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { InferActionTypes } from "../../store";
+import { createSlice } from '@reduxjs/toolkit';
+import { InferActionTypes } from '../../store';
 // import { appActionCreators, appActions } from './appActions';
-import { initializeApp } from "./appThunks";
+import { initializeApp } from './appThunks';
 
 export const appInitialState = {
   initialized: false,
-  error: "",
+  error: '',
 };
 export type AppInitialStateType = typeof appInitialState;
 
 // export type ActionsTypes = InferActionTypes<typeof appActionCreators>
 
 export const appSlice = createSlice({
-  name: "app",
+  name: 'app',
   initialState: appInitialState,
   reducers: {},
   extraReducers: {

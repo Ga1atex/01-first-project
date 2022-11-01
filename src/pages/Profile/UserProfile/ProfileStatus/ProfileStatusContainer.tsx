@@ -1,7 +1,7 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateProfileStatus } from "../../../../redux/reducers/profileReducer/profileThunks";
-import ProfileStatus from "./ProfileStatus";
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateProfileStatus } from '../../../../redux/reducers/profileReducer/profileThunks';
+import ProfileStatus from './ProfileStatus';
 
 const ProfileStatusContainer = (props: OwnPropsType) => {
   const { status, isOwner } = props;
@@ -11,8 +11,8 @@ const ProfileStatusContainer = (props: OwnPropsType) => {
   const [profileStatus, setProfileStatus] = useState(status);
 
   useEffect(() => {
-    setProfileStatus(status)
-  }, [status])
+    setProfileStatus(status);
+  }, [status]);
 
   const activateEditMode = () => {
     if (isOwner) {
@@ -28,18 +28,26 @@ const ProfileStatusContainer = (props: OwnPropsType) => {
     setProfileStatus(e.currentTarget.value);
   };
   if (!status && !isOwner) {
-    return null
+    return null;
   }
   return (
-    <ProfileStatus {...props} editMode={editMode} status={profileStatus} onStatusChange={onStatusChange} activateEditMode={activateEditMode} deactivateEditMode={deactivateEditMode} isOwner={isOwner} />
+    <ProfileStatus
+      {...props}
+      editMode={editMode}
+      status={profileStatus}
+      onStatusChange={onStatusChange}
+      activateEditMode={activateEditMode}
+      deactivateEditMode={deactivateEditMode}
+      isOwner={isOwner}
+    />
   );
 };
 
 type OwnPropsType = {
-  status: string
-  isOwner: boolean
+  status: string;
+  isOwner: boolean;
   // userId: number
-}
+};
 // type MapStatePropsType = {
 
 // }

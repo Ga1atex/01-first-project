@@ -1,21 +1,18 @@
-import { MessageAPIType, StatusType } from "../../../api/chatAPI";
-import { InferActionTypes } from "../../store";
-import { v1 as uuidv1 } from "uuid";
-// import { chatActions, chatActionCreators } from './chatActions';
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { MessageAPIType, StatusType } from '../../../api/chatAPI';
+import { v1 as uuidv1 } from 'uuid';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type ChatMessageType = MessageAPIType & { id: string };
 
 const chatInitialState = {
   messages: [] as ChatMessageType[],
-  status: "pending" as StatusType,
+  status: 'pending' as StatusType,
 };
 
 export type ChatInitialStateType = typeof chatInitialState;
-// export type ActionsTypes = InferActionTypes<typeof chatActionCreators>
 
 export const chatSlice = createSlice({
-  name: "chat",
+  name: 'chat',
   initialState: chatInitialState,
   reducers: {
     statusChanged: (state, action: PayloadAction<StatusType>) => {

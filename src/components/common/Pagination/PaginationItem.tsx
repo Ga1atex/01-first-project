@@ -11,23 +11,35 @@ type PaginationItemPropsType = {
   currentPage: number;
   onPageChanged?: (pageNumber: number) => void;
 };
-export const PaginationItem: React.FC<PaginationItemPropsType> = ({ pageNumber, currentPage, onPageChanged = () => { } }) => {
-  const isActive = (currentPage === pageNumber);
-  const listItemClass = classNames(styles.pagging__link, { [styles['pagging__link--active']]: isActive });
-  const urlParams = QueryString.parse(window.location.search.slice(1)) as QueryParamsType;
+export const PaginationItem: React.FC<PaginationItemPropsType> = ({
+  pageNumber,
+  currentPage,
+  onPageChanged = () => {},
+}) => {
+  const isActive = currentPage === pageNumber;
+  const listItemClass = classNames(styles.pagging__link, {
+    [styles['pagging__link--active']]: isActive,
+  });
+  const urlParams = QueryString.parse(
+    window.location.search.slice(1)
+  ) as QueryParamsType;
 
   const clickHandler: MouseEventHandler<HTMLAnchorElement> = (event) => {
-    if (isActive) return false
+    if (isActive) return false;
     event.preventDefault();
     onPageChanged(pageNumber);
   };
 
   const { page: _, ...restParams } = urlParams;
-  const link = `${RouteNames.USERS}?page=${pageNumber}${QueryString.stringify(restParams)}`
+  const link = `${RouteNames.USERS}?page=${pageNumber}${QueryString.stringify(
+    restParams
+  )}`;
 
   return (
     <li className={styles.pagging__item}>
-      <Link className={listItemClass} to={link} onClick={clickHandler}>{pageNumber}</Link>
+      <Link className={listItemClass} to={link} onClick={clickHandler}>
+        {pageNumber}
+      </Link>
     </li>
   );
 };

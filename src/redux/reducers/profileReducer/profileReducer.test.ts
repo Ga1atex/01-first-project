@@ -1,44 +1,44 @@
-import profileReducer from "./profileReducer";
+import profileReducer from './profileReducer';
 // import { profileActionCreators } from "./profileActions";
 
 const state = {
   postsData: [
     {
       id: 1,
-      message: "Post1",
+      message: 'Post1',
       likesCount: 431,
       isLiked: false,
-      userName: "UserName123",
+      userName: 'UserName123',
       userId: 2,
     },
     {
       id: 2,
-      message: "Hey",
+      message: 'Hey',
       likesCount: 431,
       isLiked: false,
-      userName: "UserName123",
+      userName: 'UserName123',
       userId: 2,
     },
     {
       id: 3,
-      message: "Hi",
+      message: 'Hi',
       likesCount: 431,
       isLiked: false,
-      userName: "UserName123",
+      userName: 'UserName123',
       userId: 2,
     },
     {
       id: 4,
-      message: "How is your day123",
+      message: 'How is your day123',
       likesCount: 222,
       isLiked: false,
-      userName: "UserName123",
+      userName: 'UserName123',
       userId: 2,
     },
   ],
   profile: null,
-  profileUpdateStatus: "none",
-  status: "",
+  profileUpdateStatus: 'none',
+  status: '',
   isFetching: false,
 };
 

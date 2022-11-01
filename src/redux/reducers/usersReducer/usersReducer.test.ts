@@ -1,7 +1,7 @@
 import usersReducer, {
   initialUserStateType,
   usersActionCreators,
-} from "./usersReducer";
+} from './usersReducer';
 
 let state: initialUserStateType;
 
@@ -10,31 +10,31 @@ beforeEach(() => {
     usersData: [
       {
         id: 0,
-        name: "Name0",
+        name: 'Name0',
         followed: false,
         photos: { small: null, large: null },
-        status: "status 0",
+        status: 'status 0',
       },
       {
         id: 1,
-        name: "Name1",
+        name: 'Name1',
         followed: false,
         photos: { small: null, large: null },
-        status: "status 1",
+        status: 'status 1',
       },
       {
         id: 2,
-        name: "Name2",
+        name: 'Name2',
         followed: true,
         photos: { small: null, large: null },
-        status: "status 2",
+        status: 'status 2',
       },
       {
         id: 3,
-        name: "Name3",
+        name: 'Name3',
         followed: true,
         photos: { small: null, large: null },
-        status: "status 3",
+        status: 'status 3',
       },
     ],
     pageSize: 10,
@@ -43,14 +43,14 @@ beforeEach(() => {
     isFetching: false,
     followingInProgress: [],
     filter: {
-      term: "",
+      term: '',
       friend: null,
     },
   };
 });
 
-describe("user reducer action tests", () => {
-  test("toggle follow works", () => {
+describe('user reducer action tests', () => {
+  test('toggle follow works', () => {
     const newState = usersReducer(
       state,
       usersActionCreators.toggleFollowingProgress({

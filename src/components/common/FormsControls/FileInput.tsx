@@ -5,7 +5,7 @@ import React from 'react';
 const FileInput: React.FC<UploadProps> = (props) => {
   return (
     <Upload {...props}>
-      <Button icon={<UploadOutlined />} >Click to Upload</Button>
+      <Button icon={<UploadOutlined />}>Click to Upload</Button>
     </Upload>
   );
 };

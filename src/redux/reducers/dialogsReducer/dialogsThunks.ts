@@ -1,12 +1,12 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { dialogsAPI } from "../../../api/dialogsAPI";
-import { BaseThunkType } from "../../store";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { dialogsAPI } from '../../../api/dialogsAPI';
+import { BaseThunkType } from '../../store';
 // import { dialogsActionCreators, dialogsActions } from "./dialogsActions";
 
 // type ThunkType = BaseThunkType<ActionsTypes>;
 
 export const requestDialogs = createAsyncThunk(
-  "dialogs/requestDialogs",
+  'dialogs/requestDialogs',
   async (_, thunkAPI) => {
     const response = await dialogsAPI.getDialogs();
 
@@ -15,14 +15,13 @@ export const requestDialogs = createAsyncThunk(
 );
 
 export const getMessages = createAsyncThunk(
-  "dialogs/getMessages",
+  'dialogs/getMessages',
   async (
     { userId, isNewDialog = false }: { userId: number; isNewDialog: boolean },
     thunkAPI
   ) => {
     if (isNewDialog) {
       const data = await dialogsAPI.startDialog(userId);
-      // dispatch(requestDialogs())
     }
 
     const resData = await dialogsAPI.getMessages(userId);
@@ -31,7 +30,7 @@ export const getMessages = createAsyncThunk(
 );
 
 export const sendMessage = createAsyncThunk(
-  "dialogs/sendMessage",
+  'dialogs/sendMessage',
   async (
     { userId, message }: { userId: number; message: string },
     thunkAPI
@@ -39,12 +38,11 @@ export const sendMessage = createAsyncThunk(
     const response = await dialogsAPI.sendMessage(userId, message);
 
     return response.data.message;
-    // dispatch(requestDialogs());
   }
 );
 
 export const deleteMessage = createAsyncThunk(
-  "dialogs/deleteMessage",
+  'dialogs/deleteMessage',
   async (messageId: string) => {
     const response = await dialogsAPI.deleteMessageForOwner(messageId);
 
@@ -53,7 +51,7 @@ export const deleteMessage = createAsyncThunk(
 );
 
 export const restoreMessage = createAsyncThunk(
-  "dialogs/restoreMessage",
+  'dialogs/restoreMessage',
   async (messageId: string, thunkAPI) => {
     const response = await dialogsAPI.restoreMessage(messageId);
 
@@ -62,7 +60,7 @@ export const restoreMessage = createAsyncThunk(
 );
 
 export const addMessageToSpam = createAsyncThunk(
-  "dialogs/addMessageToSpam",
+  'dialogs/addMessageToSpam',
   async (messageId: string, thunkAPI) => {
     const response = await dialogsAPI.addMessageToSpam(messageId);
 
@@ -71,7 +69,7 @@ export const addMessageToSpam = createAsyncThunk(
 );
 
 export const getMessagesNewerThen = createAsyncThunk(
-  "dialogs/getMessagesNewerThen",
+  'dialogs/getMessagesNewerThen',
   async ({ userId, date }: { userId: number; date: string }, thunkAPI) => {
     const response = await dialogsAPI.getMessagesNewerThen(userId, date);
 

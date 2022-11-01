@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // import { InferActionTypes } from "../../store";
 // import { authActions, authActionCreators } from './authActions';
-import { getAuthUserData, getCaptchaUrl, logout } from "./authThunks";
+import { getAuthUserData, getCaptchaUrl, logout } from './authThunks';
 
 const authInitialState = {
   userId: null as null | number,
@@ -35,32 +35,18 @@ export type AuthInitialStateType = typeof authInitialState;
 // };
 
 export const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: authInitialState,
   reducers: {
-    setAuthUserData(state, action) {
+    setAuthUserData(state, action: PayloadAction<AuthInitialStateType>) {
       state = action.payload;
     },
   },
   extraReducers(builder) {
     // Add reducers for additional action types here, and handle loading state as needed
     builder
-      .addCase(getAuthUserData.fulfilled, (state, action) => {
-        state.userId = action.payload!.userId;
-        state.email = action.payload!.email;
-        state.fullName = action.payload!.fullName;
-        state.login = action.payload!.login;
-        state.photoSmall = action.payload!.photoSmall;
-        state.isAuth = action.payload!.isAuth;
-      })
-      .addCase(logout.fulfilled, (state, action) => {
-        state.userId = null;
-        state.email = null;
-        state.fullName = null;
-        state.login = null;
-        state.photoSmall = null;
-        state.isAuth = false;
-      })
+      .addCase(getAuthUserData.fulfilled, (state, action) => action.payload)
+      .addCase(logout.fulfilled, () => authInitialState)
       .addCase(getCaptchaUrl.fulfilled, (state, action) => {
         state.captchaUrl = action.payload;
       });

@@ -1,3 +1,3 @@
-import { appSlice } from "./appReducer";
+import { appSlice } from './appReducer';
 
 export const appActionCreators = appSlice.actions;

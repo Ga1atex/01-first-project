@@ -2,10 +2,10 @@ import { render, screen } from '@testing-library/react';
 import SocialNetworkApp from './App';
 // import App from './App';
 
-test('renders learn react link', () => {
+test('renders learn react link', async () => {
   render(<SocialNetworkApp />);
-  setTimeout(() => {
-    const linkElement = screen.getByText(/Social Network/i);
+  setTimeout(async () => {
+    const linkElement = await screen.findByText(/Social Network/i);
     expect(linkElement).toBeInTheDocument();
   }, 200);
 });

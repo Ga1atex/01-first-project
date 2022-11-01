@@ -1,7 +1,7 @@
-import { Breadcrumb } from "antd"
-import { NavLink, useLocation } from "react-router-dom"
-import { RouteNames } from "../../AppRoutes";
-import styles from "./Breadcrumbs.module.scss"
+import { Breadcrumb } from 'antd';
+import { NavLink, useLocation } from 'react-router-dom';
+import { RouteNames } from '../../AppRoutes';
+import styles from './Breadcrumbs.module.scss';
 
 export const Breadcrumbs = () => {
   const breadcrumbNameMap: Record<string, string> = {
@@ -12,21 +12,24 @@ export const Breadcrumbs = () => {
     [RouteNames.LOGIN]: 'Login',
   };
   const location = useLocation();
-  const pathSnippets = location.pathname.split('/').filter(i => i);
+  const pathSnippets = location.pathname.split('/').filter((i) => i);
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {
     const url = pathSnippets.slice(0, index + 1).join('/');
 
     return (
       <Breadcrumb.Item key={url}>
-        <NavLink to={url}>{breadcrumbNameMap["/" + url]}</NavLink>
+        <NavLink to={url}>{breadcrumbNameMap['/' + url]}</NavLink>
       </Breadcrumb.Item>
     );
   });
+
   const breadcrumbItems = [
     <Breadcrumb.Item key="home">
       <NavLink to="/">Home</NavLink>
     </Breadcrumb.Item>,
   ].concat(extraBreadcrumbItems);
 
-  return <Breadcrumb className={styles.breadcrumb}>{breadcrumbItems}</Breadcrumb>
-}
+  return (
+    <Breadcrumb className={styles.breadcrumb}>{breadcrumbItems}</Breadcrumb>
+  );
+};

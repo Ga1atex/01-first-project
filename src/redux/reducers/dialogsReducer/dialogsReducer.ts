@@ -1,6 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { PhotosType } from "../../../types/types";
-import { InferActionTypes } from "../../store";
+import { createSlice } from '@reduxjs/toolkit';
+import {
+  DialogsMessageType,
+  DialogType,
+  PhotosType,
+} from '../../../types/types';
 
 import {
   deleteMessage,
@@ -8,28 +11,7 @@ import {
   getMessagesNewerThen,
   requestDialogs,
   sendMessage,
-} from "./dialogsThunks";
-
-export type DialogType = {
-  id: number;
-  userName: string;
-  hasNewMessages: boolean;
-  lastDialogActivityDate: string;
-  lastUserActivityDate: string;
-  newMessagesCount: number;
-  photos: PhotosType;
-};
-
-export type DialogsMessageType = {
-  id: string;
-  body: string;
-  translatedBody: null;
-  addedAt: string;
-  senderId: number;
-  senderName: string;
-  recipientId: number;
-  viewed: boolean;
-};
+} from './dialogsThunks';
 
 const dialogsInitialState = {
   dialogsData: [] as Array<DialogType>,
@@ -41,7 +23,7 @@ const dialogsInitialState = {
 export type DialogsInitialStateType = typeof dialogsInitialState;
 
 export const dialogsSlice = createSlice({
-  name: "dialogs",
+  name: 'dialogs',
   initialState: dialogsInitialState,
   reducers: {},
   extraReducers(builder) {
