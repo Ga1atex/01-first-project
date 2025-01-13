@@ -13,6 +13,22 @@ export const instance = axios.create({
   },
 });
 
+const apiKeyStorageKey = 'API-KEY';
+export const setSecureConnection = (apiKey?: string) => {
+  localStorage.setItem(apiKeyStorageKey, apiKey ?? API_KEY);
+  instance.defaults.headers['API-KEY'] = apiKey ?? API_KEY;
+};
+
+export const getSecureConnection = () => {
+  const apiKey = localStorage.getItem(apiKeyStorageKey);
+  instance.defaults.headers['API-KEY'] = apiKey ?? API_KEY;
+};
+
+export const clearSecureConnection = () => {
+  localStorage.removeItem(apiKeyStorageKey);
+  instance.defaults.headers['API-KEY'] = API_KEY;
+};
+
 instance.interceptors.response.use(
   (response) => {
     return response;

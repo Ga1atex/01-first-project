@@ -1,5 +1,6 @@
 import { FormikHelpers } from 'formik';
 import { useSelector } from 'react-redux';
+import { setSecureConnection } from '../../api/api';
 import { selectCaptchaUrl } from '../../redux/reducers/authReducer/authSelectors';
 import { login } from '../../redux/reducers/authReducer/authThunks';
 import { useAppDispatch } from '../../utils/hooks/reduxHooks';
@@ -14,8 +15,8 @@ const Login: React.FC = () => {
     formData: LoginFormValuesType,
     submitProps: FormikHelpers<LoginFormValuesType>
   ) => {
-    const { email, password, rememberMe, captcha } = formData;
-
+    const { email, password, rememberMe, captcha, apiKey } = formData;
+    setSecureConnection(apiKey);
     dispatch(
       login({
         email,

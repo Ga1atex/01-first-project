@@ -1,5 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ResultCodeForCaptcha, ResultCodesEnum } from '../../../api/api';
+import {
+  clearSecureConnection,
+  ResultCodeForCaptcha,
+  ResultCodesEnum,
+} from '../../../api/api';
 import { authAPI } from '../../../api/authAPI';
 import { profileAPI } from '../../../api/profileAPI';
 import { securityAPI } from '../../../api/securityAPI';
@@ -95,6 +99,7 @@ export const getCaptchaUrl = createAsyncThunk(
 
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   const response = await authAPI.logout();
+  clearSecureConnection();
   if (response.resultCode === ResultCodesEnum.Success) {
     return;
   }

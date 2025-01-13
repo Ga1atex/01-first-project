@@ -13,6 +13,7 @@ type LoginFormOwnProps = {
 export type LoginFormValuesType = {
   email: string;
   password: string;
+  apiKey?: string;
   rememberMe: boolean;
   captcha: null | string;
 };
@@ -59,6 +60,12 @@ export const LoginForm: React.FC<LoginFormOwnProps> = (props) => {
                 <span> Remember me</span>
               </Space>
             </label>
+            <Field
+              component={Input}
+              type="text"
+              name={'apiKey'}
+              placeholder={'Enter api-key'}
+            />
             {captchaUrl && (
               <div className="">
                 <img src={captchaUrl} alt={'Captcha'} />
