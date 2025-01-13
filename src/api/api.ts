@@ -23,6 +23,7 @@ export const getSecureConnection = () => {
   const apiKey = localStorage.getItem(apiKeyStorageKey);
   instance.defaults.headers['API-KEY'] = apiKey ?? API_KEY;
 };
+getSecureConnection();
 
 export const clearSecureConnection = () => {
   localStorage.removeItem(apiKeyStorageKey);
