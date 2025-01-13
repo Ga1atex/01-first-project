@@ -29,6 +29,7 @@ export const LoginForm: React.FC<LoginFormOwnProps> = (props) => {
             password: '',
             rememberMe: true,
             captcha: '',
+            apiKey: '',
           } as LoginFormValuesType
         }
         validate={undefined}
