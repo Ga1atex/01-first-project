@@ -39,7 +39,7 @@ const Post: React.FC<PostType> = ({
   return (
     <Comment
       actions={actions}
-      author={<Link to={'/' + userId}>{userName}</Link>}
+      author={<Link to={'/profile/' + userId}>{userName}</Link>}
       avatar={<UserAvatar src={avatarImage} alt="Users avatar" />}
       content={<p>{message}</p>}
       datetime={
