@@ -43,7 +43,7 @@ const Profile: React.FC = () => {
   return (
     <div className={styles.profile}>
       <UserProfile
-        isOwner={!params.userId}
+        isOwner={!params.userId || Number(params.userId) === authorizedUserId}
         profile={profile}
         status={status}
         profileUpdateStatus={profileUpdateStatus}
