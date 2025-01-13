@@ -15,13 +15,14 @@ export const instance = axios.create({
 
 const apiKeyStorageKey = 'API-KEY';
 export const setSecureConnection = (apiKey?: string) => {
-  localStorage.setItem(apiKeyStorageKey, apiKey ?? API_KEY);
-  instance.defaults.headers['API-KEY'] = apiKey ?? API_KEY;
+  localStorage.setItem(apiKeyStorageKey, apiKey || API_KEY);
+  instance.defaults.headers['API-KEY'] = apiKey || API_KEY;
 };
 
 export const getSecureConnection = () => {
-  const apiKey = localStorage.getItem(apiKeyStorageKey);
-  instance.defaults.headers['API-KEY'] = apiKey ?? API_KEY;
+  const apiKey = localStorage.getItem(apiKeyStorageKey) || API_KEY;
+  instance.defaults.headers['API-KEY'] = apiKey;
+  return apiKey;
 };
 getSecureConnection();
 
