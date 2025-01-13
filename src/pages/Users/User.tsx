@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 import UserAvatar from '../../components/common/UserAvatar/UserAvatar';
 import { UserType } from '../../types/types';
 import { RouteNames } from '../../components/AppRoutes';
+import { useSelector } from 'react-redux';
+import { selectAuthorizedUserId } from '../../redux/reducers/authReducer/authSelectors';
 
 type PropsType = {
   user: UserType;
@@ -25,6 +27,8 @@ const User: React.FC<PropsType> = ({
     toggleFollow(user.followed, user.id);
   };
 
+  const authId = useSelector(selectAuthorizedUserId);
+
   return (
     <div key={user.id} className="users__item user">
       <Space className="">
@@ -37,7 +41,10 @@ const User: React.FC<PropsType> = ({
         </NavLink>
         {isAuth && (
           <Button
-            disabled={followingInProgress.some((id) => id === user.id)}
+            disabled={
+              user.id === authId ||
+              followingInProgress.some((id) => id === user.id)
+            }
             className=""
             onClick={followHandler}
           >
