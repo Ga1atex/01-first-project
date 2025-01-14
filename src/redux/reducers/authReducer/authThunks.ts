@@ -45,7 +45,6 @@ export const getAuthUserData = createAsyncThunk(
         }
       }
     }
-    // return response.data;
   }
 );
 
